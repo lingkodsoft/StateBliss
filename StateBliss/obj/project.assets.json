@@ -694,11 +694,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\project_lingkod\\StateBliss\\StateBliss\\StateBliss\\StateBliss.csproj",
+      "projectUniqueName": "C:\\project_lingkod\\StateBliss\\StateBliss\\StateBliss.csproj",
       "projectName": "StateBliss",
-      "projectPath": "C:\\project_lingkod\\StateBliss\\StateBliss\\StateBliss\\StateBliss.csproj",
+      "projectPath": "C:\\project_lingkod\\StateBliss\\StateBliss\\StateBliss.csproj",
       "packagesPath": "C:\\Users\\mike\\.nuget\\packages\\",
-      "outputPath": "C:\\project_lingkod\\StateBliss\\StateBliss\\StateBliss\\obj\\",
+      "outputPath": "C:\\project_lingkod\\StateBliss\\StateBliss\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet",

@@ -36,14 +36,18 @@ namespace StateBliss
             var entity = new MyEntity();
             
             var state = new State<MyEntity, StatusEnum>(entity, a => a.Status)
-                .Define(b =>
+                .Define(b => 
                 {
                     b.From(StatusEnum.NotClicked).To(StatusEnum.Clicked)
-                        .OnEnter(this, a => a.ChangeText1);
+                        .OnTransitioned(this, a => a.ChangeText1);
 
                     b.From(StatusEnum.Clicked).To(StatusEnum.NotClicked)
-                        .OnEnter(this, a => a.ChangeText1)
-                        .OnExit(this, a => a.ChangeText1);
+                        .OnTransitioned(this, a => a.ChangeText1)
+                        .OnTransitioning(this, a => a.ChangeText1);
+
+                    b.OnEnter(StatusEnum.Clicked, this,a => a.ChangeText1);
+                    b.OnExit(StatusEnum.NotClicked, this, a => a.ChangeText1);
+                    
                 });
 
             _stateMachineManager.Register(state);

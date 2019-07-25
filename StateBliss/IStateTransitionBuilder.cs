@@ -5,7 +5,7 @@ namespace StateBliss
 {
     public interface IStateTransitionBuilder
     {
-        IStateTransitionBuilder OnEnter<T>(T target, Expression<Func<T, Action>> func);
-        IStateTransitionBuilder OnExit<T>(T target, Expression<Func<T, Action>> func);
+        IStateTransitionBuilder OnTransitioned<T>(T target, Expression<Func<T, Action>> func);
+        IStateTransitionBuilder OnTransitioning<T>(T target, Expression<Func<T, Action>> func);
     }
 }
