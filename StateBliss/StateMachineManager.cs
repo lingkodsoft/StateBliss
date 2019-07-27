@@ -39,35 +39,37 @@ namespace StateBliss
         {
             _taskRunnercts.Cancel();
             _stopRunning = true;
+            _actionInfos.Add((null, null, -1, -1));
         }
 
         private void Process()
         {
-            while (!_stopRunning)
+            foreach (var item in _actionInfos.GetConsumingEnumerable())
             {
-                foreach (var item in _actionInfos.GetConsumingEnumerable())
+                if (_stopRunning)
                 {
-                    try
-                    {
-                        item.actionInfo.Execute(item.state, item.fromState, item.toState);
-                    }
-                    catch (Exception e)
-                    {
-                        OnHandlerException?.Invoke(this, (e, item.state, item.fromState, item.toState));
-                    }
+                    break;
+                }
+
+                try
+                {
+                    item.actionInfo.Execute(item.state, item.fromState, item.toState);
+                }
+                catch (Exception e)
+                {
+                    OnHandlerException?.Invoke(this, (e, item.state, item.fromState, item.toState));
                 }
             }
         }
 
-        public async Task WaitAllHandlersProcessed()
+        public async Task WaitAllHandlersProcessed(int waitDelayMilliseconds = 1000)
         {
             var spin = new SpinWait();
             while (_actionInfos.Count > 0)
             {
                 spin.SpinOnce();
             }
-
-            await Task.Delay(2000);
+            await Task.Delay(waitDelayMilliseconds);
         }
 
         public void ChangeState<TEntity, TState>(State<TEntity, TState> state, TState newState) where TState : Enum

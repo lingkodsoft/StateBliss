@@ -10,6 +10,6 @@ namespace StateBliss
         event EventHandler<(Exception exception, State state, int fromState, int toState)> OnHandlerException;
         void Start();
         void Stop();
-        Task WaitAllHandlersProcessed();
+        Task WaitAllHandlersProcessed(int waitDelayMilliseconds = 100);
     }
 }
