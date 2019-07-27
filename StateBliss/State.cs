@@ -1,53 +1,47 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace StateBliss
 {
     public abstract class State
     {
-        internal void SetCurrentState<TState>(TState newState) where TState : Enum
-        {
-            throw new NotImplementedException();
-        }
-
+        public string Name { get; protected set; }
         public IStateMachineManager Manager { get; internal set; }
-
-        internal abstract void SetState(int newState);
+        internal abstract void SetEntityState(int newState);
     }
 
-    public interface IState<TState> where TState : Enum
-    {
-        TState Current { get; }
-        TState[] GetNextStates();
-        IStateMachineManager Manager { get; }
-        object Entity { get; }
-    }
-    
     public class State<TEntity, TState> : State, IState<TState> where TState : Enum
     {
         private readonly TEntity _entity;
-        internal Expression<Func<TEntity, TState>> StateSelector { get; private set; }
-        internal StateTransitionBuilder<TState> StateTransitionBuilder { get; private set; }
+        private readonly PropertyInfo _entityPropInfo;
 
-        public State(TEntity entity, Expression<Func<TEntity, TState>> stateSelector)
+        public State(TEntity entity, Expression<Func<TEntity, TState>> statePropertySelector, string name = null)
         {
             _entity = entity;
-            StateSelector = stateSelector;
+            var entityStateName = statePropertySelector.GetFieldName();
+            _entityPropInfo = _entity.GetType().GetProperty(entityStateName);
+            Name = name;
         }
-        
+
+        internal StateTransitionBuilder<TState> StateTransitionBuilder { get; private set; }
+
         public TState[] GetNextStates()
         {
-            throw new System.NotImplementedException();
+            return StateTransitionBuilder.GetNextStates(Current);
         }
 
-        public TState Current { get; private set; }
+        public TState Current => GetEntityState();
 
-        internal override void SetState(int newState)
+        private TState GetEntityState()
         {
-            //TODO: set the entity state
-            Current = (TState)Enum.ToObject(newState.GetType(), newState);
+            return (TState)_entityPropInfo.GetValue(_entity);
+        }
+
+        internal override void SetEntityState(int newState)
+        {
+            var state = (TState)(object)newState;
+            _entityPropInfo.SetValue(_entity, state);
         }
 
         public TEntity Entity => _entity;
@@ -61,10 +55,9 @@ namespace StateBliss
             return this;
         }
         
-        public State<TEntity, TState> Change(TState newState)
+        public void ChangeTo(TState newState)
         {
             Manager.ChamgeState(this, newState);
-            return this;
         }
     }
 }

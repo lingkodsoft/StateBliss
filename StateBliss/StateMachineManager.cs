@@ -14,7 +14,9 @@ namespace StateBliss
         private bool _stopRunning;
         private Task _taskRunner;
         private CancellationTokenSource _taskRunnercts;
-        
+
+        public event EventHandler<(Exception exception, State state, int fromState, int toState)> OnHandlerException; 
+
         public void Register(State state)
         {
             state.Manager = this;
@@ -51,7 +53,7 @@ namespace StateBliss
                     }
                     catch (Exception e)
                     {
-                        
+                        OnHandlerException?.Invoke(this, (e, item.state, item.fromState, item.toState));
                     }
                 }
             }
@@ -65,9 +67,20 @@ namespace StateBliss
             //trigger handlers
             var stateTransitionBuilder = state.StateTransitionBuilder;
 
-            if (Equals(state.Current, newState) && stateTransitionBuilder.DisabledSameStateTransitioned.Any(a => Equals(a, newState)))
+            if (Equals(state.Current, newState))
             {
-                throw new SameStateTransitionDisabledException();
+                if (stateTransitionBuilder.DisabledSameStateTransitioned.Any(a => Equals(a, newState)))
+                {
+                    throw new SameStateTransitionDisabledException();
+                }
+            }
+            else
+            {
+                var nextStateTransitions = state.GetNextStates();
+                if (!nextStateTransitions.Any(a => Equals(a, newState)))
+                {
+                    throw new NoRuleDefinedForStateTransitionException();
+                }
             }
 
             //OnTransitioning
@@ -88,7 +101,7 @@ namespace StateBliss
                 QueueActionForExecution(actionInfo, state, @from, @to);
             }
 
-            state.SetCurrentState(newState);
+            state.SetEntityState((int)Enum.ToObject(newState.GetType(), newState));
             
             //OnTransitioned
             foreach (var actionInfo in stateTransitionBuilder.GetOnTransitionedHandlers())

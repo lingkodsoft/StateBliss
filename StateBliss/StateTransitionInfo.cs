@@ -6,6 +6,6 @@ namespace StateBliss
     {
         public int From;
         public int To;
-        public List<(ActionInfo, HandlerType)> Handlers = new List<(ActionInfo, HandlerType)>();
+        public readonly List<(ActionInfo, HandlerType)> Handlers = new List<(ActionInfo, HandlerType)>();
     }
 }

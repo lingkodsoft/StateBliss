@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StateBliss", "StateBliss\StateBliss.csproj", "{0BB61948-77F1-44F4-ACBA-BCA40CFB87DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StateBliss.Tests", "StateBliss.Tests\StateBliss.Tests.csproj", "{6DDC92E9-079E-46E3-B14B-447DC7928791}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{0BB61948-77F1-44F4-ACBA-BCA40CFB87DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BB61948-77F1-44F4-ACBA-BCA40CFB87DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BB61948-77F1-44F4-ACBA-BCA40CFB87DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DDC92E9-079E-46E3-B14B-447DC7928791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DDC92E9-079E-46E3-B14B-447DC7928791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DDC92E9-079E-46E3-B14B-447DC7928791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DDC92E9-079E-46E3-B14B-447DC7928791}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

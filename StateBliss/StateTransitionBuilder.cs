@@ -9,10 +9,10 @@ namespace StateBliss
         where TState : Enum
     {
         
-        private List<StateTransitionInfo> _stateTransitions = new List<StateTransitionInfo>();
+        private readonly List<StateTransitionInfo> _stateTransitions = new List<StateTransitionInfo>();
         private StateTransitionInfo _stateTransitionInfo;
         
-        public List<TState> DisabledSameStateTransitioned = new List<TState>();
+        public readonly List<TState> DisabledSameStateTransitioned = new List<TState>();
         
         public IStateToBuilder<TState> From(TState state)
         {
@@ -33,7 +33,7 @@ namespace StateBliss
         public IStateTransitionBuilder<TState> OnTransitioned<T>(T target, Expression<Func<T, OnStateTransitionedHandler<TState>>> handler)
         {
             _stateTransitionInfo.Handlers.Add( (
-                new ActionInfo<TState>(Guid.NewGuid(), handler.GetMethodName(), HandlerType.OnTransitioned, target), 
+                new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnTransitioned, target), 
                 HandlerType.OnTransitioned));
             return this;
         }
@@ -41,7 +41,7 @@ namespace StateBliss
         public IStateTransitionBuilder<TState> OnTransitioning<T>(T target, Expression<Func<T, OnStateTransitioningHandler<TState>>> handler)
         {
             _stateTransitionInfo.Handlers.Add( (
-                new ActionInfo<TState>(Guid.NewGuid(), handler.GetMethodName(), HandlerType.OnTransitioning, target), 
+                new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnTransitioning, target), 
                 HandlerType.OnTransitioning));
             return this;
         }
@@ -54,9 +54,9 @@ namespace StateBliss
                 To = (int)Enum.ToObject(state.GetType(), state)
             };
             stateTransitionInfo.Handlers.Add((
-                new ActionInfo<TState>(Guid.NewGuid(), handler.GetMethodName(), HandlerType.OnEnter, target), 
+                new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnEnter, target), 
                 HandlerType.OnEnter));
-            _stateTransitions.Add(_stateTransitionInfo);
+            _stateTransitions.Add(stateTransitionInfo);
         }
         
         public void OnExit<T>(TState state, T target, Expression<Func<T, OnStateExitHandler<TState>>> handler)
@@ -67,16 +67,16 @@ namespace StateBliss
                 To = -1
             };
             stateTransitionInfo.Handlers.Add((
-                new ActionInfo<TState>(Guid.NewGuid(), handler.GetMethodName(), HandlerType.OnExit, target), 
+                new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnExit, target), 
                 HandlerType.OnExit));
-            _stateTransitions.Add(_stateTransitionInfo);
+            _stateTransitions.Add(stateTransitionInfo);
         }
 
         public void DisableSameStateTransitionFor(params TState[] states)
         {
             DisabledSameStateTransitioned.AddRange(states);
         }
-        
+
         internal IReadOnlyList<ActionInfo> GetOnTransitioningHandlers()
         {
             //TODO: optimize
@@ -87,19 +87,16 @@ namespace StateBliss
 
         internal IReadOnlyList<ActionInfo> GetOnTransitionedHandlers()
         {
-            //TODO: optimize
             return GetHandlers(HandlerType.OnTransitioned);
         }
 
         internal IReadOnlyList<ActionInfo> GetOnExitHandlers()
         {
-            //TODO: optimize
             return GetHandlers(HandlerType.OnExit);
         }
 
         internal IReadOnlyList<ActionInfo> GetOnEnterHandlers()
         {
-            //TODO: optimize
             return GetHandlers(HandlerType.OnEnter);
         }
 
@@ -109,6 +106,14 @@ namespace StateBliss
             return _stateTransitions.SelectMany(a => a.Handlers)
                 .Where(a => a.Item2 == handlerType)
                 .Select(a => a.Item1).ToList();
+        }
+
+        public TState[] GetNextStates(TState state)
+        {
+            //TODO: optimize
+            var stateFilter = (int)Enum.ToObject(state.GetType(), state);
+            return _stateTransitions.Where(a => a.From == stateFilter)
+                .Select(a => (TState)(object)a.To).ToArray();
         }
     }
 }

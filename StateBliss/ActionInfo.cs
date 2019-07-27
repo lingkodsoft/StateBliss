@@ -10,16 +10,13 @@ namespace StateBliss
     internal class ActionInfo<TState> : ActionInfo
         where TState : Enum
     {
-        public Guid Id { get; }
         private Delegate _method;
         private readonly string _methodName;
         private readonly HandlerType _handlerType;
-        private object _target;
-
+        private readonly object _target;
         
-        public ActionInfo(Guid id, string methodName, HandlerType handlerType, object target)
+        public ActionInfo(string methodName, HandlerType handlerType, object target)
         {
-            Id = id;
             _methodName = methodName;
             _handlerType = handlerType;
             _target = target;
@@ -55,8 +52,8 @@ namespace StateBliss
 
         public override void Execute(State state, int fromState, int toState)
         {
-            var @from = (TState)Enum.ToObject(fromState.GetType(), fromState);
-            var @to = (TState)Enum.ToObject(toState.GetType(), toState);
+            var @from = (TState)(object)fromState;
+            var @to = (TState)(object)toState;
             
             switch (_handlerType)
             {
