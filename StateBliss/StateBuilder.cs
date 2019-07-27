@@ -3,17 +3,17 @@
 //
 //namespace StateBliss
 //{
-//    public class StateBuilder<T, TStatus>
+//    public class StateBuilder<T, TState>
 //    {
-//        public StateBuilder(Expression<Func<T, TStatus>> stateSelector)
+//        public StateBuilder(Expression<Func<T, TState>> stateSelector)
 //        {
 //            
 //        }
 //        
-//        public State<TStatus> Define(Action<StateTransitionBuilder> builderAction)
+//        public State<TState> Define(Action<StateTransitionBuilder> builderAction)
 //        {
 //            
-//            return new State<TStatus>();
+//            return new State<TState>();
 //        }
 //        
 //    }

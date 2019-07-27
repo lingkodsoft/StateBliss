@@ -2,29 +2,80 @@ using System;
 
 namespace StateBliss
 {
-    public class ActionInfo
+    internal abstract class ActionInfo
+    {
+        public abstract void Execute(State state, int fromState, int toState);
+    }
+    
+    internal class ActionInfo<TState> : ActionInfo
+        where TState : Enum
     {
         public Guid Id { get; }
-        private Action _method;
+        private Delegate _method;
         private readonly string _methodName;
+        private readonly HandlerType _handlerType;
         private object _target;
 
-        public ActionInfo(Guid id, string methodName, object target)
+        
+        public ActionInfo(Guid id, string methodName, HandlerType handlerType, object target)
         {
             Id = id;
             _methodName = methodName;
+            _handlerType = handlerType;
             _target = target;
-            CreateDelegateFromInstance();
+            CreateDelegate();
         }
 
-        private void CreateDelegateFromInstance()
+        private void CreateDelegate()
         {
-            _method = Delegate.CreateDelegate(typeof (Action), _target, _methodName) as Action;
+            switch (_handlerType)
+            {
+                case HandlerType.OnEnter:
+                    CreateDelegateFromInstance<OnStateEnterHandler<TState>>();
+                    break;
+                case HandlerType.OnExit:
+                    CreateDelegateFromInstance<OnStateExitHandler<TState>>();
+                    break;
+                case HandlerType.OnTransitioning:
+                    CreateDelegateFromInstance<OnStateTransitioningHandler<TState>>();
+                    break;
+                case HandlerType.OnTransitioned:
+                    CreateDelegateFromInstance<OnStateTransitionedHandler<TState>>();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
-        public void Execute()
+        private void CreateDelegateFromInstance<TDelegate>()
+            where TDelegate : Delegate
         {
-            _method.Invoke();
+            _method = Delegate.CreateDelegate(typeof (TDelegate), _target, _methodName);
+        }
+
+        public override void Execute(State state, int fromState, int toState)
+        {
+            var @from = (TState)Enum.ToObject(fromState.GetType(), fromState);
+            var @to = (TState)Enum.ToObject(toState.GetType(), toState);
+            
+            switch (_handlerType)
+            {
+                case HandlerType.OnEnter:
+                    ((OnStateEnterHandler<TState>)_method)(@to, (IState<TState>)state);
+                    break;
+                case HandlerType.OnExit:
+                    ((OnStateExitHandler<TState>)_method)(@from, (IState<TState>)state);
+                    break;
+                case HandlerType.OnTransitioning:
+                    ((OnStateTransitioningHandler<TState>)_method)((IState<TState>)state, @to);
+                    break;
+                case HandlerType.OnTransitioned:
+                    CreateDelegateFromInstance<OnStateTransitionedHandler<TState>>();
+                    ((OnStateTransitionedHandler<TState>)_method)(@from, (IState<TState>)state);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

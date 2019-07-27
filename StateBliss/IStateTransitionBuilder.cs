@@ -3,9 +3,9 @@ using System.Linq.Expressions;
 
 namespace StateBliss
 {
-    public interface IStateTransitionBuilder
+    public interface IStateTransitionBuilder<TState> where TState : Enum
     {
-        IStateTransitionBuilder OnTransitioned<T>(T target, Expression<Func<T, Action>> func);
-        IStateTransitionBuilder OnTransitioning<T>(T target, Expression<Func<T, Action>> func);
+        IStateTransitionBuilder<TState> OnTransitioned<T>(T target, Expression<Func<T, OnStateTransitionedHandler<TState>>> handler);
+        IStateTransitionBuilder<TState> OnTransitioning<T>(T target, Expression<Func<T, OnStateTransitioningHandler<TState>>> handler);
     }
 }

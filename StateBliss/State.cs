@@ -7,66 +7,63 @@ namespace StateBliss
 {
     public abstract class State
     {
-        internal void SetCurrentState<TStatus>(TStatus newState) where TStatus : Enum
+        internal void SetCurrentState<TState>(TState newState) where TState : Enum
         {
             throw new NotImplementedException();
         }
 
-        internal IReadOnlyList<ActionInfo> GetOnTransitioningHandlers<TStatus>(TStatus newState) where TStatus : Enum
-        {
-            throw new NotImplementedException();
-        }
+        public IStateMachineManager Manager { get; internal set; }
 
-        internal IReadOnlyList<ActionInfo> GetOnExitHandlers()
-        {
-            throw new NotImplementedException();
-        }
+        internal abstract void SetState(int newState);
+    }
 
-        internal IReadOnlyList<ActionInfo> GetOnEnterHandlers<TStatus>(TStatus newState) where TStatus : Enum
-        {
-            throw new NotImplementedException();
-        }
-
-        internal IReadOnlyList<ActionInfo> GetOnTransitionedHandlers<TStatus>(TStatus newState) where TStatus : Enum
-        {
-            throw new NotImplementedException();
-        }
+    public interface IState<TState> where TState : Enum
+    {
+        TState Current { get; }
+        TState[] GetNextStates();
+        IStateMachineManager Manager { get; }
+        object Entity { get; }
     }
     
-    public class State<TEntity, TStatus> : State where TStatus : Enum
+    public class State<TEntity, TState> : State, IState<TState> where TState : Enum
     {
         private readonly TEntity _entity;
-        private readonly Expression<Func<TEntity, TStatus>> _stateSelector;
+        internal Expression<Func<TEntity, TState>> StateSelector { get; private set; }
+        internal StateTransitionBuilder<TState> StateTransitionBuilder { get; private set; }
 
-        private IEnumerable<ActionInfo> _transitionActions;
-        
-        public State(TEntity entity, Expression<Func<TEntity, TStatus>> stateSelector)
+        public State(TEntity entity, Expression<Func<TEntity, TState>> stateSelector)
         {
             _entity = entity;
-            _stateSelector = stateSelector;
+            StateSelector = stateSelector;
         }
         
-        public TStatus[] GetNextStates()
+        public TState[] GetNextStates()
         {
             throw new System.NotImplementedException();
         }
-        
-        public IStateMachineManager Manager { get; internal set; }
-        
-        public TStatus Current { get; private set; }
-        
+
+        public TState Current { get; private set; }
+
+        internal override void SetState(int newState)
+        {
+            //TODO: set the entity state
+            Current = (TState)Enum.ToObject(newState.GetType(), newState);
+        }
+
         public TEntity Entity => _entity;
 
-        public State<TEntity, TStatus> Define(Action<StateTransitionBuilder<TStatus>> builderAction)
+        object IState<TState>.Entity => Entity;
+
+        public State<TEntity, TState> Define(Action<IStateFromBuilder<TState>> builderAction)
         {
-            
+            StateTransitionBuilder = new StateTransitionBuilder<TState>();
+            builderAction(StateTransitionBuilder);
             return this;
         }
         
-        public State<TEntity, TStatus> Change(TStatus newState)
+        public State<TEntity, TState> Change(TState newState)
         {
             Manager.ChamgeState(this, newState);
-            Current = newState;
             return this;
         }
     }

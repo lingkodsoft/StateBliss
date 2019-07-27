@@ -14,3 +14,5 @@ aspnet-core/test/JMeter/AspNetZeroDotNetCoreSimpleTest.jmx
 aspnet-core/DeleteBinsAndObjs.bat
 
 *.pubxml
+bin/
+obj/
