@@ -1,0 +1,17 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# IDEs and editors
+.vs/
+.idea/
+
+/StateBliss/bin
+/StateBliss/obj
+
+# User-specific files
+*.suo
+*.user
+*.sln.docstates
+aspnet-core/DeleteBinsAndObjs.bat
+
+*.pubxml
+

@@ -1,9 +1,0 @@
-C:\project_lingkod\StateBliss\StateBliss\bin\Debug\netcoreapp2.2\StateBliss.deps.json
-C:\project_lingkod\StateBliss\StateBliss\bin\Debug\netcoreapp2.2\StateBliss.dll
-C:\project_lingkod\StateBliss\StateBliss\bin\Debug\netcoreapp2.2\StateBliss.pdb
-C:\project_lingkod\StateBliss\StateBliss\obj\Debug\netcoreapp2.2\StateBliss.csprojAssemblyReference.cache
-C:\project_lingkod\StateBliss\StateBliss\obj\Debug\netcoreapp2.2\StateBliss.csproj.CoreCompileInputs.cache
-C:\project_lingkod\StateBliss\StateBliss\obj\Debug\netcoreapp2.2\StateBliss.AssemblyInfoInputs.cache
-C:\project_lingkod\StateBliss\StateBliss\obj\Debug\netcoreapp2.2\StateBliss.AssemblyInfo.cs
-C:\project_lingkod\StateBliss\StateBliss\obj\Debug\netcoreapp2.2\StateBliss.dll
-C:\project_lingkod\StateBliss\StateBliss\obj\Debug\netcoreapp2.2\StateBliss.pdb
