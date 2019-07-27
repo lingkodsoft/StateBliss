@@ -4,8 +4,11 @@
 .vs/
 .idea/
 
-/StateBliss/bin
-/StateBliss/obj
+StateBliss/bin/
+StateBliss/obj/
+StateBliss.Tests/bin/
+StateBliss.Tests/obj/
+packages/
 
 # User-specific files
 *.suo

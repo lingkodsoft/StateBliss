@@ -34,7 +34,7 @@
         <entry file="file://$PROJECT_DIR$/StateBliss.Tests/StateBlissTests.cs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="3690">
-              <caret line="209" lean-forward="true" selection-start-line="209" selection-end-line="209" />
+              <caret line="209" selection-start-line="209" selection-end-line="209" />
               <folding>
                 <marker date="1564242628845" expanded="false" signature="6:91" ph="..." />
                 <marker date="1564242628845" expanded="true" signature="119:8043" ph="{...}" />
@@ -78,7 +78,7 @@
         <entry file="file://$PROJECT_DIR$/StateBliss/IStateMachineManager.cs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="198">
-              <caret line="11" column="20" lean-forward="true" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
+              <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
               <folding>
                 <marker date="1564242705319" expanded="true" signature="6:43" ph="..." />
                 <marker date="1564242705319" expanded="true" signature="65:495" ph="{...}" />
@@ -350,12 +350,12 @@
       <workItem from="1564212140359" duration="262000" />
       <workItem from="1564212833098" duration="339000" />
       <workItem from="1564218690156" duration="3420000" />
-      <workItem from="1564239680633" duration="3307000" />
+      <workItem from="1564239680633" duration="3634000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43368000" />
+    <option name="totallyTimeSpent" value="43695000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -384,10 +384,10 @@
       <window_info anchor="bottom" id="NuGet" order="7" weight="0.32977587" />
       <window_info anchor="bottom" id="Performance Profiler" order="8" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="10" sideWeight="0.49813533" visible="true" weight="0.46851653" />
+      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49813533" weight="0.46851653" />
       <window_info anchor="bottom" id="Database Changes" order="11" />
       <window_info anchor="bottom" id="Unit Tests" order="12" weight="0.32977587" />
-      <window_info anchor="bottom" id="Terminal" order="13" sideWeight="0.49920085" weight="0.1995731" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="13" sideWeight="0.49920085" visible="true" weight="0.1995731" />
       <window_info anchor="bottom" id="Event Log" order="14" sideWeight="0.5018647" side_tool="true" weight="0.46851653" />
       <window_info anchor="bottom" id="Build" order="15" weight="0.18890075" />
       <window_info anchor="bottom" id="Messages" order="16" />
@@ -732,7 +732,7 @@
     <entry file="file://$PROJECT_DIR$/StateBliss/IStateMachineManager.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
-          <caret line="11" column="20" lean-forward="true" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
+          <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
           <folding>
             <marker date="1564242705319" expanded="true" signature="6:43" ph="..." />
             <marker date="1564242705319" expanded="true" signature="65:495" ph="{...}" />
@@ -744,7 +744,7 @@
     <entry file="file://$PROJECT_DIR$/StateBliss.Tests/StateBlissTests.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3690">
-          <caret line="209" lean-forward="true" selection-start-line="209" selection-end-line="209" />
+          <caret line="209" selection-start-line="209" selection-end-line="209" />
           <folding>
             <marker date="1564242628845" expanded="false" signature="6:91" ph="..." />
             <marker date="1564242628845" expanded="true" signature="119:8043" ph="{...}" />
