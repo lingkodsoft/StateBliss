@@ -67,7 +67,6 @@ namespace StateBliss
                     ((OnStateTransitioningHandler<TState>)_method)((IState<TState>)state, @to);
                     break;
                 case HandlerType.OnTransitioned:
-                    CreateDelegateFromInstance<OnStateTransitionedHandler<TState>>();
                     ((OnStateTransitionedHandler<TState>)_method)(@from, (IState<TState>)state);
                     break;
                 default:

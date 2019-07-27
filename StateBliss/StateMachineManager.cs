@@ -59,7 +59,18 @@ namespace StateBliss
             }
         }
 
-        public void ChamgeState<TEntity, TState>(State<TEntity, TState> state, TState newState) where TState : Enum
+        public async Task WaitAllHandlersProcessed()
+        {
+            var spin = new SpinWait();
+            while (_actionInfos.Count > 0)
+            {
+                spin.SpinOnce();
+            }
+
+            await Task.Delay(2000);
+        }
+
+        public void ChangeState<TEntity, TState>(State<TEntity, TState> state, TState newState) where TState : Enum
         {
             var @from = (int)Enum.ToObject(state.Current.GetType(), state.Current);
             var @to = (int)Enum.ToObject(newState.GetType(), newState);

@@ -1,0 +1,8 @@
+C:\project_lingkod\StateBliss\StateBliss\bin\Debug\net472\StateBliss.dll
+C:\project_lingkod\StateBliss\StateBliss\bin\Debug\net472\StateBliss.pdb
+C:\project_lingkod\StateBliss\StateBliss\obj\Debug\net472\StateBliss.csprojAssemblyReference.cache
+C:\project_lingkod\StateBliss\StateBliss\obj\Debug\net472\StateBliss.csproj.CoreCompileInputs.cache
+C:\project_lingkod\StateBliss\StateBliss\obj\Debug\net472\StateBliss.AssemblyInfoInputs.cache
+C:\project_lingkod\StateBliss\StateBliss\obj\Debug\net472\StateBliss.AssemblyInfo.cs
+C:\project_lingkod\StateBliss\StateBliss\obj\Debug\net472\StateBliss.dll
+C:\project_lingkod\StateBliss\StateBliss\obj\Debug\net472\StateBliss.pdb

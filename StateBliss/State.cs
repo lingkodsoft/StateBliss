@@ -57,7 +57,7 @@ namespace StateBliss
         
         public void ChangeTo(TState newState)
         {
-            Manager.ChamgeState(this, newState);
+            Manager.ChangeState(this, newState);
         }
     }
 }

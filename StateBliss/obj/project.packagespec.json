@@ -6,12 +6,15 @@
     "projectPath": "C:\\project_lingkod\\StateBliss\\StateBliss\\StateBliss.csproj",
     "outputPath": "C:\\project_lingkod\\StateBliss\\StateBliss\\obj\\",
     "projectStyle": "PackageReference",
+    "crossTargeting": true,
     "fallbackFolders": [
       "C:\\Microsoft\\Xamarin\\NuGet",
       "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
     ],
     "originalTargetFrameworks": [
-      "netcoreapp2.2"
+      "net472",
+      "netcoreapp2.2",
+      "netstandard2.0"
     ],
     "sources": {
       "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -19,6 +22,12 @@
     },
     "frameworks": {
       "netcoreapp2.2": {
+        "projectReferences": {}
+      },
+      "net472": {
+        "projectReferences": {}
+      },
+      "netstandard2.0": {
         "projectReferences": {}
       }
     },
@@ -35,6 +44,22 @@
           "suppressParent": "All",
           "target": "Package",
           "version": "[2.2.0, )",
+          "autoReferenced": true
+        }
+      },
+      "imports": [
+        "net461"
+      ],
+      "assetTargetFallback": true,
+      "warn": true
+    },
+    "net472": {},
+    "netstandard2.0": {
+      "dependencies": {
+        "NETStandard.Library": {
+          "suppressParent": "All",
+          "target": "Package",
+          "version": "[2.0.3, )",
           "autoReferenced": true
         }
       },
