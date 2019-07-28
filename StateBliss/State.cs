@@ -55,9 +55,28 @@ namespace StateBliss
             return this;
         }
         
-        public void ChangeTo(TState newState)
+        public bool ChangeTo(TState newState)
         {
-            Manager.ChangeState(this, newState);
+            EnsureDefinitionExists();
+            return Manager.ChangeState(this, newState);
+        }
+
+        public bool ChangeTo<TContext>(TState newState, GuardsInfo<TState, TContext> guards)
+            where TContext : GuardContext<TState>
+        {
+            EnsureDefinitionExists();
+
+            StateTransitionBuilder.AddOnStateEnterGuards(newState, guards.Context, guards.Guards);
+            
+            return Manager.ChangeState(this, newState);
+        }
+        
+        private void EnsureDefinitionExists()
+        {
+            if (StateTransitionBuilder == null)
+            {
+                throw new InvalidOperationException("Must define states first by calling State.Define method.");
+            }
         }
     }
 }

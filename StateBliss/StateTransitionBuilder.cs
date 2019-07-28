@@ -120,35 +120,41 @@ namespace StateBliss
             DisabledSameStateTransitioned.AddRange(states);
         }
 
-        internal IReadOnlyList<ActionInfo> GetOnTransitioningHandlers()
+        internal ActionInfo[] GetOnTransitioningHandlers()
         {
             //TODO: optimize
             return _stateTransitions.SelectMany(a => a.Handlers)
                 .Where(a => a.Item2 == HandlerType.OnTransitioning)
-                .Select(a => a.Item1).ToList();
+                .Select(a => a.Item1).ToArray();
         }
 
-        internal IReadOnlyList<ActionInfo> GetOnTransitionedHandlers()
+        internal ActionInfo[] GetOnTransitionedHandlers()
         {
             return GetHandlers(HandlerType.OnTransitioned);
         }
 
-        internal IReadOnlyList<ActionInfo> GetOnExitHandlers()
+        internal ActionInfo[] GetOnExitHandlers()
         {
             return GetHandlers(HandlerType.OnExit);
         }
 
-        internal IReadOnlyList<ActionInfo> GetOnEnterHandlers()
+        internal ActionInfo[] GetOnEnterHandlers()
         {
             return GetHandlers(HandlerType.OnEnter);
         }
 
-        private IReadOnlyList<ActionInfo> GetHandlers(HandlerType handlerType)
+        public ActionInfo<TState>[] GetOnEnterGuardHandlers()
+        {
+            return GetHandlers(HandlerType.OnEnterGuard)
+                .Select(a => (ActionInfo<TState>)a).ToArray();
+        }
+
+        private ActionInfo[] GetHandlers(HandlerType handlerType)
         {
             //TODO: optimize
             return _stateTransitions.SelectMany(a => a.Handlers)
                 .Where(a => a.Item2 == handlerType)
-                .Select(a => a.Item1).ToList();
+                .Select(a => a.Item1).ToArray();
         }
 
         public TState[] GetNextStates(TState state)
@@ -157,6 +163,23 @@ namespace StateBliss
             var stateFilter = (int)Enum.ToObject(state.GetType(), state);
             return _stateTransitions.Where(a => a.From == stateFilter)
                 .Select(a => (TState)(object)a.To).ToArray();
+        }
+
+        internal void AddOnStateEnterGuards<TContext>(TState state, TContext context, IEnumerable<OnStateEnterGuardHandler<TState,TContext>> guards) 
+            where TContext : GuardContext<TState>
+        {
+            var stateTransitionInfo = new StateTransitionInfo
+            {
+                From = -1,
+                To = (int)Enum.ToObject(state.GetType(), state)
+            };
+            foreach (var handler in guards)
+            {
+                stateTransitionInfo.Handlers.Add((
+                    new ActionInfo<TState, TContext>(context, handler, HandlerType.OnEnterGuard), 
+                    HandlerType.OnEnterGuard));
+            }
+            _stateTransitions.Add(stateTransitionInfo);
         }
     }
 }

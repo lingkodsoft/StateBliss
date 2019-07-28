@@ -20,7 +20,10 @@ namespace StateBliss
         public void Register(State state)
         {
             state.Manager = this;
-            _managedStates.Add(state);
+            if (!_managedStates.Contains(state))
+            {
+                _managedStates.Add(state);   
+            }
         }
 
         private void QueueActionForExecution(ActionInfo actionInfo, State state, int fromState, int toState)
@@ -37,7 +40,7 @@ namespace StateBliss
 
         public void Stop()
         {
-            _taskRunnercts.Cancel();
+            _taskRunnercts?.Cancel();
             _stopRunning = true;
             _actionInfos.Add((null, null, -1, -1));
         }
@@ -72,7 +75,7 @@ namespace StateBliss
             await Task.Delay(waitDelayMilliseconds);
         }
 
-        public void ChangeState<TEntity, TState>(State<TEntity, TState> state, TState newState) where TState : Enum
+        public bool ChangeState<TEntity, TState>(State<TEntity, TState> state, TState newState) where TState : Enum
         {
             var @from = (int)Enum.ToObject(state.Current.GetType(), state.Current);
             var @to = (int)Enum.ToObject(newState.GetType(), newState);
@@ -117,6 +120,29 @@ namespace StateBliss
                 QueueActionForExecution(actionInfo, state, @from, @to);
             }
 
+            //OnEnterGuards of new state
+            foreach (var actionInfo in stateTransitionBuilder.GetOnEnterGuardHandlers())
+            {
+                try
+                {
+                    actionInfo.GuardContext.Continue = false;
+                    actionInfo.Execute(state, @from, @to);
+
+                    if (actionInfo.GuardContext.Continue) continue;
+                    
+                    if (actionInfo.GuardContext.ThrowExceptionWhenDiscontinued)
+                    {
+                        throw new StateEnterGuardHandlerDiscontinuedException();
+                    }
+                    return false;
+                }
+                catch (Exception e)
+                {
+                    OnHandlerException?.Invoke(this, (e, state, @from, @to));
+                    throw;
+                }
+            }
+            
             //OnEnter of new state
             foreach (var actionInfo in stateTransitionBuilder.GetOnEnterHandlers())
             {
@@ -130,6 +156,8 @@ namespace StateBliss
             {
                 QueueActionForExecution(actionInfo, state, @from, @to);
             }
+
+            return true;
         }
     }
 }

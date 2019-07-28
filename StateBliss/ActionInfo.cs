@@ -7,14 +7,52 @@ namespace StateBliss
         public abstract void Execute(State state, int fromState, int toState);
         public abstract void SetObject(object target);
     }
+
+    internal class ActionInfo<TState, TContext> : ActionInfo<TState>
+        where TState : Enum
+        where TContext : GuardContext<TState>
+    {
+        private readonly TContext _context;
+
+        public ActionInfo(TContext context, Delegate handler, HandlerType handlerType) : base(handler, handlerType)
+        {
+            _context = context;
+        }
+
+        public override GuardContext<TState> GuardContext => _context;
+        
+        public ActionInfo(TContext context, string methodName, HandlerType handlerType, object target) : base(methodName, handlerType, target)
+        {
+            _context = context;
+        }
+        
+        public override void Execute(State state, int fromState, int toState)
+        {
+            if (_handlerType == HandlerType.OnEnterGuard)
+            {
+                var @from = (TState)(object)fromState;
+                //var @to = (TState)(object)toState;
+                _context.PreviousState = @from;
+                _context.State = (IState<TState>)state;
+                ((OnStateEnterGuardHandler<TState, TContext>)_method)(_context);
+            }
+            else
+            {
+                base.Execute(state, fromState, toState);    
+            }
+        }
+    }
     
+
     internal class ActionInfo<TState> : ActionInfo
         where TState : Enum
     {
-        private Delegate _method;
-        private readonly HandlerType _handlerType;
-        private object _target;
+        protected Delegate _method;
+        protected readonly HandlerType _handlerType;
+        protected object _target;
         
+        public virtual GuardContext<TState> GuardContext { get; }
+
         public ActionInfo(Delegate handler, HandlerType handlerType)
         {
             _method = handler;
@@ -38,26 +76,28 @@ namespace StateBliss
             switch (_handlerType)
             {
                 case HandlerType.OnEnter:
-                    CreateDelegateFromInstance<OnStateEnterHandler<TState>>(methodName);
+                    _method = CreateDelegateFromInstance(typeof(OnStateEnterHandler<TState>), _target, methodName, _handlerType);
+                    break;
+                case HandlerType.OnEnterGuard:
+                    _method = CreateDelegateFromInstance(null, _target, methodName, _handlerType);
                     break;
                 case HandlerType.OnExit:
-                    CreateDelegateFromInstance<OnStateExitHandler<TState>>(methodName);
+                    _method = CreateDelegateFromInstance(typeof(OnStateExitHandler<TState>), _target, methodName, _handlerType);
                     break;
                 case HandlerType.OnTransitioning:
-                    CreateDelegateFromInstance<OnStateTransitioningHandler<TState>>(methodName);
+                    _method = CreateDelegateFromInstance(typeof(OnStateTransitioningHandler<TState>), _target, methodName, _handlerType);
                     break;
                 case HandlerType.OnTransitioned:
-                    CreateDelegateFromInstance<OnStateTransitionedHandler<TState>>(methodName);
+                    _method = CreateDelegateFromInstance(typeof(OnStateTransitionedHandler<TState>), _target, methodName, _handlerType);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private void CreateDelegateFromInstance<TDelegate>(string methodName)
-            where TDelegate : Delegate
+        protected virtual Delegate CreateDelegateFromInstance(Type type, object target, string methodName, HandlerType handlerType)
         {
-            _method = Delegate.CreateDelegate(typeof (TDelegate), _target, methodName);
+            return Delegate.CreateDelegate(type, target, methodName);
         }
 
         public override void Execute(State state, int fromState, int toState)
