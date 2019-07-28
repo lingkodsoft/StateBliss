@@ -96,10 +96,19 @@ namespace StateBliss
                 }
             }
 
+            //TODO: add guard actions, IEnumerable guards 
             //OnTransitioning
             foreach (var actionInfo in stateTransitionBuilder.GetOnTransitioningHandlers())
             {
-                actionInfo.Execute(state, @from, @to);
+                try
+                {
+                    actionInfo.Execute(state, @from, @to);
+                }
+                catch (Exception e)
+                {
+                    OnHandlerException?.Invoke(this, (e, state, @from, @to));
+                    throw;
+                }
             }
             
             //OnExit of current state

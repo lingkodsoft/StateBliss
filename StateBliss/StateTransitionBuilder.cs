@@ -16,6 +16,7 @@ namespace StateBliss
         
         public IStateToBuilder<TState> From(TState state)
         {
+            //TODO: get existing StateTransitionInfo and use if exists
             _stateTransitionInfo = new StateTransitionInfo
             {
                 From = (int) Enum.ToObject(state.GetType(), state)
@@ -23,14 +24,22 @@ namespace StateBliss
             _stateTransitions.Add(_stateTransitionInfo);
             return this;
         }
-        
+
         public IStateTransitionBuilder<TState> To(TState state)
         {
             _stateTransitionInfo.To = (int)Enum.ToObject(state.GetType(), state);
             return this;
         }
 
-        public IStateTransitionBuilder<TState> OnTransitioned<T>(T target, Expression<Func<T, OnStateTransitionedHandler<TState>>> handler)
+        public IStateTransitionBuilder<TState> Changed(OnStateTransitionedHandler<TState> handler)
+        {
+            _stateTransitionInfo.Handlers.Add( (
+                new ActionInfo<TState>(handler, HandlerType.OnTransitioned), 
+                HandlerType.OnTransitioned));
+            return this;
+        }
+
+        public IStateTransitionBuilder<TState> Changed<T>(T target, Expression<Func<T, OnStateTransitionedHandler<TState>>> handler)
         {
             _stateTransitionInfo.Handlers.Add( (
                 new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnTransitioned, target), 
@@ -38,12 +47,33 @@ namespace StateBliss
             return this;
         }
 
-        public IStateTransitionBuilder<TState> OnTransitioning<T>(T target, Expression<Func<T, OnStateTransitioningHandler<TState>>> handler)
+        public IStateTransitionBuilder<TState> Changing(OnStateTransitioningHandler<TState> handler)
+        {
+            _stateTransitionInfo.Handlers.Add( (
+                new ActionInfo<TState>(handler, HandlerType.OnTransitioning), 
+                HandlerType.OnTransitioning));
+            return this;
+        }
+
+        public IStateTransitionBuilder<TState> Changing<T>(T target, Expression<Func<T, OnStateTransitioningHandler<TState>>> handler)
         {
             _stateTransitionInfo.Handlers.Add( (
                 new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnTransitioning, target), 
                 HandlerType.OnTransitioning));
             return this;
+        }
+
+        public void OnEnter(TState state, OnStateEnterHandler<TState> handler)
+        {
+            var stateTransitionInfo = new StateTransitionInfo
+            {
+                From = -1,
+                To = (int)Enum.ToObject(state.GetType(), state)
+            };
+            stateTransitionInfo.Handlers.Add((
+                new ActionInfo<TState>(handler, HandlerType.OnEnter), 
+                HandlerType.OnEnter));
+            _stateTransitions.Add(stateTransitionInfo);
         }
 
         public void OnEnter<T>(TState state, T target, Expression<Func<T, OnStateEnterHandler<TState>>> handler)
@@ -58,7 +88,20 @@ namespace StateBliss
                 HandlerType.OnEnter));
             _stateTransitions.Add(stateTransitionInfo);
         }
-        
+
+        public void OnExit(TState state, OnStateExitHandler<TState> handler)
+        {
+            var stateTransitionInfo = new StateTransitionInfo
+            {
+                From = (int)Enum.ToObject(state.GetType(), state),
+                To = -1
+            };
+            stateTransitionInfo.Handlers.Add((
+                new ActionInfo<TState>(handler, HandlerType.OnExit), 
+                HandlerType.OnExit));
+            _stateTransitions.Add(stateTransitionInfo);
+        }
+
         public void OnExit<T>(TState state, T target, Expression<Func<T, OnStateExitHandler<TState>>> handler)
         {
             var stateTransitionInfo = new StateTransitionInfo

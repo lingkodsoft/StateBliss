@@ -5,49 +5,59 @@ namespace StateBliss
     internal abstract class ActionInfo
     {
         public abstract void Execute(State state, int fromState, int toState);
+        public abstract void SetObject(object target);
     }
     
     internal class ActionInfo<TState> : ActionInfo
         where TState : Enum
     {
         private Delegate _method;
-        private readonly string _methodName;
         private readonly HandlerType _handlerType;
-        private readonly object _target;
+        private object _target;
         
-        public ActionInfo(string methodName, HandlerType handlerType, object target)
+        public ActionInfo(Delegate handler, HandlerType handlerType)
         {
-            _methodName = methodName;
+            _method = handler;
             _handlerType = handlerType;
-            _target = target;
-            CreateDelegate();
         }
 
-        private void CreateDelegate()
+        public ActionInfo(string methodName, HandlerType handlerType, object target)
+        {
+            _handlerType = handlerType;
+            _target = target;
+            CreateDelegate(methodName);
+        }
+
+        public override void SetObject(object target)
+        {
+            _target = target;
+        }
+
+        private void CreateDelegate(string methodName)
         {
             switch (_handlerType)
             {
                 case HandlerType.OnEnter:
-                    CreateDelegateFromInstance<OnStateEnterHandler<TState>>();
+                    CreateDelegateFromInstance<OnStateEnterHandler<TState>>(methodName);
                     break;
                 case HandlerType.OnExit:
-                    CreateDelegateFromInstance<OnStateExitHandler<TState>>();
+                    CreateDelegateFromInstance<OnStateExitHandler<TState>>(methodName);
                     break;
                 case HandlerType.OnTransitioning:
-                    CreateDelegateFromInstance<OnStateTransitioningHandler<TState>>();
+                    CreateDelegateFromInstance<OnStateTransitioningHandler<TState>>(methodName);
                     break;
                 case HandlerType.OnTransitioned:
-                    CreateDelegateFromInstance<OnStateTransitionedHandler<TState>>();
+                    CreateDelegateFromInstance<OnStateTransitionedHandler<TState>>(methodName);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private void CreateDelegateFromInstance<TDelegate>()
+        private void CreateDelegateFromInstance<TDelegate>(string methodName)
             where TDelegate : Delegate
         {
-            _method = Delegate.CreateDelegate(typeof (TDelegate), _target, _methodName);
+            _method = Delegate.CreateDelegate(typeof (TDelegate), _target, methodName);
         }
 
         public override void Execute(State state, int fromState, int toState)
