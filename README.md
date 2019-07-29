@@ -1,3 +1,7 @@
+# Finite State Machine in c#
+
+[Stackoverflow](https://stackoverflow.com/questions/5923767/simple-state-machine-example-in-c/5924053)
+
 # How to use 
 
 
@@ -95,3 +99,8 @@ You can do this. See unit tests for more examples.
 # Install from Nuget
 
 `Install-Package StateBliss -Version 1.0.0`
+
+# TO DO:
+
+* Global triggers
+* Extensions i.e. order.State.AsState()
