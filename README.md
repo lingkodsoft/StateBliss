@@ -51,7 +51,7 @@ You can do this. See unit tests for more examples.
                             PersistOrderToRepository
                         ));
 
-                        b.DisableSameStateTransitionFor(MyStates.Paid);
+                        b.DisableSameStateTransitionFor(OrderState.Paid);
                         
                     });
 
