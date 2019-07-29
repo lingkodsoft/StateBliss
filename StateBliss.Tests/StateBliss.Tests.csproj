@@ -69,12 +69,6 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="GuardContextTests.cs" />
-        <Compile Include="Order.cs" />
-        <Compile Include="PayOrderCommand.cs" />
-        <Compile Include="PayOrderCommandHandler.cs" />
-        <Compile Include="OrdersRepository.cs" />
-        <Compile Include="OrderState.cs" />
-        <Compile Include="OrderStateDefinition.cs" />
         <Compile Include="StateBlissTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

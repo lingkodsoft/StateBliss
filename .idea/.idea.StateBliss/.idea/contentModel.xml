@@ -48,13 +48,7 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="GuardContextTests.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
-        <e p="Order.cs" t="Include" />
-        <e p="OrdersRepository.cs" t="Include" />
-        <e p="OrderState.cs" t="Include" />
-        <e p="OrderStateDefinition.cs" t="Include" />
         <e p="packages.config" t="Include" />
-        <e p="PayOrderCommand.cs" t="Include" />
-        <e p="PayOrderCommandHandler.cs" t="Include" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
         </e>

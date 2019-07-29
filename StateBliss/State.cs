@@ -50,6 +50,10 @@ namespace StateBliss
 
         public State<TEntity, TState> Define(Action<IStateFromBuilder<TState>> builderAction)
         {
+            if (StateTransitionBuilder != null)
+            {
+                throw new InvalidOperationException($"Define must be called once only.");
+            }
             StateTransitionBuilder = new StateTransitionBuilder<TState>();
             builderAction(StateTransitionBuilder);
             return this;
