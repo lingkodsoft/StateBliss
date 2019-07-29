@@ -5,7 +5,7 @@ namespace StateBliss
     public abstract class GuardContext<TState>
         where TState : Enum
     {
-        public TState PreviousState { get; internal set; }
+        public TState NextState { get; internal set; }
         public IState<TState> State { get; internal set; }
         
         /// <summary>

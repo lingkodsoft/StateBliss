@@ -30,9 +30,8 @@ namespace StateBliss
         {
             if (_handlerType == HandlerType.OnEnterGuard)
             {
-                var @from = (TState)(object)fromState;
-                //var @to = (TState)(object)toState;
-                _context.PreviousState = @from;
+                var @to = (TState)(object)toState;
+                _context.NextState = @to;
                 _context.State = (IState<TState>)state;
                 ((OnStateEnterGuardHandler<TState, TContext>)_method)(_context);
             }
