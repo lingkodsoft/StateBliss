@@ -19,7 +19,16 @@
         <e p="NoRuleDefinedForStateTransitionException.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
+            <e p="net471" t="Include">
+              <e p="StateBliss.AssemblyInfo.cs" t="Include" />
+            </e>
             <e p="net472" t="Include">
+              <e p="StateBliss.AssemblyInfo.cs" t="Include" />
+            </e>
+            <e p="netcoreapp2.0" t="Include">
+              <e p="StateBliss.AssemblyInfo.cs" t="Include" />
+            </e>
+            <e p="netcoreapp2.1" t="Include">
               <e p="StateBliss.AssemblyInfo.cs" t="Include" />
             </e>
             <e p="netcoreapp2.2" t="Include">
