@@ -1,20 +1,92 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# How to use 
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+You can do this. See unit tests for more examples.
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+```
+  public class Order
+  {
+      public int Id { get; set; }
+      public OrderState State { get; set; }
+  }
+        
+  public enum OrderState
+  {
+      Initial,
+      Paid,
+      Processing,
+      Processed,
+      Delivered
+  }
+  
+  public class OrderHandler
+  {
+      public OrderHandler(IStateMachineManager stateMachineManager)
+      {
+          _stateMachineManager = stateMachineManager;
+      }
+      
+      private class PaymentGuardContext : GuardContext<OrderState>
+      {
+          public PayOrderCommand Command { get; set; }
+      }
+      
+      public void HandleOrder(Order order)
+      {
+          var context = new PaymentGuardContext();
+      
+          var state = new State<Order, OrderState>(order, a => a.State)
+                    .Define(b =>
+                    {
+                        b.From(OrderState.Initial).To(OrderState.Paid)
+                          .Changing(OnTransitioningStateFromInitialToPaidHandler)
+                          .Changed(OnTransitionedStateFromInitialToPaidHandler);
+                        
+                        b.From(OrderState.Paid).To(OrderState.Processed);
+                        b.From(OrderState.Processed).To(OrderState.Delivered);
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+                        b.OnEnter(OrderState.Paid, Guards<OrderState>.From(() => context,
+                            ValidateRequest,
+                            PayToPaymentGateway, 
+                            PersistOrderToRepository
+                        ));
+
+                        b.DisableSameStateTransitionFor(MyStates.Paid);
+                        
+                    });
+
+        _stateMachineManager.Register(state);
+  
+        var hasChangedState = state.ChangeTo(OrderState.Paid);
+        
+        //Assert.Equal(OrderState.Paid, order.State);
+    }
+  
+    private void OnTransitioningStateFromInitialToPaidHandler(IState<OrderState> state, OrderState next)
+    {   
+        //throwing exception in Changing handler prevents the state change
+        //throw new Exception();        
+    }
+        
+    private void OnTransitionedStateFromInitialToPaidHandler(OrderState previous, IState<OrderState> state)
+    {        
+    }
+
+    private void ValidateRequest(PaymentGuardContext context)
+    {    
+        context.Continue = true;
+    }
+
+    private void PayToPaymentGateway(PaymentGuardContext context)
+    {
+        context.Continue = true;
+    }
+
+    private void PersistOrderToRepository(PaymentGuardContext context)
+    {
+        context.Continue = true;
+    }
+  }
+  
+  
+```
