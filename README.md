@@ -21,6 +21,8 @@ You can do this. See unit tests for more examples.
   
   public class OrderHandler
   {
+      private IStateMachineManager _stateMachineManager;
+      
       public OrderHandler(IStateMachineManager stateMachineManager)
       {
           _stateMachineManager = stateMachineManager;
@@ -44,7 +46,7 @@ You can do this. See unit tests for more examples.
                         b.From(OrderState.Paid).To(OrderState.Processed);
                         b.From(OrderState.Processed).To(OrderState.Delivered);
 
-                        b.OnEnter(OrderState.Paid, Guards<OrderState>.From(() => context,
+                        b.OnEnter(OrderState.Paid, Guards<OrderState>.From(context,
                             ValidateRequest,
                             PayToPaymentGateway, 
                             PersistOrderToRepository
