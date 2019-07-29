@@ -28,7 +28,6 @@ You can do this. See unit tests for more examples.
       
       private class PaymentGuardContext : GuardContext<OrderState>
       {
-          public PayOrderCommand Command { get; set; }
       }
       
       public void HandleOrder(Order order)
