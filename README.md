@@ -24,14 +24,7 @@ You can do this. See unit tests for more examples.
   }
   
   public class OrderHandler
-  {
-      private IStateMachineManager _stateMachineManager;
-      
-      public OrderHandler(IStateMachineManager stateMachineManager)
-      {
-          _stateMachineManager = stateMachineManager;
-      }
-      
+  {      
       private class PaymentGuardContext : GuardContext<OrderState>
       {
       }
@@ -59,14 +52,30 @@ You can do this. See unit tests for more examples.
                         b.DisableSameStateTransitionFor(OrderState.Paid);
                         
                     });
-
-        _stateMachineManager.Register(state);
   
         var hasChangedState = state.ChangeTo(OrderState.Paid);
         
         //Assert.Equal(OrderState.Paid, order.State);
     }
   
+    public void HandleOrderUseExtensionAndTriggers(Order order)
+    {
+          var context = new PaymentGuardContext();
+          var triggerToOrderStatePaid = "triggerToOrderStatePaid";
+      
+          var state = order.State.AsState(b =>
+                    {
+                        b.From(OrderState.Initial).To(OrderState.Paid)
+                          .Changing(OnTransitioningStateFromInitialToPaidHandler);
+                      
+                        b.TriggerTo(OrderState.Paid, triggerToOrderStatePaid);
+                    });
+  
+        StateMachineManager.Trigger(triggerToOrderStatePaid);
+        
+        //Assert.Equal(OrderState.Paid, order.State);
+    }
+    
     private void OnTransitioningStateFromInitialToPaidHandler(IState<OrderState> state, OrderState next)
     {   
         //throwing exception in Changing handler prevents the state change
@@ -99,8 +108,3 @@ You can do this. See unit tests for more examples.
 # Install from Nuget
 
 `Install-Package StateBliss -Version 1.0.0`
-
-# TO DO:
-
-* Global triggers
-* Extensions i.e. order.State.AsState()
