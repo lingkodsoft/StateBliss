@@ -1,4 +1,4 @@
-# Finite State Machine in c#
+# StateBliss : Finite State Machine in c#
 
 [Stackoverflow](https://stackoverflow.com/questions/5923767/simple-state-machine-example-in-c/5924053)
 
