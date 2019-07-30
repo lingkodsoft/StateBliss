@@ -110,4 +110,4 @@ You can do this. See unit tests for more examples.
 
 # Install from Nuget
 
-`Install-Package StateBliss -Version 1.0.0`
+`Install-Package StateBliss -Version 1.0.1`
