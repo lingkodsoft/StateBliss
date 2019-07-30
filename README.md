@@ -88,16 +88,19 @@ You can do this. See unit tests for more examples.
 
     private void ValidateRequest(PaymentGuardContext context)
     {    
+        //must set Continue to true to proceed to the next handler in the pipeline
         context.Continue = true;
     }
 
     private void PayToPaymentGateway(PaymentGuardContext context)
     {
+        //must set Continue to true to proceed to the next handler in the pipeline
         context.Continue = true;
     }
 
     private void PersistOrderToRepository(PaymentGuardContext context)
     {
+        //must set Continue to true to proceed to the next handler in the pipeline
         context.Continue = true;
     }
   }
