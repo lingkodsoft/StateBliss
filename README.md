@@ -55,7 +55,7 @@ You can do this. See unit tests for more examples.
   
         var hasChangedState = state.ChangeTo(OrderState.Paid);
         
-        //Assert.Equal(OrderState.Paid, order.State);
+        Assert.Equal(OrderState.Paid, order.State);
     }
   
     public void HandleOrderUseExtensionAndTriggers(Order order)
@@ -73,7 +73,7 @@ You can do this. See unit tests for more examples.
   
         StateMachineManager.Trigger(triggerToOrderStatePaid);
         
-        //Assert.Equal(OrderState.Paid, order.State);
+        Assert.Equal(OrderState.Paid, order.State);
     }
     
     private void OnTransitioningStateFromInitialToPaidHandler(IState<OrderState> state, OrderState next)
