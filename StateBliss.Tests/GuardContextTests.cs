@@ -237,8 +237,10 @@ namespace StateBliss.Tests
                     .Define(b =>
                     {
                         b.From(OrderState.Initial).To(OrderState.Paid);
+                        b.From(OrderState.Paid).To(OrderState.Processed);
+                        b.From(OrderState.Processed).To(OrderState.Delivered);
 
-                        b.OnEnter(OrderState.Paid, Guards<OrderState>.From(paidStateContextProvider,
+                        b.OnEnter(OrderState.Paid, Guards<OrderState>.From(paidStateContextProvider(),
                             ValidateRequest,
                             PayToPaymentGateway, 
                             PersistOrderToRepository
@@ -246,9 +248,29 @@ namespace StateBliss.Tests
 
                     });
 
-                _stateMachineManager.Register(state);
+//                //TODO: create a default statemanager
+//                order.AsState(
+//                    b =>
+//                    {
+//                        b.From(OrderState.Initial).To(OrderState.Paid);
+//                        b.From(OrderState.Paid).To(OrderState.Processed);
+//                        b.From(OrderState.Processed).To(OrderState.Delivered);
+//
+//                        b.OnEnter(OrderState.Paid, Guards<OrderState>.From(paidStateContextProvider(),
+//                            ValidateRequest,
+//                            PayToPaymentGateway, 
+//                            PersistOrderToRepository
+//                        ));
+//
+//                    }).ChangeTo(OrderState.Paid);
+//                
+//                _stateMachineManager.Register(state);
                 return state;
             }
+            
+            //TODO: add global states trigger
+            
+            //TODO: add extensions
 
             private void ValidateRequest(PaymentGuardContext context)
             {

@@ -9,5 +9,6 @@ namespace StateBliss
         IStateTransitionBuilder<TState> Changed<T>(T target, Expression<Func<T, OnStateTransitionedHandler<TState>>> handler);
         IStateTransitionBuilder<TState> Changing(OnStateTransitioningHandler<TState> handler);
         IStateTransitionBuilder<TState> Changing<T>(T target, Expression<Func<T, OnStateTransitioningHandler<TState>>> handler);
+        IStateTransitionBuilder<TState> TriggeredBy(string trigger);
     }
 }

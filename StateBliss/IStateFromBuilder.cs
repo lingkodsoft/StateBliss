@@ -12,6 +12,6 @@ namespace StateBliss
         void OnExit(TState state, OnStateExitHandler<TState> handler);
         void OnExit<T>(TState state, T target, Expression<Func<T, OnStateExitHandler<TState>>> handler);
         void DisableSameStateTransitionFor(params TState[] states);
-        
+        void TriggerTo(TState nextState, string trigger);
     }
 }

@@ -5,19 +5,30 @@ using System.Linq.Expressions;
 
 namespace StateBliss
 {
-    internal class StateTransitionBuilder<TState>: IStateTransitionBuilder<TState>,IStateFromBuilder<TState>, IStateToBuilder<TState> 
+    internal class StateTransitionBuilder
+    {
+        protected State _state;
+        internal readonly List<(string trigger, int? fromState, int toState, State state)> Triggers = new List<(string trigger, int? fromState, int toState, State state)>();
+    }
+
+    internal class StateTransitionBuilder<TState>: StateTransitionBuilder, IStateTransitionBuilder<TState>,IStateFromBuilder<TState>, IStateToBuilder<TState> 
         where TState : Enum
     {
         private readonly List<StateTransitionInfo> _stateTransitions = new List<StateTransitionInfo>();
         private StateTransitionInfo _stateTransitionInfo;
         
         public readonly List<TState> DisabledSameStateTransitioned = new List<TState>();
+
+        public StateTransitionBuilder(State state)
+        {
+            _state = state;
+        }
         
         public IStateToBuilder<TState> From(TState state)
         {
             _stateTransitionInfo =  new StateTransitionInfo
             {
-                From = (int) Enum.ToObject(state.GetType(), state)
+                From = (int)Enum.ToObject(state.GetType(), state)
             };
             return this;
         }
@@ -59,6 +70,17 @@ namespace StateBliss
                 new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnTransitioning, target), 
                 HandlerType.OnTransitioning));
             return this;
+        }
+
+        public IStateTransitionBuilder<TState> TriggeredBy(string trigger)
+        {
+            Triggers.Add((trigger, _stateTransitionInfo.From, _stateTransitionInfo.To, _state));
+            return this;
+        }
+
+        public void TriggerTo(TState nextState, string trigger)
+        {
+            Triggers.Add((trigger, null, (int)Enum.ToObject(nextState.GetType(), nextState), _state));
         }
 
         public void OnEnter(TState state, OnStateEnterHandler<TState> handler)

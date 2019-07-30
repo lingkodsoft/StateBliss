@@ -10,19 +10,87 @@ namespace StateBliss
     public class StateMachineManager : IStateMachineManager
     {
         private BlockingCollection<(ActionInfo actionInfo, State state, int fromState, int toState)> _actionInfos = new BlockingCollection<(ActionInfo, State state, int fromState, int toState)>();
-        private List<State> _managedStates = new List<State>();
+        private ConcurrentDictionary<Guid, WeakReference<State>> _managedStates = new ConcurrentDictionary<Guid, WeakReference<State>>();
         private bool _stopRunning;
         private Task _taskRunner;
         private CancellationTokenSource _taskRunnercts;
+        private SpinWait _spinWait = new SpinWait();
+
+        private static readonly List<WeakReference<StateMachineManager>> _managers = new List<WeakReference<StateMachineManager>>();
+        private static readonly IStateMachineManager _default = new StateMachineManager();
+        public static IStateMachineManager Default => _default;
+
+        public StateMachineManager()
+        {
+            _managers.Add(new WeakReference<StateMachineManager>(this));
+            RemoveDereferencedManagers();
+        }
 
         public event EventHandler<(Exception exception, State state, int fromState, int toState)> OnHandlerException; 
 
         public void Register(State state)
         {
+            UnregisterStateFromDefaultInstance(state);
             state.Manager = this;
-            if (!_managedStates.Contains(state))
+            
+            if (!_managedStates.ContainsKey(state.Id))
             {
-                _managedStates.Add(state);   
+                var value = new WeakReference<State>(state);
+                while (!_managedStates.TryAdd(state.Id, value))
+                {
+                    _spinWait.SpinOnce();
+                } 
+            }
+            RemovedDereferenceStatesFromDefaultInstance();
+        }
+
+        public static void Trigger(string triggerName)
+        {
+            foreach (var wrManager in _managers)
+            {
+                if (wrManager.TryGetTarget(out var manager))
+                {
+                    manager.TriggerStateChange(triggerName);
+                }
+            }
+        }
+        
+        private void TriggerStateChange(string triggerName)
+        {
+            foreach (var wrState in _managedStates.Values)
+            {
+                if (wrState.TryGetTarget(out var s))
+                {
+                    var triggerInfo = s.StateTransitionBuilder.Triggers.SingleOrDefault(a => a.trigger == triggerName);
+
+                    if (triggerInfo.fromState == null || triggerInfo.state.Current == triggerInfo.fromState)
+                    {
+                        triggerInfo.state?.ChangeTo(triggerInfo.toState);
+                    }
+                }
+            }
+        }
+
+        private void RemoveDereferencedManagers()
+        {
+            _managers.RemoveAll(a => !a.TryGetTarget(out var s));
+        }
+        
+        private void UnregisterStateFromDefaultInstance(State state)
+        {
+            var defaultStateManager = (StateMachineManager)Default;
+            defaultStateManager._managedStates.TryRemove(state.Id, out var s);
+        }
+        
+        private void RemovedDereferenceStatesFromDefaultInstance()
+        {
+            var defaultStateManager = (StateMachineManager)Default;
+            foreach (var kv in defaultStateManager._managedStates)
+            {
+                if (!kv.Value.TryGetTarget(out var state))
+                {
+                    defaultStateManager._managedStates.TryRemove(kv.Key, out var s);
+                }
             }
         }
 
@@ -74,8 +142,13 @@ namespace StateBliss
             }
             await Task.Delay(waitDelayMilliseconds);
         }
-
+        
         public bool ChangeState<TEntity, TState>(State<TEntity, TState> state, TState newState) where TState : Enum
+        {
+            return ChangeState<TState>(state, newState);
+        }
+
+        public bool ChangeState<TState>(State<TState> state, TState newState) where TState : Enum
         {
             var @from = (int)Enum.ToObject(state.Current.GetType(), state.Current);
             var @to = (int)Enum.ToObject(newState.GetType(), newState);

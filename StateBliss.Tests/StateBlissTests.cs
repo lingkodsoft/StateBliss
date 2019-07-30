@@ -17,9 +17,141 @@ namespace StateBliss.Tests
         
         public void Dispose()
         {
-            _stateMachineManager.Stop();
+            _stateMachineManager?.Stop();
+            StateMachineManager.Default.Stop();
         }
 
+        [Fact]
+        public async Task Test_DefaultStateMachineManager()
+        {
+            // Arrange
+            StateMachineManager.Default.Start();
+
+            var entity = new MyEntity
+            {
+                Status = MyStates.NotClicked
+            };
+            
+            var state = new State<MyEntity, MyStates>(entity, a => a.Status, "myState1")
+                .Define(b => 
+                {
+                    b.From(MyStates.NotClicked).To(MyStates.Clicked)
+                        .Changed(OnTransitionedHandler1);
+                });
+
+            // Act
+            state.ChangeTo(MyStates.Clicked);
+            await StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
+
+            // Assert
+            Assert.Equal(1, OnTransitionedHandler1_TimesCalled);
+            Assert.Equal(MyStates.Clicked, state.Current);
+        }
+        
+        [Fact]
+        public async Task Test_StateCtorWithoutEntityParam()
+        {
+            // Arrange
+            StateMachineManager.Default.Start();
+            var initialState = MyStates.NotClicked;
+            
+            var state = new State<MyStates>(initialState)
+                .Define(b =>
+                {
+                    var triggerNotClickedToClicked = "NotClickedToClicked";
+                    var triggerToClicked = "ToClicked";
+                    
+                    b.From(MyStates.NotClicked).To(MyStates.Clicked)
+                        .Changed(OnTransitionedHandler1);
+
+                    b.TriggerTo(MyStates.Clicked, triggerToClicked);
+
+                });
+
+            // Act
+            state.ChangeTo(MyStates.Clicked);
+            await StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
+
+            // Assert
+            Assert.Equal(1, OnTransitionedHandler1_TimesCalled);
+            Assert.Equal(MyStates.Clicked, state.Current);
+        }
+        
+        [Fact]
+        public async Task Test_TriggeredBy()
+        {
+            // Arrange
+            StateMachineManager.Default.Start();
+            var initialState = MyStates.NotClicked;
+            var triggerNotClickedToClicked = "NotClickedToClicked";
+            
+            var state = new State<MyStates>(initialState)
+                .Define(b =>
+                {
+                    b.From(MyStates.NotClicked).To(MyStates.Clicked)
+                        .TriggeredBy(triggerNotClickedToClicked)
+                        .Changed(OnTransitionedHandler1);
+                });
+
+            // Act
+            StateMachineManager.Trigger(triggerNotClickedToClicked);
+            await StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
+
+            // Assert
+            Assert.Equal(1, OnTransitionedHandler1_TimesCalled);
+            Assert.Equal(MyStates.Clicked, state.Current);
+        }
+        
+        [Fact]
+        public async Task Test_TriggerTo()
+        {
+            // Arrange
+            StateMachineManager.Default.Start();
+            var initialState = MyStates.NotClicked;
+            var triggerToClicked = "ToClicked";
+            
+            var state = new State<MyStates>(initialState)
+                .Define(b =>
+                {
+                    b.From(MyStates.NotClicked).To(MyStates.Clicked)
+                        .Changed(OnTransitionedHandler1);
+
+                    b.TriggerTo(MyStates.Clicked, triggerToClicked);
+
+                });
+
+            // Act
+            StateMachineManager.Trigger(triggerToClicked);
+            await StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
+
+            // Assert
+            Assert.Equal(1, OnTransitionedHandler1_TimesCalled);
+            Assert.Equal(MyStates.Clicked, state.Current);
+        }
+        
+        
+        [Fact]
+        public async Task Test_AsStateExtension()
+        {
+            // Arrange
+            StateMachineManager.Default.Start();
+            var initialState = MyStates.NotClicked;
+            
+            var state = initialState.AsState(b => 
+                {
+                    b.From(MyStates.NotClicked).To(MyStates.Clicked)
+                        .Changed(OnTransitionedHandler1);
+                });
+
+            // Act
+            state.ChangeTo(MyStates.Clicked);
+            await StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
+
+            // Assert
+            Assert.Equal(1, OnTransitionedHandler1_TimesCalled);
+            Assert.Equal(MyStates.Clicked, state.Current);
+        }
+        
         [Fact]
         public async Task Test_OnTransitioningHandlerCalled()
         {
