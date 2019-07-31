@@ -41,6 +41,10 @@ namespace StateBliss
     
     public class State<TState> : State, IState<TState> where TState : Enum
     {
+        public State(TState state) : this(state, null, true)
+        {
+        }
+        
         public State(TState state, string name = null, bool registerToDefaultStateMachineManager = true)
         {
             base.Current = (int)Enum.ToObject(state.GetType(), state);

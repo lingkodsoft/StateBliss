@@ -49,6 +49,7 @@
         <e p="StateBliss.csproj" t="IncludeRecursive" />
         <e p="StateEnterGuardHandlerDiscontinuedException.cs" t="Include" />
         <e p="StateExtensions.cs" t="Include" />
+        <e p="StateFactory.cs" t="Include" />
         <e p="StateMachineManager.cs" t="Include" />
         <e p="StateTransitionBuilder.cs" t="Include" />
         <e p="StateTransitionInfo.cs" t="Include" />

@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace StateBliss
 {
+    
+                
+    //TODO: dynamically insert handler in the Guards pipeline
+    
     public class StateMachineManager : IStateMachineManager
     {
         private BlockingCollection<(ActionInfo actionInfo, State state, int fromState, int toState)> _actionInfos = new BlockingCollection<(ActionInfo, State state, int fromState, int toState)>();
@@ -15,10 +19,11 @@ namespace StateBliss
         private Task _taskRunner;
         private CancellationTokenSource _taskRunnercts;
         private SpinWait _spinWait = new SpinWait();
+        private StateFactory _stateFactory;
 
         private static readonly List<WeakReference<StateMachineManager>> _managers = new List<WeakReference<StateMachineManager>>();
-        private static readonly IStateMachineManager _default = new StateMachineManager();
-        public static IStateMachineManager Default => _default;
+        private static readonly StateMachineManager _default = new StateMachineManager();
+        public static StateMachineManager Default => _default;
 
         public StateMachineManager()
         {
@@ -30,6 +35,7 @@ namespace StateBliss
 
         public void Register(State state)
         {
+            Start();
             UnregisterStateFromDefaultInstance(state);
             state.Manager = this;
             
@@ -70,6 +76,13 @@ namespace StateBliss
                 }
             }
         }
+        
+        public static void Guards<TState>(Guid id, TState state, GuardsInfo<TState, GuardContext<TState>> @from) where TState : Enum
+        {
+            var state1 = GetState<TState>(id);
+//            state1.StateTransitionBuilder.
+            throw new NotImplementedException();
+        }
 
         private void RemoveDereferencedManagers()
         {
@@ -101,6 +114,10 @@ namespace StateBliss
 
         public void Start()
         {
+            if (_taskRunner != null)
+            {
+                return;
+            }
             _stopRunning = false;
             _taskRunnercts = new CancellationTokenSource();
             _taskRunner = Task.Factory.StartNew(Process, _taskRunnercts.Token);
@@ -148,6 +165,37 @@ namespace StateBliss
             return ChangeState<TState>(state, newState);
         }
 
+
+        public void SetStateFactory(StateFactory stateFactory)
+        {
+            _stateFactory = stateFactory;
+        }
+        
+        public static bool ChangeState<TState>(TState newState, Guid id) where TState : Enum
+        {
+            return Default.ChangeStateInternal(newState, id);
+        }
+        
+        public static State<TState> GetState<TState>(Guid id) where TState : Enum
+        {
+            return (State<TState>) Default._stateFactory(typeof(TState), id);
+        }
+        
+        State<TState> IStateMachineManager.GetState<TState>(Guid id)
+        {
+            return (State<TState>)_stateFactory(typeof(TState), id);
+        }
+        
+        private bool ChangeStateInternal<TState>(TState newState, Guid id) where TState : Enum
+        {
+            return ChangeState((State<TState>) _stateFactory(typeof(TState), id), newState);
+        }
+        
+        bool IStateMachineManager.ChangeState<TState>(TState newState, Guid id)
+        {
+            return ChangeStateInternal(newState, id);
+        }
+        
         public bool ChangeState<TState>(State<TState> state, TState newState) where TState : Enum
         {
             var @from = (int)Enum.ToObject(state.Current.GetType(), state.Current);

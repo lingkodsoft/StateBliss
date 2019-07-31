@@ -48,6 +48,58 @@ namespace StateBliss.Tests
             Assert.Equal(OrderState.Paid, payOrderCommand.State.Current);
         }
         
+        
+        [Fact]
+        public async Task Test_StateFactory()
+        {
+            // Arrange
+            var guid = Guid.NewGuid();
+            int stateIdValueFromRepo = (int)MyStates.NotClicked;
+
+            StateMachineManager.Default.SetStateFactory((type, id) =>
+            {
+//              var stateGenericType = typeof(State<>).MakeGenericType(type);
+//              var stateId =   Convert.ChangeType(Enum.ToObject(type, stateIdValueFromRepo), type);
+//              var newState = (State)Activator.CreateInstance(stateGenericType, stateId);
+
+                if (id != guid)
+                {
+                    return null;
+                }
+                
+                var state0 = new State<MyStates>((MyStates)(object)stateIdValueFromRepo)
+                    .Define(b =>
+                    {
+                        b.From(MyStates.NotClicked).To(MyStates.Clicked)
+                            .Changed((s, n) =>
+                            {
+                                stateIdValueFromRepo = (int)Enum.ToObject(type, n.Current);
+                            })
+                            ;
+                    });
+                
+                return state0;
+
+            });
+            
+            // Act
+            StateMachineManager.ChangeState(MyStates.Clicked, guid);
+            await StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
+
+//            StateMachineManager.Guards(guid, MyStates.NotClicked, Guards<MyStates>.From(
+//                OnTransitionedHandler1, 
+//                OnTransitionedHandler2));
+
+            
+            // Assert
+            Assert.Equal(MyStates.Clicked, StateMachineManager.GetState<MyStates>(guid).Current);
+        }
+
+//        private TContext OnTransitionedHandler1<TContext>() where TContext : GuardContext<TStataus>
+//        {
+//            throw new NotImplementedException();
+//        }
+
         [Fact]
         public async Task Test_GuardsOnStateDefine()
         {

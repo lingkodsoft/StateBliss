@@ -58,14 +58,11 @@ namespace StateBliss.Tests
             var state = new State<MyStates>(initialState)
                 .Define(b =>
                 {
-                    var triggerNotClickedToClicked = "NotClickedToClicked";
                     var triggerToClicked = "ToClicked";
                     
                     b.From(MyStates.NotClicked).To(MyStates.Clicked)
                         .Changed(OnTransitionedHandler1);
-
-                    b.TriggerTo(MyStates.Clicked, triggerToClicked);
-
+                    
                 });
 
             // Act
@@ -134,7 +131,6 @@ namespace StateBliss.Tests
         public async Task Test_AsStateExtension()
         {
             // Arrange
-            StateMachineManager.Default.Start();
             var initialState = MyStates.NotClicked;
             
             var state = initialState.AsState(b => 
