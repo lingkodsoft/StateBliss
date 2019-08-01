@@ -2,7 +2,7 @@ using System;
 
 namespace StateBliss
 {
-    public abstract class GuardContext<TState>
+    public class GuardContext<TState>
         where TState : Enum
     {
         public TState NextState { get; internal set; }

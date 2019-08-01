@@ -44,8 +44,14 @@ namespace StateBliss
         public State(TState state) : this(state, null, true)
         {
         }
-        
+
         public State(TState state, string name = null, bool registerToDefaultStateMachineManager = true)
+            : this(Guid.NewGuid(), state, name, registerToDefaultStateMachineManager)
+        {
+        }
+        
+        public State(Guid id, TState state, string name = null, bool registerToDefaultStateMachineManager = true)
+            :base(id)
         {
             base.Current = (int)Enum.ToObject(state.GetType(), state);
             Name = name;
@@ -107,6 +113,11 @@ namespace StateBliss
             return Manager.ChangeState(this, newState);
         }
         
+        public void Guards(TState state, GuardsInfo<TState, GuardContext<TState>> guardInfo)
+        {
+            StateTransitionBuilder.AddOnStateEnterGuards(state, guardInfo.Context,  guardInfo.Guards);
+        }
+        
         private void EnsureDefinitionExists()
         {
             if (StateTransitionBuilder == null)
@@ -118,9 +129,9 @@ namespace StateBliss
     
     public abstract class State
     {
-        protected State()
+        protected State(Guid id)
         {
-            Id = Guid.NewGuid();            
+            Id = id;            
         }
         
         public int Current { get; protected set; }

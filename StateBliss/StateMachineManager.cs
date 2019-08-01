@@ -7,10 +7,6 @@ using System.Threading.Tasks;
 
 namespace StateBliss
 {
-    
-                
-    //TODO: dynamically insert handler in the Guards pipeline
-    
     public class StateMachineManager : IStateMachineManager
     {
         private BlockingCollection<(ActionInfo actionInfo, State state, int fromState, int toState)> _actionInfos = new BlockingCollection<(ActionInfo, State state, int fromState, int toState)>();
@@ -77,11 +73,11 @@ namespace StateBliss
             }
         }
         
-        public static void Guards<TState>(Guid id, TState state, GuardsInfo<TState, GuardContext<TState>> @from) where TState : Enum
+        public static void Guards<TState, TContext>(Guid id, TState state, TContext context, GuardsInfo<TState, GuardContext<TState>> @from) where TState : Enum
+            where TContext : GuardContext<TState>
         {
             var state1 = GetState<TState>(id);
-//            state1.StateTransitionBuilder.
-            throw new NotImplementedException();
+            state1.StateTransitionBuilder.AddOnStateEnterGuards(state, context,  @from.Guards);
         }
 
         private void RemoveDereferencedManagers()
@@ -157,6 +153,7 @@ namespace StateBliss
             {
                 spin.SpinOnce();
             }
+
             await Task.Delay(waitDelayMilliseconds);
         }
         
@@ -164,7 +161,11 @@ namespace StateBliss
         {
             return ChangeState<TState>(state, newState);
         }
-
+        
+        public static void SetDefaultStateFactory(StateFactory stateFactory)
+        {
+            Default.SetStateFactory(stateFactory);
+        }
 
         public void SetStateFactory(StateFactory stateFactory)
         {
@@ -220,7 +221,6 @@ namespace StateBliss
                 }
             }
 
-            //TODO: add guard actions, IEnumerable guards 
             //OnTransitioning
             foreach (var actionInfo in stateTransitionBuilder.GetOnTransitioningHandlers())
             {

@@ -11,7 +11,7 @@ namespace StateBliss
         internal readonly List<(string trigger, int? fromState, int toState, State state)> Triggers = new List<(string trigger, int? fromState, int toState, State state)>();
     }
 
-    internal class StateTransitionBuilder<TState>: StateTransitionBuilder, IStateTransitionBuilder<TState>,IStateFromBuilder<TState>, IStateToBuilder<TState> 
+    internal class StateTransitionBuilder<TState>: StateTransitionBuilder, IStateTransitionBuilder<TState>, IStateFromBuilder<TState>, IStateToBuilder<TState> 
         where TState : Enum
     {
         private readonly List<StateTransitionInfo> _stateTransitions = new List<StateTransitionInfo>();

@@ -54,51 +54,97 @@ namespace StateBliss.Tests
         {
             // Arrange
             var guid = Guid.NewGuid();
-            int stateIdValueFromRepo = (int)MyStates.NotClicked;
 
-            StateMachineManager.Default.SetStateFactory((type, id) =>
-            {
-//              var stateGenericType = typeof(State<>).MakeGenericType(type);
-//              var stateId =   Convert.ChangeType(Enum.ToObject(type, stateIdValueFromRepo), type);
-//              var newState = (State)Activator.CreateInstance(stateGenericType, stateId);
+            var stateFactory = SetupStateFactory(guid, () => 
 
-                if (id != guid)
-                {
-                    return null;
-                }
-                
-                var state0 = new State<MyStates>((MyStates)(object)stateIdValueFromRepo)
-                    .Define(b =>
-                    {
-                        b.From(MyStates.NotClicked).To(MyStates.Clicked)
-                            .Changed((s, n) =>
-                            {
-                                stateIdValueFromRepo = (int)Enum.ToObject(type, n.Current);
-                            })
-                            ;
-                    });
-                
-                return state0;
-
-            });
+                new State<MyStates>(guid, MyStates.NotClicked)
+                    .Define(b => { b.From(MyStates.NotClicked).To(MyStates.Clicked); })
+            );
+            StateMachineManager.Default.SetStateFactory(stateFactory);
             
             // Act
             StateMachineManager.ChangeState(MyStates.Clicked, guid);
             await StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
-
-//            StateMachineManager.Guards(guid, MyStates.NotClicked, Guards<MyStates>.From(
-//                OnTransitionedHandler1, 
-//                OnTransitionedHandler2));
-
             
             // Assert
             Assert.Equal(MyStates.Clicked, StateMachineManager.GetState<MyStates>(guid).Current);
         }
 
-//        private TContext OnTransitionedHandler1<TContext>() where TContext : GuardContext<TStataus>
-//        {
-//            throw new NotImplementedException();
-//        }
+        [Fact]
+        public async Task Test_AddGuardsOnState()
+        {
+            // Arrange
+            var guid = Guid.NewGuid();
+            var hasChanged = false;
+            var stateFactory = SetupStateFactory(guid, () => 
+
+                new State<MyStates>(guid, MyStates.NotClicked)
+                    .Define(b =>
+                    {
+                        b.From(MyStates.NotClicked).To(MyStates.Clicked)
+                            .Changed((s, n) =>
+                            {
+                                hasChanged = true;
+                            });
+                    })
+            );
+            StateMachineManager.SetDefaultStateFactory(stateFactory);
+
+            var state = StateMachineManager.GetState<MyStates>(guid);
+            var context = new GuardContext<MyStates>();
+            
+            state.Guards(MyStates.Clicked, Guards<MyStates>.From(context,
+                GuardHandler1, 
+                GuardHandler2));
+            
+            // Act
+            StateMachineManager.ChangeState(MyStates.Clicked, guid);
+            await StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
+            
+            // Assert
+            Assert.Equal(MyStates.Clicked, state.Current);
+            Assert.True(hasChanged);
+        }
+
+        private static readonly Dictionary<Type, List<State>> StatesRepo = new Dictionary<Type, List<State>>();
+        private StateFactory SetupStateFactory(Guid guid, Func<State> stateProvider)
+        {
+            StateFactory result = (stateType, id) =>
+            {
+                State state0;
+
+                if (!StatesRepo.ContainsKey(stateType))
+                {
+                    state0 = stateProvider();
+                    StatesRepo.Add(stateType, new List<State>() { state0 });
+                }
+                else
+                {
+                    var states = StatesRepo[stateType];
+                    state0 = states.FirstOrDefault(a => a.Id == guid);
+
+                    if (state0 == null)
+                    {
+                        state0 = stateProvider();
+                        states.Add(state0);
+                    }
+                }
+                return state0;
+            };
+
+            return result;
+        }
+        
+
+        private void GuardHandler2(GuardContext<MyStates> context)
+        {
+            context.Continue = true;
+        }
+
+        private void GuardHandler1(GuardContext<MyStates> context)
+        {
+            context.Continue = true;
+        }
 
         [Fact]
         public async Task Test_GuardsOnStateDefine()
