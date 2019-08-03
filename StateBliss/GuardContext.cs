@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 
 namespace StateBliss
 {
     public class GuardContext<TState>
         where TState : Enum
     {
+        private Dictionary<string, object> _data;
         public TState NextState { get; internal set; }
         public IState<TState> State { get; internal set; }
         
@@ -13,5 +15,10 @@ namespace StateBliss
         /// </summary>
         public bool ThrowExceptionWhenDiscontinued { get; set; }
         public bool Continue { get; set; }
+
+        public Dictionary<string, object> Data
+        {
+            get => _data ?? (_data = new Dictionary<string, object>());
+        }
     }
 }

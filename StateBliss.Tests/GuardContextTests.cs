@@ -37,7 +37,7 @@ namespace StateBliss.Tests
 
             // Act
             payOrderCommandHandler.Handle(payOrderCommand);
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
             Assert.True(payOrderCommand.Succeeded);
@@ -55,7 +55,7 @@ namespace StateBliss.Tests
             // Arrange
             var guid = Guid.NewGuid();
 
-            var stateFactory = SetupStateFactory(guid, () => 
+            var stateFactory = StateFactoryTestHelper.SetupStateFactory(guid, () => 
 
                 new State<MyStates>(guid, MyStates.NotClicked)
                     .Define(b => { b.From(MyStates.NotClicked).To(MyStates.Clicked); })
@@ -64,19 +64,19 @@ namespace StateBliss.Tests
             
             // Act
             StateMachineManager.ChangeState(MyStates.Clicked, guid);
-            await StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
+            await StateMachineManager.Default.WaitAllHandlersProcessedAsync(); //this is only needed for unit test to ensure that all handlers are run
             
             // Assert
             Assert.Equal(MyStates.Clicked, StateMachineManager.GetState<MyStates>(guid).Current);
         }
 
         [Fact]
-        public async Task Test_AddGuardsOnState()
+        public async Task Test_AddGuardsOnStateEntry()
         {
             // Arrange
             var guid = Guid.NewGuid();
             var hasChanged = false;
-            var stateFactory = SetupStateFactory(guid, () => 
+            var stateFactory = StateFactoryTestHelper.SetupStateFactory(guid, () => 
 
                 new State<MyStates>(guid, MyStates.NotClicked)
                     .Define(b =>
@@ -93,57 +93,69 @@ namespace StateBliss.Tests
             var state = StateMachineManager.GetState<MyStates>(guid);
             var context = new GuardContext<MyStates>();
             
-            state.Guards(MyStates.Clicked, Guards<MyStates>.From(context,
+            state.GuardsForEntry(MyStates.Clicked, Guards<MyStates>.From(context,
                 GuardHandler1, 
                 GuardHandler2));
             
             // Act
             StateMachineManager.ChangeState(MyStates.Clicked, guid);
-            await StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
+            await StateMachineManager.Default.WaitAllHandlersProcessedAsync(); //this is only needed for unit test to ensure that all handlers are run
             
             // Assert
             Assert.Equal(MyStates.Clicked, state.Current);
             Assert.True(hasChanged);
-        }
-
-        private static readonly Dictionary<Type, List<State>> StatesRepo = new Dictionary<Type, List<State>>();
-        private StateFactory SetupStateFactory(Guid guid, Func<State> stateProvider)
-        {
-            StateFactory result = (stateType, id) =>
-            {
-                State state0;
-
-                if (!StatesRepo.ContainsKey(stateType))
-                {
-                    state0 = stateProvider();
-                    StatesRepo.Add(stateType, new List<State>() { state0 });
-                }
-                else
-                {
-                    var states = StatesRepo[stateType];
-                    state0 = states.FirstOrDefault(a => a.Id == guid);
-
-                    if (state0 == null)
-                    {
-                        state0 = stateProvider();
-                        states.Add(state0);
-                    }
-                }
-                return state0;
-            };
-
-            return result;
+            Assert.True((bool)context.Data["GuardHandler1"]);
+            Assert.True((bool)context.Data["GuardHandler2"]);
         }
         
+        
+        [Fact]
+        public async Task Test_AddGuardsOnStateExit()
+        {
+            // Arrange
+            var guid = Guid.NewGuid();
+            var hasChanged = false;
+            var stateFactory = StateFactoryTestHelper.SetupStateFactory(guid, () => 
+
+                new State<MyStates>(guid, MyStates.NotClicked)
+                    .Define(b =>
+                    {
+                        b.From(MyStates.NotClicked).To(MyStates.Clicked)
+                            .Changed((s, n) =>
+                            {
+                                hasChanged = true;
+                            });
+                    })
+            );
+            StateMachineManager.SetDefaultStateFactory(stateFactory);
+
+            var state = StateMachineManager.GetState<MyStates>(guid);
+            var context = new GuardContext<MyStates>();
+            
+            state.GuardsForExit(MyStates.NotClicked, Guards<MyStates>.From(context,
+                GuardHandler1, 
+                GuardHandler2));
+            
+            // Act
+            StateMachineManager.ChangeState(MyStates.Clicked, guid);
+            await StateMachineManager.Default.WaitAllHandlersProcessedAsync(); //this is only needed for unit test to ensure that all handlers are run
+            
+            // Assert
+            Assert.Equal(MyStates.Clicked, state.Current);
+            Assert.True(hasChanged);
+            Assert.True((bool)context.Data["GuardHandler1"]);
+        }
 
         private void GuardHandler2(GuardContext<MyStates> context)
         {
             context.Continue = true;
+            context.Data["GuardHandler2"] = true;
         }
 
         private void GuardHandler1(GuardContext<MyStates> context)
         {
             context.Continue = true;
+            context.Data["GuardHandler1"] = true;
         }
 
         [Fact]
@@ -169,7 +181,7 @@ namespace StateBliss.Tests
 
             // Act
             payOrderCommandHandler.Handle(payOrderCommand);
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
             Assert.True(payOrderCommand.Succeeded);

@@ -28,12 +28,13 @@ namespace StateBliss
         
         public override void Execute(State state, int fromState, int toState)
         {
-            if (_handlerType == HandlerType.OnEnterGuard)
+            if (_handlerType == HandlerType.OnEnterGuard || 
+                _handlerType == HandlerType.OnExitGuard)
             {
-                var @to = (TState)(object)toState;
+                var @to = toState.ToEnum<TState>();
                 _context.NextState = @to;
                 _context.State = (IState<TState>)state;
-                ((OnStateEnterGuardHandler<TState, TContext>)_method)(_context);
+                ((OnGuardHandler<TState, TContext>)_method)(_context);
             }
             else
             {
@@ -101,8 +102,8 @@ namespace StateBliss
 
         public override void Execute(State state, int fromState, int toState)
         {
-            var @from = (TState)(object)fromState;
-            var @to = (TState)(object)toState;
+            var @from = fromState.ToEnum<TState>();
+            var @to = toState.ToEnum<TState>();
             
             switch (_handlerType)
             {

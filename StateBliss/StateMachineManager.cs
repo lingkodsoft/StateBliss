@@ -9,17 +9,18 @@ namespace StateBliss
 {
     public class StateMachineManager : IStateMachineManager
     {
-        private BlockingCollection<(ActionInfo actionInfo, State state, int fromState, int toState)> _actionInfos = new BlockingCollection<(ActionInfo, State state, int fromState, int toState)>();
+        private ConcurrentQueue<(ActionInfo actionInfo, State state, int fromState, int toState)> _actionInfos = new ConcurrentQueue<(ActionInfo, State state, int fromState, int toState)>();
         private ConcurrentDictionary<Guid, WeakReference<State>> _managedStates = new ConcurrentDictionary<Guid, WeakReference<State>>();
-        private bool _stopRunning;
+        private volatile bool _stopRunning;
         private Task _taskRunner;
         private CancellationTokenSource _taskRunnercts;
         private SpinWait _spinWait = new SpinWait();
         private StateFactory _stateFactory;
-
+        private readonly ManualResetEvent _resetEvent = new ManualResetEvent(false);
         private static readonly List<WeakReference<StateMachineManager>> _managers = new List<WeakReference<StateMachineManager>>();
         private static readonly StateMachineManager _default = new StateMachineManager();
         public static StateMachineManager Default => _default;
+        private ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
         public StateMachineManager()
         {
@@ -105,36 +106,54 @@ namespace StateBliss
 
         private void QueueActionForExecution(ActionInfo actionInfo, State state, int fromState, int toState)
         {
-            _actionInfos.Add((actionInfo, state, fromState, toState));
+            _actionInfos.Enqueue((actionInfo, state, fromState, toState));
+            _resetEvent.Set();
         }
 
+        private object _taskLock = new object();
         public void Start()
         {
-            if (_taskRunner != null)
+            lock (_taskLock)
             {
-                return;
+                if (_taskRunner?.Status == TaskStatus.Running)
+                {
+                    return;
+                }
+
+                _stopRunning = false;
+                _taskRunnercts = new CancellationTokenSource();
+                _taskRunner = Task.Factory.StartNew(Process, _taskRunnercts.Token);
             }
-            _stopRunning = false;
-            _taskRunnercts = new CancellationTokenSource();
-            _taskRunner = Task.Factory.StartNew(Process, _taskRunnercts.Token);
         }
 
         public void Stop()
         {
             _taskRunnercts?.Cancel();
             _stopRunning = true;
-            _actionInfos.Add((null, null, -1, -1));
+            _resetEvent.Set();
         }
 
         private void Process()
         {
-            foreach (var item in _actionInfos.GetConsumingEnumerable())
+            while(true)
             {
-                if (_stopRunning)
+                lock (_taskLock)
                 {
-                    break;
+                    if (_stopRunning)
+                    {
+                        _taskRunner = null;
+                        _resetEvent.Set();
+                        return;
+                    }
                 }
-
+                
+                if (!_actionInfos.TryDequeue(out var item))
+                {
+                    _resetEvent.WaitOne();
+                    _resetEvent.Reset();
+                    continue;
+                }
+                
                 try
                 {
                     item.actionInfo.Execute(item.state, item.fromState, item.toState);
@@ -146,17 +165,31 @@ namespace StateBliss
             }
         }
 
-        public async Task WaitAllHandlersProcessed(int waitDelayMilliseconds = 1000)
+        public async Task WaitAllHandlersProcessedAsync(int waitDelayMilliseconds = 100)
         {
             var spin = new SpinWait();
-            while (_actionInfos.Count > 0)
+            while (!_actionInfos.IsEmpty)
             {
                 spin.SpinOnce();
             }
-
-            await Task.Delay(waitDelayMilliseconds);
+            if (waitDelayMilliseconds == 0) return;
+            await Task.Delay(waitDelayMilliseconds).ConfigureAwait(false);
         }
-        
+
+        public void WaitAllHandlersProcessed(int waitDelayMilliseconds = 100)
+        {
+            var spin = new SpinWait();
+            while (!_actionInfos.IsEmpty)
+            {
+                spin.SpinOnce();
+            }
+            var startTime = DateTime.Now;
+            while(DateTime.Now.Subtract(startTime).TotalMilliseconds < waitDelayMilliseconds)
+            {
+                spin.SpinOnce();
+            }
+        }
+
         public bool ChangeState<TEntity, TState>(State<TEntity, TState> state, TState newState) where TState : Enum
         {
             return ChangeState<TState>(state, newState);
@@ -184,12 +217,17 @@ namespace StateBliss
         
         State<TState> IStateMachineManager.GetState<TState>(Guid id)
         {
+            return GetStateInternal<TState>(id);
+        }
+        
+        private State<TState> GetStateInternal<TState>(Guid id) where TState : Enum
+        {
             return (State<TState>)_stateFactory(typeof(TState), id);
         }
         
         private bool ChangeStateInternal<TState>(TState newState, Guid id) where TState : Enum
         {
-            return ChangeState((State<TState>) _stateFactory(typeof(TState), id), newState);
+            return ChangeState(GetStateInternal<TState>(id), newState);
         }
         
         bool IStateMachineManager.ChangeState<TState>(TState newState, Guid id)
@@ -199,86 +237,187 @@ namespace StateBliss
         
         public bool ChangeState<TState>(State<TState> state, TState newState) where TState : Enum
         {
-            var @from = (int)Enum.ToObject(state.Current.GetType(), state.Current);
-            var @to = (int)Enum.ToObject(newState.GetType(), newState);
-
-            //trigger handlers
             var stateTransitionBuilder = state.StateTransitionBuilder;
 
-            if (Equals(state.Current, newState))
-            {
-                if (stateTransitionBuilder.DisabledSameStateTransitioned.Any(a => Equals(a, newState)))
-                {
-                    throw new SameStateTransitionDisabledException();
-                }
-            }
-            else
-            {
-                var nextStateTransitions = state.GetNextStates();
-                if (!nextStateTransitions.Any(a => Equals(a, newState)))
-                {
-                    throw new NoRuleDefinedForStateTransitionException();
-                }
-            }
+            var curentState = state.Current;
+            int @from;
+            int @to;
 
-            //OnTransitioning
-            foreach (var actionInfo in stateTransitionBuilder.GetOnTransitioningHandlers())
+            _lock.EnterReadLock();
+            try
             {
-                try
-                {
-                    actionInfo.Execute(state, @from, @to);
-                }
-                catch (Exception e)
-                {
-                    OnHandlerException?.Invoke(this, (e, state, @from, @to));
-                    throw;
-                }
-            }
-            
-            //OnExit of current state
-            foreach (var actionInfo in stateTransitionBuilder.GetOnExitHandlers())
-            {
-                QueueActionForExecution(actionInfo, state, @from, @to);
-            }
+                @from = state.Current.ToInt();
+                @to = newState.ToInt();
 
-            //OnEnterGuards of new state
-            foreach (var actionInfo in stateTransitionBuilder.GetOnEnterGuardHandlers())
-            {
-                try
+                //trigger handlers
+                if (@from == @to)
                 {
-                    actionInfo.GuardContext.Continue = false;
-                    actionInfo.Execute(state, @from, @to);
-
-                    if (actionInfo.GuardContext.Continue) continue;
-                    
-                    if (actionInfo.GuardContext.ThrowExceptionWhenDiscontinued)
+                    if (stateTransitionBuilder.DisabledSameStateTransitioned.Any(a => a.Equals(newState)))
                     {
-                        throw new StateEnterGuardHandlerDiscontinuedException();
+                        throw new SameStateTransitionDisabledException();
                     }
-                    return false;
+
+                    //On Editing state
+                    foreach (var actionInfo in stateTransitionBuilder.GetOnEditHandlers(curentState))
+                    {
+                        try
+                        {
+                            actionInfo.Execute(state, @from, @to);
+                        }
+                        catch (Exception e)
+                        {
+                            OnHandlerException?.Invoke(this, (e, state, @from, @to));
+                            throw;
+                        }
+                    }
+                    
+                    //On Edited state
+                    foreach (var actionInfo in stateTransitionBuilder.GetOnEditGuardHandlers(curentState))
+                    {
+                        QueueActionForExecution(actionInfo, state, @from, @to);
+                    }
+
                 }
-                catch (Exception e)
+                else
                 {
-                    OnHandlerException?.Invoke(this, (e, state, @from, @to));
-                    throw;
+                    var nextStateTransitions = state.GetNextStates();
+                    if (!nextStateTransitions.Any(a => a.Equals(newState)))
+                    {
+                        throw new NoRuleDefinedForStateTransitionException();
+                    }
+                }
+
+                //OnExitGuards of new state
+                foreach (var actionInfo in stateTransitionBuilder.GetOnExitGuardHandlers(curentState))
+                {
+                    try
+                    {
+                        actionInfo.GuardContext.Continue = false;
+                        actionInfo.Execute(state, @from, @to);
+
+                        if (actionInfo.GuardContext.Continue) continue;
+
+                        if (actionInfo.GuardContext.ThrowExceptionWhenDiscontinued)
+                        {
+                            throw new StateEnterGuardHandlerDiscontinuedException();
+                        }
+
+                        return false;
+                    }
+                    catch (Exception e)
+                    {
+                        OnHandlerException?.Invoke(this, (e, state, @from, @to));
+                        throw;
+                    }
+                }
+
+                //OnEnterGuards of new state
+                foreach (var actionInfo in stateTransitionBuilder.GetOnEnterGuardHandlers(newState))
+                {
+                    try
+                    {
+                        actionInfo.GuardContext.Continue = false;
+                        actionInfo.Execute(state, @from, @to);
+
+                        if (actionInfo.GuardContext.Continue) continue;
+
+                        if (actionInfo.GuardContext.ThrowExceptionWhenDiscontinued)
+                        {
+                            throw new StateEnterGuardHandlerDiscontinuedException();
+                        }
+
+                        return false;
+                    }
+                    catch (Exception e)
+                    {
+                        OnHandlerException?.Invoke(this, (e, state, @from, @to));
+                        throw;
+                    }
+                }
+
+                //OnTransitioning
+                foreach (var actionInfo in stateTransitionBuilder.GetOnTransitioningHandlers(curentState, newState))
+                {
+                    try
+                    {
+                        actionInfo.Execute(state, @from, @to);
+                    }
+                    catch (Exception e)
+                    {
+                        OnHandlerException?.Invoke(this, (e, state, @from, @to));
+                        throw;
+                    }
                 }
             }
-            
-            //OnEnter of new state
-            foreach (var actionInfo in stateTransitionBuilder.GetOnEnterHandlers())
+            finally
             {
-                QueueActionForExecution(actionInfo, state, @from, @to);
+                _lock.ExitReadLock();
             }
 
-            state.SetEntityState((int)Enum.ToObject(newState.GetType(), newState));
-            
-            //OnTransitioned
-            foreach (var actionInfo in stateTransitionBuilder.GetOnTransitionedHandlers())
+            _lock.EnterWriteLock();
+            try
             {
-                QueueActionForExecution(actionInfo, state, @from, @to);
+                state.SetEntityState(newState.ToInt());
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+            
+            _lock.EnterReadLock();
+            try
+            {
+                //OnExit of current state
+                foreach (var actionInfo in stateTransitionBuilder.GetOnExitHandlers(curentState))
+                {
+                    QueueActionForExecution(actionInfo, state, @from, @to);
+                }
+
+                //OnEnter of new state
+                foreach (var actionInfo in stateTransitionBuilder.GetOnEnterHandlers(newState))
+                {
+                    QueueActionForExecution(actionInfo, state, @from, @to);
+                }
+
+                //OnTransitioned
+                foreach (var actionInfo in stateTransitionBuilder.GetOnTransitionedHandlers(curentState, newState))
+                {
+                    QueueActionForExecution(actionInfo, state, @from, @to);
+                }
+            }
+            finally
+            {
+                _lock.ExitReadLock();
             }
 
             return true;
+        }
+
+        private void ReleaseUnmanagedResources()
+        {
+            // TODO release unmanaged resources here
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            ReleaseUnmanagedResources();
+            if (disposing)
+            {
+                _taskRunner?.Dispose();
+                _taskRunnercts?.Dispose();
+                _resetEvent?.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~StateMachineManager()
+        {
+            Dispose(false);
         }
     }
 }

@@ -41,7 +41,7 @@ namespace StateBliss.Tests
 
             // Act
             state.ChangeTo(MyStates.Clicked);
-            await StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
+            await StateMachineManager.Default.WaitAllHandlersProcessedAsync(); //this is only needed for unit test to ensure that all handlers are run
 
             // Assert
             Assert.Equal(1, OnTransitionedHandler1_TimesCalled);
@@ -67,7 +67,7 @@ namespace StateBliss.Tests
 
             // Act
             state.ChangeTo(MyStates.Clicked);
-            await StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
+            await StateMachineManager.Default.WaitAllHandlersProcessedAsync(); //this is only needed for unit test to ensure that all handlers are run
 
             // Assert
             Assert.Equal(1, OnTransitionedHandler1_TimesCalled);
@@ -92,7 +92,7 @@ namespace StateBliss.Tests
 
             // Act
             StateMachineManager.Trigger(triggerNotClickedToClicked);
-            await StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
+            await StateMachineManager.Default.WaitAllHandlersProcessedAsync(); //this is only needed for unit test to ensure that all handlers are run
 
             // Assert
             Assert.Equal(1, OnTransitionedHandler1_TimesCalled);
@@ -119,7 +119,7 @@ namespace StateBliss.Tests
 
             // Act
             StateMachineManager.Trigger(triggerToClicked);
-            await StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
+            await StateMachineManager.Default.WaitAllHandlersProcessedAsync(); //this is only needed for unit test to ensure that all handlers are run
 
             // Assert
             Assert.Equal(1, OnTransitionedHandler1_TimesCalled);
@@ -141,7 +141,7 @@ namespace StateBliss.Tests
 
             // Act
             state.ChangeTo(MyStates.Clicked);
-            await StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
+            await StateMachineManager.Default.WaitAllHandlersProcessedAsync(); //this is only needed for unit test to ensure that all handlers are run
 
             // Assert
             Assert.Equal(1, OnTransitionedHandler1_TimesCalled);
@@ -157,11 +157,11 @@ namespace StateBliss.Tests
 
             // Act
             state.ChangeTo(MyStates.Clicked);
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
-            Assert.True(OnTransitioningHandler1_TimesCalled == 1);
-            Assert.True(state.Current == MyStates.Clicked);
+            Assert.Equal(1, OnTransitioningHandler1_TimesCalled);
+            Assert.Equal(MyStates.Clicked, state.Current);
         }
 
         [Fact]
@@ -173,11 +173,11 @@ namespace StateBliss.Tests
 
             // Act
             state.ChangeTo(MyStates.Clicked);
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
-            Assert.True(OnTransitionedHandler1_TimesCalled == 1);
-            Assert.True(state.Current == MyStates.Clicked);
+            Assert.Equal(1, OnTransitionedHandler1_TimesCalled);
+            Assert.Equal(MyStates.Clicked, state.Current);
         }
 
         [Fact]
@@ -189,11 +189,11 @@ namespace StateBliss.Tests
 
             // Act
             state.ChangeTo(MyStates.Clicked);
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
-            Assert.True(OnEnterHandler1_TimesCalled == 2);
-            Assert.True(state.Current == MyStates.Clicked);
+            Assert.Equal(1, OnEnterHandler1_TimesCalled);
+            Assert.Equal(MyStates.Clicked, state.Current);
         }
         
         [Fact]
@@ -205,11 +205,11 @@ namespace StateBliss.Tests
 
             // Act
             state.ChangeTo(MyStates.Clicked);
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
-            Assert.True(OnExitHandler1_TimesCalled == 1);
-            Assert.True(state.Current == MyStates.Clicked);
+            Assert.Equal(1, OnExitHandler1_TimesCalled);
+            Assert.Equal(MyStates.Clicked, state.Current);
         }
 
         [Fact]
@@ -225,10 +225,10 @@ namespace StateBliss.Tests
                 state.ChangeTo(MyStates.Clicked);
             });
 
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
-            Assert.True(OnEnterHandler1_TimesCalled == 0);
+            Assert.Equal(0, OnEnterHandler1_TimesCalled);
         }
 
         [Fact]
@@ -241,11 +241,11 @@ namespace StateBliss.Tests
 
             // Act
             state.ChangeTo(MyStates.NotClicked);
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
-            Assert.True(OnEnterHandler1_TimesCalled == 2);
-            Assert.True(OnExitHandler1_TimesCalled == 1);
+            Assert.Equal(OnEnterHandler1_TimesCalled, 1);
+            Assert.Equal(OnExitHandler1_TimesCalled, 1);
         }
 
         [Fact]
@@ -260,10 +260,10 @@ namespace StateBliss.Tests
             {
                 state.ChangeTo(MyStates.Clicked);                
             });
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
-            Assert.True(state.Current == MyStates.NotClicked);
+            Assert.Equal(MyStates.NotClicked, state.Current);
         }
 
         [Fact]
@@ -283,7 +283,7 @@ namespace StateBliss.Tests
             {
                 state.ChangeTo(MyStates.Clicked);
             });
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
             Assert.True(handlerEventExceptionCalled);
@@ -301,11 +301,11 @@ namespace StateBliss.Tests
 
             // Act
             state.ChangeTo(MyStates.Clicked);
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
             targetHandlerClassMock.Verify(a => a.OnTransitioningHandler1(state, MyStates.Clicked), Times.Once);
-            Assert.True(state.Current == MyStates.Clicked);
+            Assert.Equal( MyStates.Clicked, state.Current);
             
             _stateMachineManager.Stop();
         }
@@ -319,12 +319,12 @@ namespace StateBliss.Tests
 
             // Act
             state.ChangeTo(MyStates.Clicked);
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
             _stateMachineManager.Stop();
 
             // Assert
             targetHandlerClassMock.Verify(a => a.OnTransitionedHandler1(MyStates.NotClicked, state), Times.Once);
-            Assert.True(state.Current == MyStates.Clicked);
+            Assert.Equal(MyStates.Clicked, state.Current);
         }
 
         [Fact]
@@ -336,11 +336,11 @@ namespace StateBliss.Tests
 
             // Act
             state.ChangeTo(MyStates.Clicked);
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
             targetHandlerClassMock.Verify(a => a.OnEnterHandler1(MyStates.Clicked, state), Times.Once);
-            Assert.True(state.Current == MyStates.Clicked);
+            Assert.Equal(MyStates.Clicked, state.Current);
         }
         
         [Fact]
@@ -352,11 +352,11 @@ namespace StateBliss.Tests
 
             // Act
             state.ChangeTo(MyStates.Clicked);
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
             targetHandlerClassMock.Verify(a => a.OnExitHandler1(MyStates.NotClicked, state), Times.Once);
-            Assert.True(state.Current == MyStates.Clicked);
+            Assert.Equal(MyStates.Clicked, state.Current);
         }
 
         [Fact]
@@ -372,7 +372,7 @@ namespace StateBliss.Tests
                 state.ChangeTo(MyStates.Clicked);
             });
 
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
             targetHandlerClassMock.Verify(a => a.OnEnterHandler1(MyStates.Clicked, state), Times.Never);
@@ -387,7 +387,7 @@ namespace StateBliss.Tests
 
             // Act
             state.ChangeTo(MyStates.NotClicked);
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
             targetHandlerClassMock.Verify(a => a.OnEnterHandler1(MyStates.NotClicked, state), Times.Once);
@@ -407,10 +407,10 @@ namespace StateBliss.Tests
             {
                 state.ChangeTo(MyStates.Clicked);                
             });
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
-            Assert.True(state.Current == MyStates.NotClicked);
+            Assert.Equal(MyStates.NotClicked, state.Current);
         }
 
         [Fact]
@@ -430,7 +430,7 @@ namespace StateBliss.Tests
 
             // Act
             state.ChangeTo(MyStates.Clicked);
-            await _stateMachineManager.WaitAllHandlersProcessed();
+            await _stateMachineManager.WaitAllHandlersProcessedAsync();
 
             // Assert
             Assert.True(handlerEventExceptionCalled);
@@ -459,6 +459,7 @@ namespace StateBliss.Tests
                         .Changing(target, a => a.OnTransitioningHandler2);
 
                     b.OnEnter(MyStates.Clicked, target,a => a.OnEnterHandler1);
+                    b.OnEnter(MyStates.NotClicked, target, a => a.OnEnterHandler1);
                     b.OnExit(MyStates.NotClicked, target, a => a.OnExitHandler1);
 
                     b.DisableSameStateTransitionFor(MyStates.Clicked);

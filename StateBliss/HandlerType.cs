@@ -5,7 +5,10 @@ namespace StateBliss
         OnEnter,
         OnEnterGuard,
         OnExit,
+        OnExitGuard,
         OnTransitioning,
-        OnTransitioned
+        OnTransitioned,
+        OnEdit,
+        OnEditGuard
     }
 }

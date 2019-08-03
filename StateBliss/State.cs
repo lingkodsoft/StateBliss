@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 
 namespace StateBliss
 {
@@ -24,7 +25,7 @@ namespace StateBliss
 
         internal override void SetEntityState(int newState)
         {
-            var state = (TState)(object)newState;
+            var state = newState.ToEnum<TState>();
             _entityPropInfo.SetValue(_entity, state);
         }
 
@@ -53,7 +54,7 @@ namespace StateBliss
         public State(Guid id, TState state, string name = null, bool registerToDefaultStateMachineManager = true)
             :base(id)
         {
-            base.Current = (int)Enum.ToObject(state.GetType(), state);
+            base.Current = state.ToInt();
             Name = name;
             if (registerToDefaultStateMachineManager)
             {
@@ -76,7 +77,7 @@ namespace StateBliss
 
         protected virtual object GetEntity() => null;
 
-        public new virtual TState Current => (TState)(object)base.Current; 
+        public new virtual TState Current => base.Current.ToEnum<TState>(); 
         
         internal override void SetEntityState(int newState)
         {
@@ -96,7 +97,7 @@ namespace StateBliss
 
         internal override bool ChangeTo(int newState)
         {
-            return ChangeTo((TState) (object) newState);
+            return ChangeTo(newState.ToEnum<TState>());
         }
 
         public bool ChangeTo(TState newState)
@@ -113,9 +114,14 @@ namespace StateBliss
             return Manager.ChangeState(this, newState);
         }
         
-        public void Guards(TState state, GuardsInfo<TState, GuardContext<TState>> guardInfo)
+        public void GuardsForEntry(TState state, GuardsInfo<TState, GuardContext<TState>> guardInfo)
         {
             StateTransitionBuilder.AddOnStateEnterGuards(state, guardInfo.Context,  guardInfo.Guards);
+        }
+        
+        public void GuardsForExit(TState state, GuardsInfo<TState, GuardContext<TState>> guardInfo)
+        {
+            StateTransitionBuilder.AddOnStateExitGuards(state, guardInfo.Context,  guardInfo.Guards);
         }
         
         private void EnsureDefinitionExists()
@@ -129,13 +135,42 @@ namespace StateBliss
     
     public abstract class State
     {
+        private ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+        private volatile int _current;
+
         protected State(Guid id)
         {
             Id = id;            
         }
-        
-        public int Current { get; protected set; }
-        
+
+        public int Current
+        {
+            get
+            {
+                _lock.EnterReadLock();
+                try
+                {
+                    return _current;
+                }
+                finally
+                {
+                    _lock.ExitReadLock();
+                }
+            }
+            protected set
+            {
+                _lock.EnterWriteLock();
+                try
+                {
+                    _current = value;
+                }
+                finally
+                {
+                    _lock.ExitWriteLock();
+                }
+            }
+        }
+
         public Guid Id { get; private set; }
         public string Name { get; protected set; }
         public IStateMachineManager Manager { get; internal set; }

@@ -6,6 +6,7 @@
       <e p="StateBliss" t="IncludeRecursive">
         <e p="ActionInfo.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
+        <e p="EnumExtensions.cs" t="Include" />
         <e p="ExpressionExtensions.cs" t="Include" />
         <e p="GuardContext.cs" t="Include" />
         <e p="Guards.cs" t="Include" />
@@ -25,9 +26,6 @@
             <e p="net472" t="Include">
               <e p="StateBliss.AssemblyInfo.cs" t="Include" />
             </e>
-            <e p="netcoreapp2.0" t="Include">
-              <e p="StateBliss.AssemblyInfo.cs" t="Include" />
-            </e>
             <e p="netcoreapp2.1" t="Include">
               <e p="StateBliss.AssemblyInfo.cs" t="Include" />
             </e>
@@ -39,7 +37,8 @@
             </e>
           </e>
         </e>
-        <e p="OnStateEnterGuardHandler.cs" t="Include" />
+        <e p="OnGuardHandler.cs" t="Include" />
+        <e p="OnStateEditHandler.cs" t="Include" />
         <e p="OnStateEnterHandler.cs" t="Include" />
         <e p="OnStateExitHandler.cs" t="Include" />
         <e p="OnStateTransitionedHandler.cs" t="Include" />
@@ -58,6 +57,7 @@
       <e p="StateBliss.Tests" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
         <e p="GuardContextTests.cs" t="Include" />
+        <e p="MultiThreadingTests.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
         <e p="Properties" t="Include">
@@ -65,11 +65,10 @@
         </e>
         <e p="StateBliss.Tests.csproj" t="IncludeRecursive" />
         <e p="StateBlissTests.cs" t="Include" />
+        <e p="StateFactoryTestHelper.cs" t="Include" />
       </e>
     </e>
-    <e p="C:\Users\mike\.Rider2019.1\config\consoles\db" t="IncludeRecursive" />
-    <e p="C:\Users\mike\.Rider2019.1\config\extensions" t="IncludeRecursive" />
-    <e p="C:\Users\mike\.Rider2019.1\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\mike\.Rider2019.1\system\resharper-host\local\Transient\ReSharperHost\v191\SolutionCaches\_StateBliss.269002201.00" t="ExcludeRecursive" />
+    <e p="C:\Users\lingkodsoft\.Rider2019.1\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\lingkodsoft\.Rider2019.1\system\resharper-host\local\Transient\ReSharperHost\v191\SolutionCaches\_StateBliss.269002201.00" t="ExcludeRecursive" />
   </component>
 </project>

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace StateBliss
 {
-    public interface IStateMachineManager
+    public interface IStateMachineManager : IDisposable
     {
         void Register(State state);
         bool ChangeState<TEntity, TState>(State<TEntity, TState> state, TState newState) where TState : Enum;
@@ -14,6 +14,7 @@ namespace StateBliss
         event EventHandler<(Exception exception, State state, int fromState, int toState)> OnHandlerException;
         void Start();
         void Stop();
-        Task WaitAllHandlersProcessed(int waitDelayMilliseconds = 100);
+        Task WaitAllHandlersProcessedAsync(int waitDelayMilliseconds = 100);
+        void WaitAllHandlersProcessed(int waitDelayMilliseconds = 100);
     }
 }

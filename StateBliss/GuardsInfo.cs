@@ -10,19 +10,19 @@ namespace StateBliss
         private readonly Func<TContext> _contextProvider;
         private readonly TContext _context;
 
-        public GuardsInfo(TContext context, IEnumerable<OnStateEnterGuardHandler<TState, TContext>> guards)
+        public GuardsInfo(TContext context, IEnumerable<OnGuardHandler<TState, TContext>> guards)
         {
             Guards = guards;
             _context = context;
         }
         
-        public GuardsInfo(Func<TContext> contextProvider, IEnumerable<OnStateEnterGuardHandler<TState, TContext>> guards)
+        public GuardsInfo(Func<TContext> contextProvider, IEnumerable<OnGuardHandler<TState, TContext>> guards)
         {
             _contextProvider = contextProvider;
             Guards = guards;
         }
             
-        public IEnumerable<OnStateEnterGuardHandler<TState, TContext>> Guards { get; }
+        public IEnumerable<OnGuardHandler<TState, TContext>> Guards { get; }
 
         public TContext Context => _context ?? _contextProvider?.Invoke();
     }
