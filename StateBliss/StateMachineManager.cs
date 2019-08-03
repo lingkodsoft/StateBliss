@@ -257,8 +257,8 @@ namespace StateBliss
                         throw new SameStateTransitionDisabledException();
                     }
 
-                    //On Editing state
-                    foreach (var actionInfo in stateTransitionBuilder.GetOnEditHandlers(curentState))
+                    //On edit guards
+                    foreach (var actionInfo in stateTransitionBuilder.GetOnEditGuardHandlers(curentState))
                     {
                         try
                         {
@@ -272,7 +272,7 @@ namespace StateBliss
                     }
                     
                     //On Edited state
-                    foreach (var actionInfo in stateTransitionBuilder.GetOnEditGuardHandlers(curentState))
+                    foreach (var actionInfo in stateTransitionBuilder.GetOnEditHandlers(curentState))
                     {
                         QueueActionForExecution(actionInfo, state, @from, @to);
                     }

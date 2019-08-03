@@ -146,6 +146,37 @@ namespace StateBliss.Tests
             Assert.True((bool)context.Data["GuardHandler1"]);
         }
 
+        [Fact]
+        public async Task Test_AddGuardsOnStateEdit()
+        {
+            // Arrange
+            var guid = Guid.NewGuid();
+            var stateFactory = StateFactoryTestHelper.SetupStateFactory(guid, () =>
+
+                new State<MyStates>(guid, MyStates.NotClicked)
+                    .Define(b =>
+                    {
+                        b.From(MyStates.NotClicked).To(MyStates.Clicked);
+                    })
+            );
+            StateMachineManager.SetDefaultStateFactory(stateFactory);
+
+            var state = StateMachineManager.GetState<MyStates>(guid);
+            var context = new GuardContext<MyStates>();
+
+            state.GuardsForExit(MyStates.NotClicked, Guards<MyStates>.From(context,
+                GuardHandler1,
+                GuardHandler2));
+
+            // Act
+            StateMachineManager.ChangeState(MyStates.NotClicked, guid);
+            await StateMachineManager.Default.WaitAllHandlersProcessedAsync(); //this is only needed for unit test to ensure that all handlers are run
+
+            // Assert
+            Assert.Equal(MyStates.NotClicked, state.Current);
+            Assert.True((bool)context.Data["GuardHandler1"]);
+        }
+
         private void GuardHandler2(GuardContext<MyStates> context)
         {
             context.Continue = true;
@@ -350,7 +381,7 @@ namespace StateBliss.Tests
                         b.From(OrderState.Paid).To(OrderState.Processed);
                         b.From(OrderState.Processed).To(OrderState.Delivered);
 
-                        b.OnEnter(OrderState.Paid, Guards<OrderState>.From(paidStateContextProvider(),
+                        b.OnEntering(OrderState.Paid, Guards<OrderState>.From(paidStateContextProvider(),
                             ValidateRequest,
                             PayToPaymentGateway, 
                             PersistOrderToRepository

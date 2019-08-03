@@ -29,10 +29,11 @@ namespace StateBliss
         public override void Execute(State state, int fromState, int toState)
         {
             if (_handlerType == HandlerType.OnEnterGuard || 
-                _handlerType == HandlerType.OnExitGuard)
+                _handlerType == HandlerType.OnExitGuard ||
+                _handlerType == HandlerType.OnEditGuard)
             {
-                var @to = toState.ToEnum<TState>();
-                _context.NextState = @to;
+                _context.FromState = toState.ToEnum<TState>();
+                _context.ToState = toState.ToEnum<TState>();
                 _context.State = (IState<TState>)state;
                 ((OnGuardHandler<TState, TContext>)_method)(_context);
             }
@@ -112,6 +113,9 @@ namespace StateBliss
                     break;
                 case HandlerType.OnExit:
                     ((OnStateExitHandler<TState>)_method)(@from, (IState<TState>)state);
+                    break;
+                case HandlerType.OnEdit:
+                    ((OnStateEnterHandler<TState>)_method)(@to, (IState<TState>)state);
                     break;
                 case HandlerType.OnTransitioning:
                     ((OnStateTransitioningHandler<TState>)_method)((IState<TState>)state, @to);

@@ -458,9 +458,9 @@ namespace StateBliss.Tests
                         .Changed(target, a => a.OnTransitionedHandler2)
                         .Changing(target, a => a.OnTransitioningHandler2);
 
-                    b.OnEnter(MyStates.Clicked, target,a => a.OnEnterHandler1);
-                    b.OnEnter(MyStates.NotClicked, target, a => a.OnEnterHandler1);
-                    b.OnExit(MyStates.NotClicked, target, a => a.OnExitHandler1);
+                    b.OnEntered(MyStates.Clicked, target,a => a.OnEnterHandler1);
+                    b.OnEntered(MyStates.NotClicked, target, a => a.OnEnterHandler1);
+                    b.OnExited(MyStates.NotClicked, target, a => a.OnExitHandler1);
 
                     b.DisableSameStateTransitionFor(MyStates.Clicked);
                 });
@@ -487,9 +487,9 @@ namespace StateBliss.Tests
                         .Changing(OnTransitioningHandler1)
                         .Changed(OnTransitionedHandler1);
                     
-                    b.OnEnter(MyStates.Clicked, OnEnterHandler1);
-                    b.OnEnter(MyStates.NotClicked, OnEnterHandler1);
-                    b.OnExit(MyStates.NotClicked, OnExitHandler1);
+                    b.OnEntered(MyStates.Clicked, OnEnterHandler1);
+                    b.OnEntered(MyStates.NotClicked, OnEnterHandler1);
+                    b.OnExited(MyStates.NotClicked, OnExitHandler1);
 
                     b.DisableSameStateTransitionFor(MyStates.Clicked);
                 });

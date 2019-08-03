@@ -6,15 +6,15 @@ namespace StateBliss
     public interface IStateFromBuilder<TState> where TState : Enum
     {
         IStateToBuilder<TState> From(TState state);
-        void OnEnter(TState state, OnStateEnterHandler<TState> handler);
-        void OnEnter<TContext>(TState state, GuardsInfo<TState, TContext> guards) where TContext : GuardContext<TState>;
-        void OnEnter<T>(TState state, T target, Expression<Func<T, OnStateEnterHandler<TState>>> handler);
-        void OnExit(TState state, OnStateExitHandler<TState> handler);
-        void OnExit<T>(TState state, T target, Expression<Func<T, OnStateExitHandler<TState>>> handler);
-        void OnExit<TContext>(TState state, GuardsInfo<TState, TContext> guards) where TContext : GuardContext<TState>;
-        void OnEdit(TState state, OnStateEnterHandler<TState> handler);
-        void OnEdit<TContext>(TState state, GuardsInfo<TState, TContext> guards) where TContext : GuardContext<TState>;
-        void OnEdit<T>(TState state, T target, Expression<Func<T, OnStateEnterHandler<TState>>> handler);
+        void OnEntered(TState state, OnStateEnterHandler<TState> handler);
+        void OnEntered<T>(TState state, T target, Expression<Func<T, OnStateEnterHandler<TState>>> handler);
+        void OnEntering<TContext>(TState state, GuardsInfo<TState, TContext> guards) where TContext : GuardContext<TState>;
+        void OnExited(TState state, OnStateExitHandler<TState> handler);
+        void OnExited<T>(TState state, T target, Expression<Func<T, OnStateExitHandler<TState>>> handler);
+        void OnExiting<TContext>(TState state, GuardsInfo<TState, TContext> guards) where TContext : GuardContext<TState>;
+        void OnEdited(TState state, OnStateEnterHandler<TState> handler);
+        void OnEdited<T>(TState state, T target, Expression<Func<T, OnStateEnterHandler<TState>>> handler);
+        void OnEditing<TContext>(TState state, GuardsInfo<TState, TContext> guards) where TContext : GuardContext<TState>;
         void DisableSameStateTransitionFor(params TState[] states);
         void TriggerTo(TState nextState, string trigger);
     }

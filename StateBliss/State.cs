@@ -123,7 +123,12 @@ namespace StateBliss
         {
             StateTransitionBuilder.AddOnStateExitGuards(state, guardInfo.Context,  guardInfo.Guards);
         }
-        
+
+        public void GuardsForEdit(TState state, GuardsInfo<TState, GuardContext<TState>> guardInfo)
+        {
+            StateTransitionBuilder.AddOnStateEditGuards(state, guardInfo.Context, guardInfo.Guards);
+        }
+
         private void EnsureDefinitionExists()
         {
             if (StateTransitionBuilder == null)

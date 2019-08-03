@@ -7,7 +7,8 @@ namespace StateBliss
         where TState : Enum
     {
         private Dictionary<string, object> _data;
-        public TState NextState { get; internal set; }
+        public TState FromState { get; internal set; }
+        public TState ToState { get; internal set; }
         public IState<TState> State { get; internal set; }
         
         /// <summary>
