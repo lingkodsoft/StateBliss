@@ -21,10 +21,14 @@ namespace StateBliss.SampleApi
             _ordersRepository.InsertOrder(cmd.Order);
             
             var state = _stateMachineManager.GetState<OrderState>(cmd.Order.Uid);
-            
-            state.GuardsForEntry(OrderState.Paid, Guards.From(context, 
+//            
+//            state.GuardsForEntry(OrderState.Paid, Guards.From(context, 
+//                ValidateRequest, PayToPaymentGateway, PersistOrderToRepository
+//                ));
+//            
+            state.GuardsForChanging(OrderState.Initial, OrderState.Paid, Guards.From(context, 
                 ValidateRequest, PayToPaymentGateway, PersistOrderToRepository
-                ));
+            ));
             
             var hasChangedState = state.ChangeTo(OrderState.Paid, context);
             

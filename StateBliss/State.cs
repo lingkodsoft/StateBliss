@@ -132,21 +132,27 @@ namespace StateBliss
         public void GuardsForEntry<TContext>(TState state, IGuardsInfo<TContext> guardInfo)
             where TContext : GuardContext
         {
-            StateTransitionBuilder.AddOnStateEnterGuards(state, guardInfo.Context,  guardInfo.Guards);
+            StateTransitionBuilder.AddOnStateEnterGuards(state.ToInt(), guardInfo.Context,  guardInfo.Guards);
         }
         
         public void GuardsForExit<TContext>(TState state, IGuardsInfo<TContext> guardInfo)
             where TContext : GuardContext
         {
-            StateTransitionBuilder.AddOnStateExitGuards(state, guardInfo.Context,  guardInfo.Guards);
+            StateTransitionBuilder.AddOnStateExitGuards(state.ToInt(), guardInfo.Context,  guardInfo.Guards);
         }
 
         public void GuardsForEdit<TContext>(TState state, IGuardsInfo<TContext> guardInfo)
             where TContext : GuardContext
         {
-            StateTransitionBuilder.AddOnStateEditGuards(state, guardInfo.Context, guardInfo.Guards);
+            StateTransitionBuilder.AddOnStateEditGuards(state.ToInt(), guardInfo.Context, guardInfo.Guards);
         }
 
+        public void GuardsForChanging<TContext>(TState fromState, TState toState, IGuardsInfo<TContext> guardInfo)
+            where TContext : GuardContext
+        {
+            StateTransitionBuilder.AddOnStateChangingGuards(fromState.ToInt(), toState.ToInt(), guardInfo.Context, guardInfo.Guards);
+        }
+        
         private void EnsureDefinitionExists()
         {
             if (StateTransitionBuilder == null)

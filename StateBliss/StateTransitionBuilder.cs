@@ -22,7 +22,7 @@ namespace StateBliss
         public readonly List<TState> DisabledSameStateTransitioned = new List<TState>();
         private StateTransitionInfo _stateTransitionInfo;
 
-        public StateTransitionBuilder(State state)
+        internal StateTransitionBuilder(State state)
         {
             _state = state;
         }
@@ -55,7 +55,7 @@ namespace StateBliss
         public void OnEntering<TContext>(TState state, IGuardsInfo<TContext> guards)
             where TContext : GuardContext<TState>
         {
-            AddOnStateEnterGuards(state, guards.Context, guards.Guards);
+            AddOnStateEnterGuards(state.ToInt(), guards.Context, guards.Guards);
         }
 
         public void OnExited(TState state, OnStateExitHandler<TState> handler)
@@ -72,7 +72,7 @@ namespace StateBliss
         public void OnExiting<TContext>(TState state, IGuardsInfo<TContext> guards)
             where TContext : GuardContext<TState>
         {
-            AddOnStateExitGuards(state, guards.Context, guards.Guards);
+            AddOnStateExitGuards(state.ToInt(), guards.Context, guards.Guards);
         }
 
         public void OnEdited(TState state, OnStateEnterHandler<TState> handler)
@@ -91,7 +91,7 @@ namespace StateBliss
         public void OnEditing<TContext>(TState state, IGuardsInfo<TContext> guards)
             where TContext : GuardContext<TState>
         {
-            AddOnStateEditGuards(state, guards.Context, guards.Guards);
+            AddOnStateEditGuards(state.ToInt(), guards.Context, guards.Guards);
         }
 
         public void DisableSameStateTransitionFor(params TState[] states)
@@ -115,7 +115,7 @@ namespace StateBliss
         }
 
         public IStateTransitionBuilder<TState> Changed<T>(T target,
-            Expression<Func<T, OnStateTransitionedHandler<TState>>> handler)
+            Expression<Func<T, OnStateTransitionedHandler<TState>>> handler) where T : class
         {
             _stateTransitionInfo.Handlers.Add((
                 new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnTransitioned, target),
@@ -132,11 +132,18 @@ namespace StateBliss
         }
 
         public IStateTransitionBuilder<TState> Changing<T>(T target,
-            Expression<Func<T, OnStateTransitioningHandler<TState>>> handler)
+            Expression<Func<T, OnStateTransitioningHandler<TState>>> handler) where T : class
         {
             _stateTransitionInfo.Handlers.Add((
                 new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnTransitioning, target),
                 HandlerType.OnTransitioning));
+            return this;
+        }
+
+        public IStateTransitionBuilder<TState> Changing<TContext>(IGuardsInfo<TContext> guards) 
+            where TContext : GuardContext<TState>
+        {
+            AddOnStateChangingGuards(_stateTransitionInfo.From, _stateTransitionInfo.To, guards.Context, guards.Guards);
             return this;
         }
 
@@ -146,46 +153,49 @@ namespace StateBliss
             return this;
         }
 
-        internal ActionInfo[] GetOnTransitioningHandlers(TState fromState, TState toState)
+        internal ActionInfo[] GetOnTransitioningHandlers(int fromState, int toState)
         {
-            return GetHandlers(HandlerType.OnTransitioning, fromState.ToInt(), toState.ToInt());
+            return GetHandlers(HandlerType.OnTransitioning, fromState, toState);
         }
 
-        internal ActionInfo[] GetOnEditHandlers(TState currentState)
+        internal ActionInfo[] GetOnEditHandlers(int currentState)
         {
-            return GetHandlers(HandlerType.OnEdit, currentState.ToInt(), currentState.ToInt());
+            return GetHandlers(HandlerType.OnEdit, currentState, currentState);
         }
 
-        public ActionInfo[] GetOnEditGuardHandlers(TState curentState)
+        internal ActionInfo<TState>[] GetOnEditGuardHandlers(int curentState)
         {
-            return GetHandlers(HandlerType.OnEditGuard, curentState.ToInt(), curentState.ToInt());
+            return GetGuardHandlers(HandlerType.OnEditGuard, curentState, curentState);
         }
 
-        internal ActionInfo[] GetOnTransitionedHandlers(TState fromState, TState toState)
+        internal ActionInfo[] GetOnTransitionedHandlers(int fromState, int toState)
         {
-            return GetHandlers(HandlerType.OnTransitioned, fromState.ToInt(), toState.ToInt());
+            return GetHandlers(HandlerType.OnTransitioned, fromState, toState);
         }
 
-        internal ActionInfo[] GetOnExitHandlers(TState fromState)
+        internal ActionInfo[] GetOnExitHandlers(int fromState)
         {
-            return GetHandlers(HandlerType.OnExit, fromState.ToInt(), null);
+            return GetHandlers(HandlerType.OnExit, fromState, null);
         }
 
-        internal ActionInfo[] GetOnEnterHandlers(TState toState)
+        internal ActionInfo[] GetOnEnterHandlers(int toState)
         {
-            return GetHandlers(HandlerType.OnEnter, null, toState.ToInt());
+            return GetHandlers(HandlerType.OnEnter, null, toState);
+        }
+        
+        internal ActionInfo<TState>[] GetOnChangingGuardHandlers(int fromState, int toState)
+        {
+            return GetGuardHandlers(HandlerType.OnTransitioningGuard, fromState, toState);
+        }
+        
+        internal ActionInfo<TState>[] GetOnEnterGuardHandlers(int toState)
+        {
+            return GetGuardHandlers(HandlerType.OnEnterGuard, null, toState);
         }
 
-        public ActionInfo<TState>[] GetOnEnterGuardHandlers(TState toState)
+        internal ActionInfo<TState>[] GetOnExitGuardHandlers(int fromState)
         {
-            return GetHandlers(HandlerType.OnEnterGuard, null, toState.ToInt())
-                .Select(a => (ActionInfo<TState>) a).ToArray();
-        }
-
-        public ActionInfo<TState>[] GetOnExitGuardHandlers(TState fromState)
-        {
-            return GetHandlers(HandlerType.OnExitGuard, fromState.ToInt(), null)
-                .Select(a => (ActionInfo<TState>) a).ToArray();
+            return GetGuardHandlers(HandlerType.OnExitGuard, fromState, null);
         }
 
         public TState[] GetNextStates(TState state)
@@ -195,26 +205,32 @@ namespace StateBliss
                 .Select(a => a.To.ToEnum<TState>()).ToArray();
         }
 
-        internal void AddOnStateEnterGuards<TContext>(TState state, TContext context,
+        internal void AddOnStateEnterGuards<TContext>(int state, TContext context,
             IEnumerable<OnGuardHandler<TContext>> guards)
             where TContext : GuardContext
         {
-            AddGuardHandler(HandlerType.OnEnterGuard, -1, state.ToInt(), context, guards);
+            AddGuardHandler(HandlerType.OnEnterGuard, -1, state, context, guards);
         }
 
-        internal void AddOnStateExitGuards<TContext>(TState state, TContext context,
+        internal void AddOnStateExitGuards<TContext>(int state, TContext context,
             IEnumerable<OnGuardHandler<TContext>> guards)
             where TContext : GuardContext
         {
-            AddGuardHandler(HandlerType.OnExitGuard, state.ToInt(), -1, context, guards);
+            AddGuardHandler(HandlerType.OnExitGuard, state, -1, context, guards);
         }
 
-        internal void AddOnStateEditGuards<TContext>(TState state, TContext context,
+        internal void AddOnStateEditGuards<TContext>(int state, TContext context,
             IEnumerable<OnGuardHandler<TContext>> guards)
             where TContext : GuardContext
         {
-            var to = state.ToInt();
-            AddGuardHandler(HandlerType.OnEnterGuard, to, to, context, guards);
+            AddGuardHandler(HandlerType.OnEnterGuard, state, state, context, guards);
+        }
+        
+        internal void AddOnStateChangingGuards<TContext>(int fromState, int toState, TContext context,
+            IEnumerable<OnGuardHandler<TContext>> guards)
+            where TContext : GuardContext
+        {
+            AddGuardHandler(HandlerType.OnTransitioningGuard, fromState, toState, context, guards);
         }
 
         private void AddHandler(int fromState, int toState, HandlerType handlerType,
@@ -273,6 +289,12 @@ namespace StateBliss
                     handlerInfo.Item1.SetContext(context);
                 }
             }
+        }
+        
+        private ActionInfo<TState>[] GetGuardHandlers(HandlerType handlerType, int? fromState, int? toState)
+        {
+            return GetHandlers(handlerType, fromState, toState)
+                .Select(a => (ActionInfo<TState>) a).ToArray();
         }
         
         private ActionInfo[] GetHandlers(HandlerType handlerType, int? fromState, int? toState)

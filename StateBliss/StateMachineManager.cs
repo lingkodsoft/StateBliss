@@ -74,12 +74,12 @@ namespace StateBliss
             }
         }
         
-        public static void Guards<TState, TContext>(Guid id, TState state, TContext context, IGuardsInfo<GuardContext<TState>> @from) where TState : Enum
-            where TContext : GuardContext<TState>
-        {
-            var state1 = GetState<TState>(id);
-            state1.StateTransitionBuilder.AddOnStateEnterGuards(state, context,  @from.Guards);
-        }
+//        public static void Guards<TState, TContext>(Guid id, TState state, TContext context, IGuardsInfo<GuardContext<TState>> @from) where TState : Enum
+//            where TContext : GuardContext<TState>
+//        {
+//            var state1 = GetState<TState>(id);
+//            state1.StateTransitionBuilder.AddOnStateEnterGuards(state, context,  @from.Guards);
+//        }
 
         private void RemoveDereferencedManagers()
         {
@@ -239,18 +239,17 @@ namespace StateBliss
         {
             var stateTransitionBuilder = state.StateTransitionBuilder;
 
-            var curentState = state.Current;
-            int @from;
-            int @to;
+            int fromState;
+            int toState;
 
             _lock.EnterReadLock();
             try
             {
-                @from = state.Current.ToInt();
-                @to = newState.ToInt();
+                fromState = state.Current.ToInt();
+                toState = newState.ToInt();
 
                 //trigger handlers
-                if (@from == @to)
+                if (fromState == toState)
                 {
                     if (stateTransitionBuilder.DisabledSameStateTransitioned.Any(a => a.Equals(newState)))
                     {
@@ -258,23 +257,16 @@ namespace StateBliss
                     }
 
                     //On edit guards
-                    foreach (var actionInfo in stateTransitionBuilder.GetOnEditGuardHandlers(curentState))
+                    if (!ExecuteGuardHandlers(state, fromState, toState,
+                        stateTransitionBuilder.GetOnEditGuardHandlers(fromState)))
                     {
-                        try
-                        {
-                            actionInfo.Execute(state, @from, @to);
-                        }
-                        catch (Exception e)
-                        {
-                            OnHandlerException?.Invoke(this, (e, state, @from, @to));
-                            throw;
-                        }
+                        return false;
                     }
                     
                     //On Edited state
-                    foreach (var actionInfo in stateTransitionBuilder.GetOnEditHandlers(curentState))
+                    foreach (var actionInfo in stateTransitionBuilder.GetOnEditHandlers(fromState))
                     {
-                        QueueActionForExecution(actionInfo, state, @from, @to);
+                        QueueActionForExecution(actionInfo, state, fromState, toState);
                     }
 
                 }
@@ -288,63 +280,33 @@ namespace StateBliss
                 }
 
                 //OnExitGuards of new state
-                foreach (var actionInfo in stateTransitionBuilder.GetOnExitGuardHandlers(curentState))
+                if (!ExecuteGuardHandlers(state, fromState, toState, stateTransitionBuilder.GetOnExitGuardHandlers(fromState)))
                 {
-                    try
-                    {
-                        actionInfo.Context.Continue = false;
-                        actionInfo.Execute(state, @from, @to);
-
-                        if (actionInfo.Context.Continue) continue;
-
-                        if (actionInfo.Context.ThrowExceptionWhenDiscontinued)
-                        {
-                            throw new StateEnterGuardHandlerDiscontinuedException();
-                        }
-
-                        return false;
-                    }
-                    catch (Exception e)
-                    {
-                        OnHandlerException?.Invoke(this, (e, state, @from, @to));
-                        throw;
-                    }
+                    return false;
                 }
 
                 //OnEnterGuards of new state
-                foreach (var actionInfo in stateTransitionBuilder.GetOnEnterGuardHandlers(newState))
+                if (!ExecuteGuardHandlers(state, fromState, toState, stateTransitionBuilder.GetOnEnterGuardHandlers(fromState)))
                 {
-                    try
-                    {
-                        actionInfo.Context.Continue = false;
-                        actionInfo.Execute(state, @from, @to);
-
-                        if (actionInfo.Context.Continue) continue;
-
-                        if (actionInfo.Context.ThrowExceptionWhenDiscontinued)
-                        {
-                            throw new StateEnterGuardHandlerDiscontinuedException();
-                        }
-
-                        return false;
-                    }
-                    catch (Exception e)
-                    {
-                        OnHandlerException?.Invoke(this, (e, state, @from, @to));
-                        throw;
-                    }
+                    return false;
                 }
 
+                //OnChangingGuards
+                if (!ExecuteGuardHandlers(state, fromState, toState, stateTransitionBuilder.GetOnChangingGuardHandlers(fromState, toState)))
+                {
+                    return false;
+                }
+                
                 //OnTransitioning
-                foreach (var actionInfo in stateTransitionBuilder.GetOnTransitioningHandlers(curentState, newState))
+                foreach (var actionInfo in stateTransitionBuilder.GetOnTransitioningHandlers(fromState, toState))
                 {
                     try
                     {
-                        actionInfo.Execute(state, @from, @to);
+                        actionInfo.Execute(state, fromState, toState);
                     }
                     catch (Exception e)
                     {
-                        OnHandlerException?.Invoke(this, (e, state, @from, @to));
+                        OnHandlerException?.Invoke(this, (e, state, fromState, toState));
                         throw;
                     }
                 }
@@ -368,21 +330,21 @@ namespace StateBliss
             try
             {
                 //OnExit of current state
-                foreach (var actionInfo in stateTransitionBuilder.GetOnExitHandlers(curentState))
+                foreach (var actionInfo in stateTransitionBuilder.GetOnExitHandlers(fromState))
                 {
-                    QueueActionForExecution(actionInfo, state, @from, @to);
+                    QueueActionForExecution(actionInfo, state, fromState, toState);
                 }
 
                 //OnEnter of new state
-                foreach (var actionInfo in stateTransitionBuilder.GetOnEnterHandlers(newState))
+                foreach (var actionInfo in stateTransitionBuilder.GetOnEnterHandlers(toState))
                 {
-                    QueueActionForExecution(actionInfo, state, @from, @to);
+                    QueueActionForExecution(actionInfo, state, fromState, toState);
                 }
 
                 //OnTransitioned
-                foreach (var actionInfo in stateTransitionBuilder.GetOnTransitionedHandlers(curentState, newState))
+                foreach (var actionInfo in stateTransitionBuilder.GetOnTransitionedHandlers(fromState, toState))
                 {
-                    QueueActionForExecution(actionInfo, state, @from, @to);
+                    QueueActionForExecution(actionInfo, state, fromState, toState);
                 }
             }
             finally
@@ -418,6 +380,34 @@ namespace StateBliss
         ~StateMachineManager()
         {
             Dispose(false);
+        }
+        
+        private bool ExecuteGuardHandlers<TState>(State<TState> state, int fromState, int toState, ActionInfo<TState>[] handlers) where TState : Enum
+        {
+            foreach (var actionInfo in handlers)
+            {
+                try
+                {
+                    actionInfo.Context.Continue = false;
+                    actionInfo.Execute(state, fromState, toState);
+
+                    if (actionInfo.Context.Continue) continue;
+
+                    if (actionInfo.Context.ThrowExceptionWhenDiscontinued)
+                    {
+                        throw new StateEnterGuardHandlerDiscontinuedException();
+                    }
+
+                    return false;
+                }
+                catch (Exception e)
+                {
+                    OnHandlerException?.Invoke(this, (e, state, fromState, toState));
+                    throw;
+                }
+            }
+
+            return true;
         }
     }
 }

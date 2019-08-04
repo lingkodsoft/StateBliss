@@ -21,15 +21,21 @@ namespace StateBliss.SampleApi
             return new State<Order, OrderState>(order, a => a.Uid, a => a.State)
                 .Define(b =>
                 {
-                    b.From(OrderState.Initial).To(OrderState.Paid);
+                    b.From(OrderState.Initial).To(OrderState.Paid)
+                        .Changing(Guards.From<PaymentGuardContext>(
+                            ValidateRequest,
+                            PayToPaymentGateway,
+                            PersistOrderToRepository
+                        ));
+                    
                     b.From(OrderState.Paid).To(OrderState.Processing);
                     b.From(OrderState.Processing).To(OrderState.Processed);
-                    
-                    b.OnEntering(OrderState.Paid, Guards.From<PaymentGuardContext>(
-                        ValidateRequest,
-                        PayToPaymentGateway,
-                        PersistOrderToRepository
-                        ));
+//                    
+//                    b.OnEntering(OrderState.Paid, Guards.From<PaymentGuardContext>(
+//                        ValidateRequest,
+//                        PayToPaymentGateway,
+//                        PersistOrderToRepository
+//                        ));
                 });
         }
         

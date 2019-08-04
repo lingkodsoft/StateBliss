@@ -29,6 +29,7 @@ namespace StateBliss
         public override void Execute(State state, int fromState, int toState)
         {
             if (_handlerType == HandlerType.OnEnterGuard || 
+                _handlerType == HandlerType.OnTransitioningGuard ||
                 _handlerType == HandlerType.OnExitGuard ||
                 _handlerType == HandlerType.OnEditGuard)
             {
@@ -83,9 +84,6 @@ namespace StateBliss
             {
                 case HandlerType.OnEnter:
                     _method = CreateDelegateFromInstance(typeof(OnStateEnterHandler<TState>), _target, methodName, _handlerType);
-                    break;
-                case HandlerType.OnEnterGuard:
-                    _method = CreateDelegateFromInstance(null, _target, methodName, _handlerType);
                     break;
                 case HandlerType.OnExit:
                     _method = CreateDelegateFromInstance(typeof(OnStateExitHandler<TState>), _target, methodName, _handlerType);

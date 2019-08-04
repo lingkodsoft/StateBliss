@@ -8,6 +8,7 @@ namespace StateBliss
         OnExitGuard,
         OnTransitioning,
         OnTransitioned,
+        OnTransitioningGuard,
         OnEdit,
         OnEditGuard
     }

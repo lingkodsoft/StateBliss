@@ -6,9 +6,11 @@ namespace StateBliss
     public interface IStateTransitionBuilder<TState> where TState : Enum
     {
         IStateTransitionBuilder<TState> Changed(OnStateTransitionedHandler<TState> handler);
-        IStateTransitionBuilder<TState> Changed<T>(T target, Expression<Func<T, OnStateTransitionedHandler<TState>>> handler);
+        IStateTransitionBuilder<TState> Changed<T>(T target, Expression<Func<T, OnStateTransitionedHandler<TState>>> handler) where T : class;
         IStateTransitionBuilder<TState> Changing(OnStateTransitioningHandler<TState> handler);
-        IStateTransitionBuilder<TState> Changing<T>(T target, Expression<Func<T, OnStateTransitioningHandler<TState>>> handler);
+        IStateTransitionBuilder<TState> Changing<T>(T target, Expression<Func<T, OnStateTransitioningHandler<TState>>> handler) where T : class;
+        IStateTransitionBuilder<TState> Changing<TContext>(IGuardsInfo<TContext> guards)
+            where TContext : GuardContext<TState>;
         IStateTransitionBuilder<TState> TriggeredBy(string trigger);
     }
 }
