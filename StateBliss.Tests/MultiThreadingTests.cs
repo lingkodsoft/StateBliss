@@ -40,7 +40,7 @@ namespace StateBliss.Tests
                         b.From(MyStates.NotClicked).To(MyStates.Clicked);
 //                        b.OnEdited(MyStates.NotClicked, OnEditHandler1);
                         
-                        b.OnEditing(MyStates.NotClicked, Guards<MyStates>.From(context, 
+                        b.OnEditing(MyStates.NotClicked, Guards.From(context, 
                             OnEditingHandler1, OnEditingHandler2));
                     })
             );

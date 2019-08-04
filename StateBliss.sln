@@ -1,8 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StateBliss", "StateBliss\StateBliss.csproj", "{0BB61948-77F1-44F4-ACBA-BCA40CFB87DC}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StateBliss", "StateBliss\StateBliss.csproj", "{0BB61948-77F1-44F4-ACBA-BCA40CFB87DC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StateBliss.Tests", "StateBliss.Tests\StateBliss.Tests.csproj", "{6DDC92E9-079E-46E3-B14B-447DC7928791}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StateBliss.SampleApi", "StateBliss.SampleApi\StateBliss.SampleApi.csproj", "{76F3511F-E4BF-4046-8CC1-DA88C93493B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +23,15 @@ Global
 		{6DDC92E9-079E-46E3-B14B-447DC7928791}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DDC92E9-079E-46E3-B14B-447DC7928791}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DDC92E9-079E-46E3-B14B-447DC7928791}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76F3511F-E4BF-4046-8CC1-DA88C93493B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76F3511F-E4BF-4046-8CC1-DA88C93493B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76F3511F-E4BF-4046-8CC1-DA88C93493B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76F3511F-E4BF-4046-8CC1-DA88C93493B9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F7C79481-C7A0-4925-9ABB-117007330B1E}
 	EndGlobalSection
 EndGlobal

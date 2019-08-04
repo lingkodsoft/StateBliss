@@ -16,8 +16,7 @@ namespace StateBliss
             return methodInfoExpression.Name;
         }
 
-        public static string GetFieldName<T, TState>(this Expression<Func<T, TState>> handlerName)
-            where TState : Enum
+        public static string GetFieldName<T, TResult>(this Expression<Func<T, TResult>> handlerName)
         {
             var unaryExpression = (MemberExpression) handlerName.Body;
             var name = unaryExpression.Member.Name;

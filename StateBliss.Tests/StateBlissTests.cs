@@ -32,7 +32,7 @@ namespace StateBliss.Tests
                 Status = MyStates.NotClicked
             };
             
-            var state = new State<MyEntity, MyStates>(entity, a => a.Status, "myState1")
+            var state = new State<MyEntity, MyStates>(entity, a => a.Uid, a => a.Status, "myState1")
                 .Define(b => 
                 {
                     b.From(MyStates.NotClicked).To(MyStates.Clicked)
@@ -447,7 +447,7 @@ namespace StateBliss.Tests
                 Status = stateEnum
             };
             
-            var state = new State<MyEntity, MyStates>(entity, a => a.Status, "myState1")
+            var state = new State<MyEntity, MyStates>(entity, a => a.Uid, a => a.Status, "myState1")
                 .Define(b => 
                 {
                     b.From(MyStates.NotClicked).To(MyStates.Clicked)
@@ -480,7 +480,7 @@ namespace StateBliss.Tests
                 Status = stateEnum
             };
             
-            var state = new State<MyEntity, MyStates>(entity, a => a.Status, "myState1")
+            var state = new State<MyEntity, MyStates>(entity, a => a.Uid, a => a.Status, "myState1")
                 .Define(b => 
                 {
                     b.From(MyStates.NotClicked).To(MyStates.Clicked)
@@ -535,6 +535,7 @@ namespace StateBliss.Tests
     {
         public int Id;
         public MyStates Status { get; set; }
+        public Guid Uid { get; set; }
     }
 
     public class TestHandlers

@@ -8,25 +8,32 @@ namespace StateBliss
     public class State<TEntity, TState> : State<TState> where TState : Enum
     {
         private readonly TEntity _entity;
-        private readonly PropertyInfo _entityPropInfo;
+        private readonly PropertyInfo _entityStatePropInfo;
+        private readonly PropertyInfo _entityUidPropInfo;
         
-        public State(TEntity entity, Expression<Func<TEntity, TState>> statePropertySelector, string name = null,
+        public State(TEntity entity, Expression<Func<TEntity, Guid>> uidPropertySelector, 
+            Expression<Func<TEntity, TState>> statePropertySelector, string name = null,
             bool registerToDefaultStateMachineManager = true) 
             : base(default, name, registerToDefaultStateMachineManager)
         {
             _entity = entity;
             var entityStateName = statePropertySelector.GetFieldName();
-            _entityPropInfo = _entity.GetType().GetProperty(entityStateName);
+            _entityStatePropInfo = _entity.GetType().GetProperty(entityStateName);
+            
+            var entityUidName = uidPropertySelector.GetFieldName();
+            _entityUidPropInfo = _entity.GetType().GetProperty(entityUidName);
+
+            Id = (Guid)_entityUidPropInfo.GetValue(_entity);
         }
 
         public override TState Current => GetEntityState();
 
-        private TState GetEntityState() => (TState)_entityPropInfo.GetValue(_entity);
+        private TState GetEntityState() => (TState)_entityStatePropInfo.GetValue(_entity);
 
         internal override void SetEntityState(int newState)
         {
             var state = newState.ToEnum<TState>();
-            _entityPropInfo.SetValue(_entity, state);
+            _entityStatePropInfo.SetValue(_entity, state);
         }
 
         public TEntity Entity => _entity;
@@ -105,26 +112,37 @@ namespace StateBliss
             EnsureDefinitionExists();
             return Manager.ChangeState(this, newState);
         }
-
-        public bool ChangeTo<TContext>(TState newState, GuardsInfo<TState, TContext> guards)
+        
+        public bool ChangeTo<TContext>(TState newState, TContext context)
             where TContext : GuardContext<TState>
         {
             EnsureDefinitionExists();
-            StateTransitionBuilder.AddOnStateEnterGuards(newState, guards.Context, guards.Guards);
+            StateTransitionBuilder.SetContext(context);
             return Manager.ChangeState(this, newState);
         }
+//
+//        public bool ChangeTo<TContext>(TState newState, GuardsInfo<TContext> guards)
+//            where TContext : GuardContext<TState>
+//        {
+//            EnsureDefinitionExists();
+//            StateTransitionBuilder.AddOnStateEnterGuards(newState, guards.Context, guards.Guards);
+//            return Manager.ChangeState(this, newState);
+//        }
         
-        public void GuardsForEntry(TState state, GuardsInfo<TState, GuardContext<TState>> guardInfo)
+        public void GuardsForEntry<TContext>(TState state, IGuardsInfo<TContext> guardInfo)
+            where TContext : GuardContext
         {
             StateTransitionBuilder.AddOnStateEnterGuards(state, guardInfo.Context,  guardInfo.Guards);
         }
         
-        public void GuardsForExit(TState state, GuardsInfo<TState, GuardContext<TState>> guardInfo)
+        public void GuardsForExit<TContext>(TState state, IGuardsInfo<TContext> guardInfo)
+            where TContext : GuardContext
         {
             StateTransitionBuilder.AddOnStateExitGuards(state, guardInfo.Context,  guardInfo.Guards);
         }
 
-        public void GuardsForEdit(TState state, GuardsInfo<TState, GuardContext<TState>> guardInfo)
+        public void GuardsForEdit<TContext>(TState state, IGuardsInfo<TContext> guardInfo)
+            where TContext : GuardContext
         {
             StateTransitionBuilder.AddOnStateEditGuards(state, guardInfo.Context, guardInfo.Guards);
         }
@@ -176,7 +194,7 @@ namespace StateBliss
             }
         }
 
-        public Guid Id { get; private set; }
+        public Guid Id { get; protected set; }
         public string Name { get; protected set; }
         public IStateMachineManager Manager { get; internal set; }
         internal abstract void SetEntityState(int newState);

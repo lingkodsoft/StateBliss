@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="C:\project_lingkod\StateBliss" t="IncludeFlat">
-      <e p="packages" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive">
+        <e p="Microsoft.DiaSymReader.Native.1.7.0\runtimes\win\native\Microsoft.DiaSymReader.Native.amd64.dll" t="Include" />
+        <e p="Microsoft.DiaSymReader.Native.1.7.0\runtimes\win\native\Microsoft.DiaSymReader.Native.x86.dll" t="Include" />
+      </e>
       <e p="StateBliss" t="IncludeRecursive">
         <e p="ActionInfo.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
@@ -52,6 +55,38 @@
         <e p="StateMachineManager.cs" t="Include" />
         <e p="StateTransitionBuilder.cs" t="Include" />
         <e p="StateTransitionInfo.cs" t="Include" />
+        <e p="StateTypeMismatchException.cs" t="Include" />
+      </e>
+      <e p="StateBliss.SampleApi" t="IncludeRecursive">
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Controllers" t="Include">
+          <e p="ValuesController.cs" t="Include" />
+        </e>
+        <e p="IStateDefinition.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.2" t="Include">
+              <e p="StateBliss.SampleApi.AssemblyInfo.cs" t="Include" />
+              <e p="StateBliss.SampleApi.RazorAssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Order.cs" t="Include" />
+        <e p="OrdersRepository.cs" t="Include" />
+        <e p="OrderState.cs" t="Include" />
+        <e p="OrderStateDefinition.cs" t="Include" />
+        <e p="PaymentGuardContext.cs" t="Include" />
+        <e p="PayOrderCommand.cs" t="Include" />
+        <e p="PayOrderCommandHandler.cs" t="Include" />
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
+        </e>
+        <e p="Startup.cs" t="Include" />
+        <e p="StateBliss.SampleApi.csproj" t="IncludeRecursive" />
+        <e p="StateProvider.cs" t="Include" />
       </e>
       <e p="StateBliss.sln" t="IncludeFlat" />
       <e p="StateBliss.Tests" t="IncludeRecursive">

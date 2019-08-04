@@ -47,11 +47,12 @@ namespace StateBliss
         }
 
         public void OnEntered<T>(TState state, T target, Expression<Func<T, OnStateEnterHandler<TState>>> handler)
+            where T: class
         {
             AddHandler(-1, state.ToInt(), HandlerType.OnEnter, handler.GetMethodName(), target: target);
         }
 
-        public void OnEntering<TContext>(TState state, GuardsInfo<TState, TContext> guards)
+        public void OnEntering<TContext>(TState state, IGuardsInfo<TContext> guards)
             where TContext : GuardContext<TState>
         {
             AddOnStateEnterGuards(state, guards.Context, guards.Guards);
@@ -63,11 +64,12 @@ namespace StateBliss
         }
 
         public void OnExited<T>(TState state, T target, Expression<Func<T, OnStateExitHandler<TState>>> handler)
+            where T: class
         {
             AddHandler(state.ToInt(), -1, HandlerType.OnExit, handler.GetMethodName(), target: target);
         }
 
-        public void OnExiting<TContext>(TState state, GuardsInfo<TState, TContext> guards)
+        public void OnExiting<TContext>(TState state, IGuardsInfo<TContext> guards)
             where TContext : GuardContext<TState>
         {
             AddOnStateExitGuards(state, guards.Context, guards.Guards);
@@ -80,12 +82,13 @@ namespace StateBliss
         }
 
         public void OnEdited<T>(TState state, T target, Expression<Func<T, OnStateEnterHandler<TState>>> handler)
+            where T: class
         {
             var current = state.ToInt();
             AddHandler(current, current, HandlerType.OnEdit, handler.GetMethodName());
         }
 
-        public void OnEditing<TContext>(TState state, GuardsInfo<TState, TContext> guards)
+        public void OnEditing<TContext>(TState state, IGuardsInfo<TContext> guards)
             where TContext : GuardContext<TState>
         {
             AddOnStateEditGuards(state, guards.Context, guards.Guards);
@@ -193,22 +196,22 @@ namespace StateBliss
         }
 
         internal void AddOnStateEnterGuards<TContext>(TState state, TContext context,
-            IEnumerable<OnGuardHandler<TState, TContext>> guards)
-            where TContext : GuardContext<TState>
+            IEnumerable<OnGuardHandler<TContext>> guards)
+            where TContext : GuardContext
         {
             AddGuardHandler(HandlerType.OnEnterGuard, -1, state.ToInt(), context, guards);
         }
 
         internal void AddOnStateExitGuards<TContext>(TState state, TContext context,
-            IEnumerable<OnGuardHandler<TState, TContext>> guards)
-            where TContext : GuardContext<TState>
+            IEnumerable<OnGuardHandler<TContext>> guards)
+            where TContext : GuardContext
         {
             AddGuardHandler(HandlerType.OnExitGuard, state.ToInt(), -1, context, guards);
         }
 
         internal void AddOnStateEditGuards<TContext>(TState state, TContext context,
-            IEnumerable<OnGuardHandler<TState, TContext>> guards)
-            where TContext : GuardContext<TState>
+            IEnumerable<OnGuardHandler<TContext>> guards)
+            where TContext : GuardContext
         {
             var to = state.ToInt();
             AddGuardHandler(HandlerType.OnEnterGuard, to, to, context, guards);
@@ -235,9 +238,15 @@ namespace StateBliss
         }
 
         private void AddGuardHandler<TContext>(HandlerType handlerType, int fromState, int toState, TContext context,
-            IEnumerable<OnGuardHandler<TState, TContext>> guards)
-            where TContext : GuardContext<TState>
+            IEnumerable<OnGuardHandler<TContext>> guards)
+            where TContext : GuardContext
         {
+            var stateType = typeof(TState);
+            if (context != null && context.StateType != stateType)
+            {
+                throw new StateTypeMismatchException($"The type {context.StateType.FullName} is not matched to the required type {stateType.FullName}");
+            }
+            
             var stateTransitionInfo = _stateTransitions.SingleOrDefault(a => a.From == fromState && a.To == toState);
             if (stateTransitionInfo == null)
             {
@@ -255,6 +264,17 @@ namespace StateBliss
                     handlerType));
         }
 
+        public void SetContext(object context)
+        {
+            foreach (var stateTransitionInfo in _stateTransitions)
+            {
+                foreach (var handlerInfo in stateTransitionInfo.Handlers)
+                {
+                    handlerInfo.Item1.SetContext(context);
+                }
+            }
+        }
+        
         private ActionInfo[] GetHandlers(HandlerType handlerType, int? fromState, int? toState)
         {
             var to = toState ?? -1;

@@ -5,21 +5,21 @@ namespace StateBliss
     internal abstract class ActionInfo
     {
         public abstract void Execute(State state, int fromState, int toState);
-        public abstract void SetObject(object target);
+        public abstract void SetTarget(object target);
+        public abstract void SetContext(object context);
     }
 
     internal class ActionInfo<TState, TContext> : ActionInfo<TState>
         where TState : Enum
-        where TContext : GuardContext<TState>
+        where TContext : GuardContext
     {
-        private readonly TContext _context;
 
         public ActionInfo(TContext context, Delegate handler, HandlerType handlerType) : base(handler, handlerType)
         {
             _context = context;
         }
 
-        public override GuardContext<TState> GuardContext => _context;
+        public new TContext Context => (TContext)_context;
         
         public ActionInfo(TContext context, string methodName, HandlerType handlerType, object target) : base(methodName, handlerType, target)
         {
@@ -32,10 +32,10 @@ namespace StateBliss
                 _handlerType == HandlerType.OnExitGuard ||
                 _handlerType == HandlerType.OnEditGuard)
             {
-                _context.FromState = toState.ToEnum<TState>();
-                _context.ToState = toState.ToEnum<TState>();
-                _context.State = (IState<TState>)state;
-                ((OnGuardHandler<TState, TContext>)_method)(_context);
+                Context.FromState = fromState;
+                Context.ToState = toState;
+                Context.State = state;
+                ((OnGuardHandler<TContext>)_method)(Context);
             }
             else
             {
@@ -44,15 +44,15 @@ namespace StateBliss
         }
     }
     
-
     internal class ActionInfo<TState> : ActionInfo
         where TState : Enum
     {
         protected Delegate _method;
         protected readonly HandlerType _handlerType;
         protected object _target;
-        
-        public virtual GuardContext<TState> GuardContext { get; }
+        protected object _context;
+
+        public virtual GuardContext<TState> Context => (GuardContext<TState>)_context;
 
         public ActionInfo(Delegate handler, HandlerType handlerType)
         {
@@ -67,9 +67,14 @@ namespace StateBliss
             CreateDelegate(methodName);
         }
 
-        public override void SetObject(object target)
+        public override void SetTarget(object target)
         {
             _target = target;
+        }
+
+        public override void SetContext(object context)
+        {
+            _context = context;
         }
 
         private void CreateDelegate(string methodName)

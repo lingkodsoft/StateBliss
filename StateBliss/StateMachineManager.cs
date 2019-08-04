@@ -74,7 +74,7 @@ namespace StateBliss
             }
         }
         
-        public static void Guards<TState, TContext>(Guid id, TState state, TContext context, GuardsInfo<TState, GuardContext<TState>> @from) where TState : Enum
+        public static void Guards<TState, TContext>(Guid id, TState state, TContext context, IGuardsInfo<GuardContext<TState>> @from) where TState : Enum
             where TContext : GuardContext<TState>
         {
             var state1 = GetState<TState>(id);
@@ -292,12 +292,12 @@ namespace StateBliss
                 {
                     try
                     {
-                        actionInfo.GuardContext.Continue = false;
+                        actionInfo.Context.Continue = false;
                         actionInfo.Execute(state, @from, @to);
 
-                        if (actionInfo.GuardContext.Continue) continue;
+                        if (actionInfo.Context.Continue) continue;
 
-                        if (actionInfo.GuardContext.ThrowExceptionWhenDiscontinued)
+                        if (actionInfo.Context.ThrowExceptionWhenDiscontinued)
                         {
                             throw new StateEnterGuardHandlerDiscontinuedException();
                         }
@@ -316,12 +316,12 @@ namespace StateBliss
                 {
                     try
                     {
-                        actionInfo.GuardContext.Continue = false;
+                        actionInfo.Context.Continue = false;
                         actionInfo.Execute(state, @from, @to);
 
-                        if (actionInfo.GuardContext.Continue) continue;
+                        if (actionInfo.Context.Continue) continue;
 
-                        if (actionInfo.GuardContext.ThrowExceptionWhenDiscontinued)
+                        if (actionInfo.Context.ThrowExceptionWhenDiscontinued)
                         {
                             throw new StateEnterGuardHandlerDiscontinuedException();
                         }
