@@ -3,6 +3,8 @@ C:\project_lingkod\StateBliss\StateBliss.SampleApi\bin\Debug\netcoreapp2.2\State
 C:\project_lingkod\StateBliss\StateBliss.SampleApi\bin\Debug\netcoreapp2.2\StateBliss.SampleApi.runtimeconfig.dev.json
 C:\project_lingkod\StateBliss\StateBliss.SampleApi\bin\Debug\netcoreapp2.2\StateBliss.SampleApi.dll
 C:\project_lingkod\StateBliss\StateBliss.SampleApi\bin\Debug\netcoreapp2.2\StateBliss.SampleApi.pdb
+C:\project_lingkod\StateBliss\StateBliss.SampleApi\bin\Debug\netcoreapp2.2\StateBliss.dll
+C:\project_lingkod\StateBliss\StateBliss.SampleApi\bin\Debug\netcoreapp2.2\StateBliss.pdb
 C:\project_lingkod\StateBliss\StateBliss.SampleApi\obj\Debug\netcoreapp2.2\StateBliss.SampleApi.csprojAssemblyReference.cache
 C:\project_lingkod\StateBliss\StateBliss.SampleApi\obj\Debug\netcoreapp2.2\StateBliss.SampleApi.csproj.CoreCompileInputs.cache
 C:\project_lingkod\StateBliss\StateBliss.SampleApi\obj\Debug\netcoreapp2.2\StateBliss.SampleApi.RazorAssemblyInfo.cache
@@ -10,8 +12,6 @@ C:\project_lingkod\StateBliss\StateBliss.SampleApi\obj\Debug\netcoreapp2.2\State
 C:\project_lingkod\StateBliss\StateBliss.SampleApi\obj\Debug\netcoreapp2.2\StateBliss.SampleApi.AssemblyInfoInputs.cache
 C:\project_lingkod\StateBliss\StateBliss.SampleApi\obj\Debug\netcoreapp2.2\StateBliss.SampleApi.AssemblyInfo.cs
 C:\project_lingkod\StateBliss\StateBliss.SampleApi\obj\Debug\netcoreapp2.2\StateBliss.SampleApi.RazorTargetAssemblyInfo.cache
+C:\project_lingkod\StateBliss\StateBliss.SampleApi\obj\Debug\netcoreapp2.2\StateBliss.SampleApi.csproj.CopyComplete
 C:\project_lingkod\StateBliss\StateBliss.SampleApi\obj\Debug\netcoreapp2.2\StateBliss.SampleApi.dll
 C:\project_lingkod\StateBliss\StateBliss.SampleApi\obj\Debug\netcoreapp2.2\StateBliss.SampleApi.pdb
-C:\project_lingkod\StateBliss\StateBliss.SampleApi\bin\Debug\netcoreapp2.2\StateBliss.dll
-C:\project_lingkod\StateBliss\StateBliss.SampleApi\bin\Debug\netcoreapp2.2\StateBliss.pdb
-C:\project_lingkod\StateBliss\StateBliss.SampleApi\obj\Debug\netcoreapp2.2\StateBliss.SampleApi.csproj.CopyComplete

@@ -11,7 +11,6 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="EnumExtensions.cs" t="Include" />
         <e p="ExpressionExtensions.cs" t="Include" />
-        <e p="GuardContext.cs" t="Include" />
         <e p="Guards.cs" t="Include" />
         <e p="GuardsInfo.cs" t="Include" />
         <e p="HandlerType.cs" t="Include" />
@@ -49,6 +48,7 @@
         <e p="SameStateTransitionDisabledException.cs" t="Include" />
         <e p="State.cs" t="Include" />
         <e p="StateBliss.csproj" t="IncludeRecursive" />
+        <e p="StateContext.cs" t="Include" />
         <e p="StateEnterGuardHandlerDiscontinuedException.cs" t="Include" />
         <e p="StateExtensions.cs" t="Include" />
         <e p="StateFactory.cs" t="Include" />
@@ -62,9 +62,11 @@
         <e p="appsettings.json" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="Controllers" t="Include">
+          <e p="PayOrderTriggerContext.cs" t="Include" />
           <e p="ValuesController.cs" t="Include" />
         </e>
         <e p="IStateDefinition.cs" t="Include" />
+        <e p="IStateDefinitionHandler.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netcoreapp2.2" t="Include">
@@ -77,9 +79,8 @@
         <e p="OrdersRepository.cs" t="Include" />
         <e p="OrderState.cs" t="Include" />
         <e p="OrderStateDefinition.cs" t="Include" />
+        <e p="OrderStateGuardsForChangingFromInitialToPaid.cs" t="Include" />
         <e p="PaymentGuardContext.cs" t="Include" />
-        <e p="PayOrderCommand.cs" t="Include" />
-        <e p="PayOrderCommandHandler.cs" t="Include" />
         <e p="Program.cs" t="Include" />
         <e p="Properties" t="Include">
           <e p="launchSettings.json" t="Include" />
@@ -103,7 +104,9 @@
         <e p="StateFactoryTestHelper.cs" t="Include" />
       </e>
     </e>
-    <e p="C:\Users\lingkodsoft\.Rider2019.1\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\lingkodsoft\.Rider2019.1\system\resharper-host\local\Transient\ReSharperHost\v191\SolutionCaches\_StateBliss.269002201.00" t="ExcludeRecursive" />
+    <e p="C:\Users\mike\.Rider2019.1\config\consoles\db" t="IncludeRecursive" />
+    <e p="C:\Users\mike\.Rider2019.1\config\extensions" t="IncludeRecursive" />
+    <e p="C:\Users\mike\.Rider2019.1\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\mike\.Rider2019.1\system\resharper-host\local\Transient\ReSharperHost\v191\SolutionCaches\_StateBliss.269002201.00" t="ExcludeRecursive" />
   </component>
 </project>

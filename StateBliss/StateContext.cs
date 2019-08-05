@@ -3,12 +3,15 @@ using System.Collections.Generic;
 
 namespace StateBliss
 {
-    public abstract class GuardContext
+    public abstract class StateContext
     {
-        protected GuardContext(Type stateType)
+        protected StateContext(Type stateType)
         {
             StateType = stateType;
         }
+        
+        public Guid Uid { get; set; }
+        public bool ChangeStateSucceeded { get; set; }
         
         public Type StateType { get; private set; }
         
@@ -27,9 +30,11 @@ namespace StateBliss
         {
             get => _data ?? (_data = new Dictionary<string, object>());
         }
+        
+        public StateContext ParentContext { get; internal set; }
     }
-
-    public class GuardContext<TState> : GuardContext
+    
+    public class StateContext<TState> : StateContext
         where TState : Enum
     {
         public new TState FromState
@@ -41,7 +46,7 @@ namespace StateBliss
         public new TState ToState
         {
             get => base.ToState.ToEnum<TState>();
-            internal set => base.ToState = value.ToInt();
+            set => base.ToState = value.ToInt();
         }
         
         public IState<TState> State{
@@ -49,8 +54,20 @@ namespace StateBliss
             internal set => base.State = (State)value;
         }
 
-        public GuardContext() : base(typeof(TState))
+        public StateContext() : base(typeof(TState))
         {
         }
     }
+
+    public class StateContext<TState, TParentContext> : StateContext<TState>
+        where TParentContext : StateContext
+        where TState : Enum
+    {
+        public new TParentContext ParentContext
+        {
+            get => (TParentContext)base.ParentContext;
+            internal set => base.ParentContext = value;
+        }
+    }
+
 }

@@ -6,10 +6,13 @@ namespace StateBliss.SampleApi
     public class OrderStateDefinition : IStateDefinition
     {
         private readonly OrdersRepository _ordersRepository;
+        private readonly OrderStateGuardsForChangingFromInitialToPaid _orderStateGuardsForChangingFromInitialToPaid;
 
-        public OrderStateDefinition(OrdersRepository ordersRepository)
+        public OrderStateDefinition(OrdersRepository ordersRepository,
+            OrderStateGuardsForChangingFromInitialToPaid orderStateGuardsForChangingFromInitialToPaid)
         {
             _ordersRepository = ordersRepository;
+            _orderStateGuardsForChangingFromInitialToPaid = orderStateGuardsForChangingFromInitialToPaid;
         }
         
         public Type EnumType => typeof(OrderState);
@@ -22,41 +25,12 @@ namespace StateBliss.SampleApi
                 .Define(b =>
                 {
                     b.From(OrderState.Initial).To(OrderState.Paid)
-                        .Changing(Guards.From<PaymentGuardContext>(
-                            ValidateRequest,
-                            PayToPaymentGateway,
-                            PersistOrderToRepository
-                        ));
+                        .Changing(_orderStateGuardsForChangingFromInitialToPaid.GetHandler());
                     
                     b.From(OrderState.Paid).To(OrderState.Processing);
                     b.From(OrderState.Processing).To(OrderState.Processed);
-//                    
-//                    b.OnEntering(OrderState.Paid, Guards.From<PaymentGuardContext>(
-//                        ValidateRequest,
-//                        PayToPaymentGateway,
-//                        PersistOrderToRepository
-//                        ));
+                    
                 });
         }
-        
-        private void ValidateRequest(PaymentGuardContext context)
-        {
-            context.Command.ValidateRequest_CallCount++;
-            context.Continue = true;
-        }
-
-        private void PayToPaymentGateway(PaymentGuardContext context)
-        {
-            context.Command.PayToGateway_CallCount++;
-            context.Continue = true;
-        }
-
-        private void PersistOrderToRepository(PaymentGuardContext context)
-        {
-            context.Command.PersistToRepo_CallCount++;
-            _ordersRepository.UpdateOrder(context.Command.Order);
-            context.Continue = true;
-        }
-
     }
 }

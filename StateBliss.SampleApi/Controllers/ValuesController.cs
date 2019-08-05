@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Remotion.Linq.Clauses;
 
 namespace StateBliss.SampleApi.Controllers
 {
@@ -10,26 +11,37 @@ namespace StateBliss.SampleApi.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        private readonly PayOrderCommandHandler _payOrderCommandHandler;
+        private readonly IStateMachineManager _stateMachineManager;
+        private readonly OrdersRepository _ordersRepository;
 
-        public ValuesController(PayOrderCommandHandler payOrderCommandHandler)
+        public ValuesController(IStateMachineManager stateMachineManager, OrdersRepository ordersRepository)
         {
-            _payOrderCommandHandler = payOrderCommandHandler;
+            _stateMachineManager = stateMachineManager;
+            _ordersRepository = ordersRepository;
         }
-        
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            _payOrderCommandHandler.Handle(new PayOrderCommand
+            var uid = Guid.NewGuid();
+            var cmd = new PayOrderTriggerContext
             {
                 Order = new Order
                 {
                     Id = 1,
-                    Uid = Guid.NewGuid(),
+                    Uid = uid,
                     State = OrderState.Initial
-                }
-            });
+                },
+                Uid = uid,
+                ToState = OrderState.Paid
+            };
+            
+            _ordersRepository.InsertOrder(cmd.Order);
+
+            _stateMachineManager.Trigger(cmd);
+            
+            
             return new string[] { "value1", "value2" };
         }
 

@@ -104,51 +104,36 @@ namespace StateBliss
 
         internal override bool ChangeTo(int newState)
         {
-            return ChangeTo(newState.ToEnum<TState>());
-        }
-
-        public bool ChangeTo(TState newState)
-        {
-            EnsureDefinitionExists();
-            return Manager.ChangeState(this, newState);
+            return ChangeTo(newState.ToEnum<TState>(), null);
         }
         
-        public bool ChangeTo<TContext>(TState newState, TContext context)
-            where TContext : GuardContext<TState>
+        public bool ChangeTo(TState newState, StateContext<TState> context = null)
         {
             EnsureDefinitionExists();
             StateTransitionBuilder.SetContext(context);
             return Manager.ChangeState(this, newState);
         }
-//
-//        public bool ChangeTo<TContext>(TState newState, GuardsInfo<TContext> guards)
-//            where TContext : GuardContext<TState>
-//        {
-//            EnsureDefinitionExists();
-//            StateTransitionBuilder.AddOnStateEnterGuards(newState, guards.Context, guards.Guards);
-//            return Manager.ChangeState(this, newState);
-//        }
         
         public void GuardsForEntry<TContext>(TState state, IGuardsInfo<TContext> guardInfo)
-            where TContext : GuardContext
+            where TContext : StateContext<TState>, new()
         {
             StateTransitionBuilder.AddOnStateEnterGuards(state.ToInt(), guardInfo.Context,  guardInfo.Guards);
         }
         
         public void GuardsForExit<TContext>(TState state, IGuardsInfo<TContext> guardInfo)
-            where TContext : GuardContext
+            where TContext : StateContext<TState>, new()
         {
             StateTransitionBuilder.AddOnStateExitGuards(state.ToInt(), guardInfo.Context,  guardInfo.Guards);
         }
 
         public void GuardsForEdit<TContext>(TState state, IGuardsInfo<TContext> guardInfo)
-            where TContext : GuardContext
+            where TContext : StateContext<TState>, new()
         {
             StateTransitionBuilder.AddOnStateEditGuards(state.ToInt(), guardInfo.Context, guardInfo.Guards);
         }
 
         public void GuardsForChanging<TContext>(TState fromState, TState toState, IGuardsInfo<TContext> guardInfo)
-            where TContext : GuardContext
+            where TContext : StateContext<TState>, new()
         {
             StateTransitionBuilder.AddOnStateChangingGuards(fromState.ToInt(), toState.ToInt(), guardInfo.Context, guardInfo.Guards);
         }

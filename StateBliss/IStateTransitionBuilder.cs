@@ -10,7 +10,7 @@ namespace StateBliss
         IStateTransitionBuilder<TState> Changing(OnStateTransitioningHandler<TState> handler);
         IStateTransitionBuilder<TState> Changing<T>(T target, Expression<Func<T, OnStateTransitioningHandler<TState>>> handler) where T : class;
         IStateTransitionBuilder<TState> Changing<TContext>(IGuardsInfo<TContext> guards)
-            where TContext : GuardContext<TState>;
+            where TContext : StateContext<TState>, new();
         IStateTransitionBuilder<TState> TriggeredBy(string trigger);
     }
 }

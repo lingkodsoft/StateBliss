@@ -6,26 +6,27 @@ namespace StateBliss
     {
         public abstract void Execute(State state, int fromState, int toState);
         public abstract void SetTarget(object target);
-        public abstract void SetContext(object context);
+        internal StateContext Context { get; set; }
+
     }
 
     internal class ActionInfo<TState, TContext> : ActionInfo<TState>
         where TState : Enum
-        where TContext : GuardContext
+        where TContext : StateContext, new()
     {
 
         public ActionInfo(TContext context, Delegate handler, HandlerType handlerType) : base(handler, handlerType)
         {
-            _context = context;
+            base.Context = context;
         }
-
-        public new TContext Context => (TContext)_context;
         
         public ActionInfo(TContext context, string methodName, HandlerType handlerType, object target) : base(methodName, handlerType, target)
         {
-            _context = context;
+            base.Context = context;
         }
         
+        public new TContext Context => (TContext) (base.Context);
+
         public override void Execute(State state, int fromState, int toState)
         {
             if (_handlerType == HandlerType.OnEnterGuard || 
@@ -51,9 +52,6 @@ namespace StateBliss
         protected Delegate _method;
         protected readonly HandlerType _handlerType;
         protected object _target;
-        protected object _context;
-
-        public virtual GuardContext<TState> Context => (GuardContext<TState>)_context;
 
         public ActionInfo(Delegate handler, HandlerType handlerType)
         {
@@ -72,12 +70,7 @@ namespace StateBliss
         {
             _target = target;
         }
-
-        public override void SetContext(object context)
-        {
-            _context = context;
-        }
-
+        
         private void CreateDelegate(string methodName)
         {
             switch (_handlerType)

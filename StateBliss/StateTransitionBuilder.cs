@@ -18,6 +18,7 @@ namespace StateBliss
         where TState : Enum
     {
         private readonly List<StateTransitionInfo> _stateTransitions = new List<StateTransitionInfo>();
+        private StateContext _context;
 
         public readonly List<TState> DisabledSameStateTransitioned = new List<TState>();
         private StateTransitionInfo _stateTransitionInfo;
@@ -26,6 +27,8 @@ namespace StateBliss
         {
             _state = state;
         }
+
+        public StateContext Context => _context;
 
         public IStateToBuilder<TState> From(TState state)
         {
@@ -53,7 +56,7 @@ namespace StateBliss
         }
 
         public void OnEntering<TContext>(TState state, IGuardsInfo<TContext> guards)
-            where TContext : GuardContext<TState>
+            where TContext : StateContext<TState>, new()
         {
             AddOnStateEnterGuards(state.ToInt(), guards.Context, guards.Guards);
         }
@@ -70,7 +73,7 @@ namespace StateBliss
         }
 
         public void OnExiting<TContext>(TState state, IGuardsInfo<TContext> guards)
-            where TContext : GuardContext<TState>
+            where TContext : StateContext<TState>, new()
         {
             AddOnStateExitGuards(state.ToInt(), guards.Context, guards.Guards);
         }
@@ -89,7 +92,7 @@ namespace StateBliss
         }
 
         public void OnEditing<TContext>(TState state, IGuardsInfo<TContext> guards)
-            where TContext : GuardContext<TState>
+            where TContext : StateContext<TState>, new()
         {
             AddOnStateEditGuards(state.ToInt(), guards.Context, guards.Guards);
         }
@@ -141,7 +144,7 @@ namespace StateBliss
         }
 
         public IStateTransitionBuilder<TState> Changing<TContext>(IGuardsInfo<TContext> guards) 
-            where TContext : GuardContext<TState>
+            where TContext : StateContext<TState>, new()
         {
             AddOnStateChangingGuards(_stateTransitionInfo.From, _stateTransitionInfo.To, guards.Context, guards.Guards);
             return this;
@@ -207,28 +210,28 @@ namespace StateBliss
 
         internal void AddOnStateEnterGuards<TContext>(int state, TContext context,
             IEnumerable<OnGuardHandler<TContext>> guards)
-            where TContext : GuardContext
+            where TContext : StateContext<TState>, new()
         {
             AddGuardHandler(HandlerType.OnEnterGuard, -1, state, context, guards);
         }
 
         internal void AddOnStateExitGuards<TContext>(int state, TContext context,
             IEnumerable<OnGuardHandler<TContext>> guards)
-            where TContext : GuardContext
+            where TContext : StateContext<TState>, new()
         {
             AddGuardHandler(HandlerType.OnExitGuard, state, -1, context, guards);
         }
 
         internal void AddOnStateEditGuards<TContext>(int state, TContext context,
             IEnumerable<OnGuardHandler<TContext>> guards)
-            where TContext : GuardContext
+            where TContext : StateContext<TState>, new()
         {
             AddGuardHandler(HandlerType.OnEnterGuard, state, state, context, guards);
         }
         
         internal void AddOnStateChangingGuards<TContext>(int fromState, int toState, TContext context,
             IEnumerable<OnGuardHandler<TContext>> guards)
-            where TContext : GuardContext
+            where TContext : StateContext<TState>, new()
         {
             AddGuardHandler(HandlerType.OnTransitioningGuard, fromState, toState, context, guards);
         }
@@ -255,7 +258,7 @@ namespace StateBliss
 
         private void AddGuardHandler<TContext>(HandlerType handlerType, int fromState, int toState, TContext context,
             IEnumerable<OnGuardHandler<TContext>> guards)
-            where TContext : GuardContext
+            where TContext : StateContext<TState>, new()
         {
             var stateType = typeof(TState);
             if (context != null && context.StateType != stateType)
@@ -280,13 +283,14 @@ namespace StateBliss
                     handlerType));
         }
 
-        public void SetContext(object context)
+        public void SetContext(StateContext context)
         {
+            _context = context;
             foreach (var stateTransitionInfo in _stateTransitions)
             {
                 foreach (var handlerInfo in stateTransitionInfo.Handlers)
                 {
-                    handlerInfo.Item1.SetContext(context);
+                    handlerInfo.Item1.Context.ParentContext = context;
                 }
             }
         }

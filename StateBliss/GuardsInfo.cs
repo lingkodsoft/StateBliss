@@ -4,19 +4,20 @@ using System.Collections.Generic;
 namespace StateBliss
 {
     public interface IGuardsInfoForContext<out TContext>
-        where TContext : GuardContext
+        where TContext : StateContext
     {
         TContext Context { get; }
     }
     
     public interface IGuardsInfo<TContext> : IGuardsInfoForContext<TContext>
-        where TContext : GuardContext
+        where TContext : StateContext
     {
         IEnumerable<OnGuardHandler<TContext>> Guards { get; }
+        Func<TContext> ContextProvider { get; }
     }
         
     public class GuardsInfo<TContext> : IGuardsInfo<TContext>
-        where TContext : GuardContext
+        where TContext : StateContext
     {
         private readonly Func<TContext> _contextProvider;
         private readonly TContext _context;
@@ -39,6 +40,7 @@ namespace StateBliss
         }
             
         public IEnumerable<OnGuardHandler<TContext>> Guards { get; }
+        public Func<TContext> ContextProvider => () => _context;
 
         public TContext Context => _context ?? _contextProvider?.Invoke();
     }

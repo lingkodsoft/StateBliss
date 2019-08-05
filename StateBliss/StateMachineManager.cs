@@ -58,6 +58,18 @@ namespace StateBliss
             }
         }
         
+        public static void Trigger<TState>(StateContext<TState> trigger)
+            where TState : Enum
+        {
+            ((IStateMachineManager) Default).Trigger(trigger);
+        }
+        
+        void IStateMachineManager.Trigger<TState>(StateContext<TState> trigger)
+        {
+            var state = GetState<TState>(trigger.Uid);
+            trigger.ChangeStateSucceeded = state.ChangeTo(trigger.ToState, trigger);
+        }
+        
         private void TriggerStateChange(string triggerName)
         {
             foreach (var wrState in _managedStates.Values)
@@ -74,13 +86,6 @@ namespace StateBliss
             }
         }
         
-//        public static void Guards<TState, TContext>(Guid id, TState state, TContext context, IGuardsInfo<GuardContext<TState>> @from) where TState : Enum
-//            where TContext : GuardContext<TState>
-//        {
-//            var state1 = GetState<TState>(id);
-//            state1.StateTransitionBuilder.AddOnStateEnterGuards(state, context,  @from.Guards);
-//        }
-
         private void RemoveDereferencedManagers()
         {
             _managers.RemoveAll(a => !a.TryGetTarget(out var s));
@@ -389,6 +394,7 @@ namespace StateBliss
                 try
                 {
                     actionInfo.Context.Continue = false;
+                    
                     actionInfo.Execute(state, fromState, toState);
 
                     if (actionInfo.Context.Continue) continue;

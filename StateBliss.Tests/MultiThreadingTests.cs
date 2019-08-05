@@ -30,7 +30,7 @@ namespace StateBliss.Tests
         {
             // Arrange
             var guid = Guid.NewGuid();
-            var context = new GuardContext<MyStates>();
+            var context = new StateContext<MyStates>();
 
             var stateFactory = StateFactoryTestHelper.SetupStateFactory(guid, () => 
 
@@ -91,13 +91,13 @@ namespace StateBliss.Tests
             
         }
 
-        private void OnEditingHandler1(GuardContext<MyStates> context)
+        private void OnEditingHandler1(StateContext<MyStates> context)
         {
             Interlocked.Increment(ref CallTimes_OnEditHandlerForNotClicked);
             context.Continue = true;
         }
         
-        private void OnEditingHandler2(GuardContext<MyStates> context)
+        private void OnEditingHandler2(StateContext<MyStates> context)
         {
             context.Continue = true;
         }
