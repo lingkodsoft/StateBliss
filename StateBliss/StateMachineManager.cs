@@ -172,23 +172,42 @@ namespace StateBliss
 
         public async Task WaitAllHandlersProcessedAsync(int waitDelayMilliseconds = 100)
         {
+            var startTime = DateTime.Now;
             var spin = new SpinWait();
-            while (!_actionInfos.IsEmpty)
+            while (true)
             {
+                if (DateTime.Now.Subtract(startTime).TotalMilliseconds > 1000)
+                {
+                    if (_actionInfos.IsEmpty)
+                    {
+                        break;
+                    }
+                    startTime = DateTime.Now;
+                }
                 spin.SpinOnce();
             }
+            startTime = DateTime.Now;
             if (waitDelayMilliseconds == 0) return;
             await Task.Delay(waitDelayMilliseconds).ConfigureAwait(false);
         }
 
         public void WaitAllHandlersProcessed(int waitDelayMilliseconds = 100)
         {
+            var startTime = DateTime.Now;
             var spin = new SpinWait();
-            while (!_actionInfos.IsEmpty)
+            while (true)
             {
+                if (DateTime.Now.Subtract(startTime).TotalMilliseconds > 1000)
+                {
+                    if (_actionInfos.IsEmpty)
+                    {
+                        break;
+                    }
+                    startTime = DateTime.Now;
+                }
                 spin.SpinOnce();
             }
-            var startTime = DateTime.Now;
+            startTime = DateTime.Now;
             while(DateTime.Now.Subtract(startTime).TotalMilliseconds < waitDelayMilliseconds)
             {
                 spin.SpinOnce();
@@ -224,32 +243,36 @@ namespace StateBliss
         {
             return GetStateInternal<TState>(id);
         }
-        
+
         private State<TState> GetStateInternal<TState>(Guid id) where TState : Enum
         {
-            return (State<TState>)_stateFactory(typeof(TState), id);
-        }
-        
-        private bool ChangeStateInternal<TState>(TState newState, Guid id) where TState : Enum
-        {
-            return ChangeState(GetStateInternal<TState>(id), newState);
+            return (State<TState>) _stateFactory(typeof(TState), id);
         }
         
         bool IStateMachineManager.ChangeState<TState>(TState newState, Guid id)
         {
-            return ChangeStateInternal(newState, id);
+            return ChangeStateInternal(newState, id, null);
         }
-        
+
         public bool ChangeState<TState>(State<TState> state, TState newState) where TState : Enum
         {
-            var stateTransitionBuilder = state.StateTransitionBuilder;
+            return ChangeStateInternal(newState, null, state);
+        }
 
+        private bool ChangeStateInternal<TState>(TState newState, Guid? id, State<TState> state = null) where TState : Enum
+        {
             int fromState;
             int toState;
-
-            _lock.EnterReadLock();
+            StateTransitionBuilder<TState> stateTransitionBuilder;
+            
+            _lock.EnterUpgradeableReadLock();
             try
             {
+                if (state == null)
+                {
+                    state = GetStateInternal<TState>(id.Value);
+                }
+                stateTransitionBuilder = state.StateTransitionBuilder;
                 fromState = state.Current.ToInt();
                 toState = newState.ToInt();
 
@@ -262,8 +285,7 @@ namespace StateBliss
                     }
 
                     //On edit guards
-                    if (!ExecuteGuardHandlers(state, fromState, toState,
-                        stateTransitionBuilder.GetOnEditGuardHandlers(fromState)))
+                    if (!ExecuteGuardHandlers(state, fromState, toState, stateTransitionBuilder.GetOnEditGuardHandlers(fromState)))
                     {
                         return false;
                     }
@@ -273,7 +295,6 @@ namespace StateBliss
                     {
                         QueueActionForExecution(actionInfo, state, fromState, toState);
                     }
-
                 }
                 else
                 {
@@ -315,25 +336,9 @@ namespace StateBliss
                         throw;
                     }
                 }
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            _lock.EnterWriteLock();
-            try
-            {
+                
                 state.SetEntityState(newState.ToInt());
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
-            
-            _lock.EnterReadLock();
-            try
-            {
+        
                 //OnExit of current state
                 foreach (var actionInfo in stateTransitionBuilder.GetOnExitHandlers(fromState))
                 {
@@ -351,13 +356,13 @@ namespace StateBliss
                 {
                     QueueActionForExecution(actionInfo, state, fromState, toState);
                 }
+                
+                return true;                
             }
             finally
             {
-                _lock.ExitReadLock();
+                _lock.ExitUpgradeableReadLock();
             }
-
-            return true;
         }
 
         private void ReleaseUnmanagedResources()

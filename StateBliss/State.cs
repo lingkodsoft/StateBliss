@@ -110,7 +110,7 @@ namespace StateBliss
         public bool ChangeTo(TState newState, StateContext<TState> context = null)
         {
             EnsureDefinitionExists();
-            StateTransitionBuilder.SetContext(context);
+            StateTransitionBuilder.SetContext(context ?? new StateContext<TState>());
             return Manager.ChangeState(this, newState);
         }
         
@@ -149,7 +149,6 @@ namespace StateBliss
     
     public abstract class State
     {
-        private ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
         private volatile int _current;
 
         protected State(Guid id)
@@ -159,30 +158,8 @@ namespace StateBliss
 
         public int Current
         {
-            get
-            {
-                _lock.EnterReadLock();
-                try
-                {
-                    return _current;
-                }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-            }
-            protected set
-            {
-                _lock.EnterWriteLock();
-                try
-                {
-                    _current = value;
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
-                }
-            }
+            get => _current;
+            protected set => Interlocked.Exchange(ref _current, value);
         }
 
         public Guid Id { get; protected set; }

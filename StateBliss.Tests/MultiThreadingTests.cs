@@ -31,6 +31,7 @@ namespace StateBliss.Tests
             // Arrange
             var guid = Guid.NewGuid();
             var context = new StateContext<MyStates>();
+            context.Data["calltimes"] = 0;
 
             var stateFactory = StateFactoryTestHelper.SetupStateFactory(guid, () => 
 
@@ -47,7 +48,8 @@ namespace StateBliss.Tests
             StateMachineManager.Default.SetStateFactory(stateFactory);
 
             var startTime = DateTime.Now;
-            
+            int callTimesNotClicked = 0;
+            var processedFinished = new bool[10];
             // Act
             
             for (int i = 0; i < 10; i++)
@@ -56,7 +58,7 @@ namespace StateBliss.Tests
                 {
                     while (DateTime.Now.Subtract(startTime).TotalSeconds < 10)
                     {
-                        Interlocked.Increment(ref CallTimes_NotClicked);
+                        Interlocked.Increment(ref callTimesNotClicked);
                         StateMachineManager.ChangeState(MyStates.NotClicked, guid);
 
 //                        
@@ -71,20 +73,23 @@ namespace StateBliss.Tests
 //                            StateMachineManager.ChangeState(MyStates.Clicked, guid);
 //                        }
                     }
-                });
+
+                    processedFinished[(int)state] = true;
+
+                }, i);
             }
             
             //Thread.Sleep(6000);
             var spin = new SpinWait();
-            for (int i = 0; i < 10000; i++)
+            while (!processedFinished.All(a=> a))
             {
                 spin.SpinOnce();
             }
             StateMachineManager.Default.WaitAllHandlersProcessed(); //this is only needed for unit test to ensure that all handlers are run
             
             // Assert
-
-            Assert.True(Math.Abs(CallTimes_OnEditHandlerForNotClicked - CallTimes_NotClicked) < 5);
+            Assert.Equal(callTimesNotClicked, (int)context.Data["calltimes"]);
+//            Assert.Equal(CallTimes_OnEditHandlerForNotClicked,CallTimes_NotClicked);
 //            Assert.Equal(CallTimes_OnChangingHandlerForNotClicked, CallTimes_NotClicked);
 //            Assert.Equal(CallTimes_OnChangedHandlerForClicked, CallTimes_Clicked);
 //            Assert.Equal(CallTimes_OnChangedHandlerForNotClicked, CallTimes_NotClicked);
@@ -93,7 +98,10 @@ namespace StateBliss.Tests
 
         private void OnEditingHandler1(StateContext<MyStates> context)
         {
-            Interlocked.Increment(ref CallTimes_OnEditHandlerForNotClicked);
+//            Interlocked.Increment(ref CallTimes_OnEditHandlerForNotClicked);
+            var calltimes = (int)context.Data["calltimes"];
+            calltimes++;
+            context.Data["calltimes"] = calltimes;
             context.Continue = true;
         }
         
@@ -130,7 +138,7 @@ namespace StateBliss.Tests
             StateMachineManager.Default.SetStateFactory(stateFactory);
 
             // Act
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1000000; i++)
             {
                 if (StateMachineManager.GetState<MyStates>(guid).Current == MyStates.Clicked)
                 {
@@ -173,7 +181,5 @@ namespace StateBliss.Tests
         {
             Interlocked.Increment(ref CallTimes_OnChangingHandlerForClicked);
         }
-
     }
-
 }

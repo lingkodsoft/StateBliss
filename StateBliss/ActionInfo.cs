@@ -4,6 +4,11 @@ namespace StateBliss
 {
     internal abstract class ActionInfo
     {
+        protected ActionInfo(StateContext context)
+        {
+            Context = context;
+        }
+        
         public abstract void Execute(State state, int fromState, int toState);
         public abstract void SetTarget(object target);
         internal StateContext Context { get; set; }
@@ -12,17 +17,18 @@ namespace StateBliss
 
     internal class ActionInfo<TState, TContext> : ActionInfo<TState>
         where TState : Enum
-        where TContext : StateContext, new()
+        where TContext : StateContext<TState>, new()
     {
 
-        public ActionInfo(TContext context, Delegate handler, HandlerType handlerType) : base(handler, handlerType)
+        public ActionInfo(TContext context, Delegate handler, HandlerType handlerType) : base(handler, handlerType, context)
         {
-            base.Context = context;
+            base.Context = context ?? new TContext();
         }
         
-        public ActionInfo(TContext context, string methodName, HandlerType handlerType, object target) : base(methodName, handlerType, target)
+        public ActionInfo(TContext context, string methodName, HandlerType handlerType, object target) 
+            : base(methodName, handlerType, target, context)
         {
-            base.Context = context;
+            base.Context = context ?? new TContext();
         }
         
         public new TContext Context => (TContext) (base.Context);
@@ -34,9 +40,9 @@ namespace StateBliss
                 _handlerType == HandlerType.OnExitGuard ||
                 _handlerType == HandlerType.OnEditGuard)
             {
-                Context.FromState = fromState;
-                Context.ToState = toState;
-                Context.State = state;
+                Context.FromState = fromState.ToEnum<TState>();
+                Context.ToState = toState.ToEnum<TState>();
+                Context.State = (IState<TState>)state;
                 ((OnGuardHandler<TContext>)_method)(Context);
             }
             else
@@ -53,14 +59,18 @@ namespace StateBliss
         protected readonly HandlerType _handlerType;
         protected object _target;
 
-        public ActionInfo(Delegate handler, HandlerType handlerType)
+        public ActionInfo(Delegate handler, HandlerType handlerType, StateContext<TState> context)
+            :base(context)
         {
+            Context = context;
             _method = handler;
             _handlerType = handlerType;
         }
 
-        public ActionInfo(string methodName, HandlerType handlerType, object target)
+        public ActionInfo(string methodName, HandlerType handlerType, object target, StateContext<TState> context)
+            :base(context)
         {
+            Context = context;
             _handlerType = handlerType;
             _target = target;
             CreateDelegate(methodName);

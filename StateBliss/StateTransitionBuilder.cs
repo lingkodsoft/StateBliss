@@ -112,7 +112,7 @@ namespace StateBliss
         public IStateTransitionBuilder<TState> Changed(OnStateTransitionedHandler<TState> handler)
         {
             _stateTransitionInfo.Handlers.Add((
-                new ActionInfo<TState>(handler, HandlerType.OnTransitioned),
+                new ActionInfo<TState>(handler, HandlerType.OnTransitioned, new StateContext<TState>()),
                 HandlerType.OnTransitioned));
             return this;
         }
@@ -121,7 +121,7 @@ namespace StateBliss
             Expression<Func<T, OnStateTransitionedHandler<TState>>> handler) where T : class
         {
             _stateTransitionInfo.Handlers.Add((
-                new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnTransitioned, target),
+                new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnTransitioned, target, new StateContext<TState>()),
                 HandlerType.OnTransitioned));
             return this;
         }
@@ -129,7 +129,7 @@ namespace StateBliss
         public IStateTransitionBuilder<TState> Changing(OnStateTransitioningHandler<TState> handler)
         {
             _stateTransitionInfo.Handlers.Add((
-                new ActionInfo<TState>(handler, HandlerType.OnTransitioning),
+                new ActionInfo<TState>(handler, HandlerType.OnTransitioning, new StateContext<TState>()),
                 HandlerType.OnTransitioning));
             return this;
         }
@@ -138,7 +138,7 @@ namespace StateBliss
             Expression<Func<T, OnStateTransitioningHandler<TState>>> handler) where T : class
         {
             _stateTransitionInfo.Handlers.Add((
-                new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnTransitioning, target),
+                new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnTransitioning, target, new StateContext<TState>()),
                 HandlerType.OnTransitioning));
             return this;
         }
@@ -252,8 +252,8 @@ namespace StateBliss
 
             stateTransitionInfo.Handlers.Add((
                 handler == null
-                    ? new ActionInfo<TState>(handlerMethodName, handlerType, target)
-                    : new ActionInfo<TState>(handler, handlerType), handlerType));
+                    ? new ActionInfo<TState>(handlerMethodName, handlerType, target, new StateContext<TState>())
+                    : new ActionInfo<TState>(handler, handlerType, new StateContext<TState>()), handlerType));
         }
 
         private void AddGuardHandler<TContext>(HandlerType handlerType, int fromState, int toState, TContext context,
