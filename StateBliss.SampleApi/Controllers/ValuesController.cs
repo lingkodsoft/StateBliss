@@ -24,7 +24,7 @@ namespace StateBliss.SampleApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            var uid = Guid.NewGuid();
+            var uid = Order.TestUid;
             var cmd = new PayOrderTriggerContext
             {
                 Order = new Order
@@ -37,10 +37,14 @@ namespace StateBliss.SampleApi.Controllers
                 ToState = OrderState.Paid
             };
             
-            _ordersRepository.InsertOrder(cmd.Order);
-
             _stateMachineManager.Trigger(cmd);
-            
+
+            var succeeded = cmd.ChangeStateSucceeded && cmd.State.Current == OrderState.Paid;
+
+            if (!succeeded)
+            {
+                return NotFound();
+            }
             
             return new string[] { "value1", "value2" };
         }

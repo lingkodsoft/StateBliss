@@ -67,6 +67,7 @@ namespace StateBliss
         void IStateMachineManager.Trigger<TState>(StateContext<TState> trigger)
         {
             var state = GetState<TState>(trigger.Uid);
+            trigger.State = state;
             trigger.ChangeStateSucceeded = state.ChangeTo(trigger.ToState, trigger);
         }
         

@@ -13,7 +13,24 @@
         <Version>1.0.1</Version>
         <AssemblyVersion>1.0.2.0</AssemblyVersion>
         <FileVersion>1.0.2.0</FileVersion>
-        <PackageVersion>1.0.2</PackageVersion>
+        <PackageVersion>1.0.3</PackageVersion>
+        <Description>Finite state machine with fluent syntax. i.e.
+return new State&lt;Order, OrderState&gt;(order, a =&gt; a.Uid, a =&gt; a.State)
+                .Define(b =&gt;
+                {
+                    b.From(OrderState.Initial).To(OrderState.Paid)
+                        .Changing(ChangingHandler);                    
+                    b.From(OrderState.Paid).To(OrderState.Processing);
+                    b.From(OrderState.Processing).To(OrderState.Processed);                    
+                });
+
+//trigger state change
+var cmd = new StateContext&lt;OrderState&gt;()
+{
+    Uid = uid,
+    ToState = OrderState.Paid
+};
+StateMachineManager.Trigger(cmd);</Description>
     </PropertyGroup>
 
 </Project>

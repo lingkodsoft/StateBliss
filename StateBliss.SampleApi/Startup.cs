@@ -51,7 +51,12 @@ namespace StateBliss.SampleApi
                 services.AddSingleton(stateDefinitionType, type);
             }
 
-            services.AddSingleton<OrdersRepository>();
+            services.AddSingleton<OrdersRepository>(provider =>
+            {
+                var orderRepository = new OrdersRepository();
+                PopulateInitialDataForTesting(orderRepository);
+                return orderRepository;
+            });
             services.AddSingleton<StateProvider>();
             services.AddSingleton<IStateMachineManager>(provider =>
             {
@@ -69,5 +74,16 @@ namespace StateBliss.SampleApi
             }
         }
 
+        private void PopulateInitialDataForTesting(OrdersRepository ordersRepository)
+        {
+            var order = new Order
+            {
+                Id = 1,
+                Uid = Order.TestUid,
+                State = OrderState.Initial
+            };
+
+            ordersRepository.InsertOrder(order);
+        }
     }
 }
