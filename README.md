@@ -64,12 +64,7 @@ You can do this. See unit tests and SampleApi for more examples.
       var uid = Order.TestUid;
       var cmd = new PayOrderChangeTrigger
       {
-          Order = new Order
-          {
-              Id = Order.TestId,
-              Uid = uid,
-              State = OrderState.Initial
-          },
+          //Order = .. set other properties needed by your business logic
           Uid = uid,
           NextState = OrderState.Paid
       };
