@@ -290,7 +290,7 @@ namespace StateBliss
             {
                 foreach (var handlerInfo in stateTransitionInfo.Handlers)
                 {
-                    handlerInfo.Item1.Context.ParentContext = context;
+                    handlerInfo.Item1.Context.ParentContext = context.ParentContext;
                 }
             }
         }

@@ -14,6 +14,7 @@
         <e p="Guards.cs" t="Include" />
         <e p="GuardsInfo.cs" t="Include" />
         <e p="HandlerType.cs" t="Include" />
+        <e p="IParentStateContext.cs" t="Include" />
         <e p="IState.cs" t="Include" />
         <e p="IStateFromBuilder.cs" t="Include" />
         <e p="IStateMachineManager.cs" t="Include" />
@@ -48,6 +49,7 @@
         <e p="SameStateTransitionDisabledException.cs" t="Include" />
         <e p="State.cs" t="Include" />
         <e p="StateBliss.csproj" t="IncludeRecursive" />
+        <e p="StateChangeTrigger.cs" t="Include" />
         <e p="StateContext.cs" t="Include" />
         <e p="StateEnterGuardHandlerDiscontinuedException.cs" t="Include" />
         <e p="StateExtensions.cs" t="Include" />
@@ -95,6 +97,7 @@
         <e p="GuardContextTests.cs" t="Include" />
         <e p="MultiThreadingTests.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
+        <e p="OrderTests.cs" t="Include" />
         <e p="packages.config" t="Include" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />

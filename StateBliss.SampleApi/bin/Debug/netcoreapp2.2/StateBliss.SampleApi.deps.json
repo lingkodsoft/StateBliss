@@ -27,7 +27,7 @@
           "Microsoft.AspNetCore.App": "2.2.0",
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
           "Microsoft.NETCore.App": "2.2.0",
-          "StateBliss": "1.0.2"
+          "StateBliss": "1.0.3"
         },
         "runtime": {
           "StateBliss.SampleApi.dll": {}
@@ -36,7 +36,7 @@
           "StateBliss.SampleApi.dll": {}
         }
       },
-      "StateBliss/1.0.2": {
+      "StateBliss/1.0.3": {
         "runtime": {
           "StateBliss.dll": {}
         },
@@ -3246,7 +3246,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "StateBliss/1.0.2": {
+    "StateBliss/1.0.3": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -58,17 +58,17 @@ namespace StateBliss
             }
         }
         
-        public static void Trigger<TState>(StateContext<TState> trigger)
+        public static void Trigger<TState>(StateChangeTrigger<TState> trigger)
             where TState : Enum
         {
             ((IStateMachineManager) Default).Trigger(trigger);
         }
         
-        void IStateMachineManager.Trigger<TState>(StateContext<TState> trigger)
+        void IStateMachineManager.Trigger<TState>(StateChangeTrigger<TState> trigger)
         {
             var state = GetState<TState>(trigger.Uid);
-            trigger.State = state;
-            trigger.ChangeStateSucceeded = state.ChangeTo(trigger.ToState, trigger);
+            trigger.Context.State = state;
+            trigger.ChangeStateSucceeded = state.ChangeTo(trigger.NextState, trigger.Context);
         }
         
         private void TriggerStateChange(string triggerName)

@@ -541,6 +541,7 @@
   <ItemGroup>
     <Compile Include="GuardContextTests.cs" />
     <Compile Include="MultiThreadingTests.cs" />
+    <Compile Include="OrderTests.cs" />
     <Compile Include="StateBlissTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StateFactoryTestHelper.cs" />

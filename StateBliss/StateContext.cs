@@ -31,7 +31,7 @@ namespace StateBliss
             get => _data ?? (_data = new Dictionary<string, object>());
         }
         
-        public StateContext ParentContext { get; internal set; }
+        public ParentStateContext ParentContext { get; internal set; }
     }
     
     public class StateContext<TState> : StateContext
@@ -60,7 +60,7 @@ namespace StateBliss
     }
 
     public class StateContext<TState, TParentContext> : StateContext<TState>
-        where TParentContext : StateContext
+        where TParentContext : ParentStateContext<TState>
         where TState : Enum
     {
         public new TParentContext ParentContext
@@ -69,5 +69,4 @@ namespace StateBliss
             internal set => base.ParentContext = value;
         }
     }
-
 }

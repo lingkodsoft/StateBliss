@@ -25,7 +25,7 @@ namespace StateBliss.SampleApi.Controllers
         public ActionResult<IEnumerable<string>> Get()
         {
             var uid = Order.TestUid;
-            var cmd = new PayOrderTriggerContext
+            var cmd = new PayOrderChangeTrigger
             {
                 Order = new Order
                 {
@@ -34,7 +34,7 @@ namespace StateBliss.SampleApi.Controllers
                     State = OrderState.Initial
                 },
                 Uid = uid,
-                ToState = OrderState.Paid
+                NextState = OrderState.Paid
             };
             
             _stateMachineManager.Trigger(cmd);

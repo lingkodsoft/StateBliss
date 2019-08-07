@@ -11,9 +11,11 @@ namespace StateBliss.SampleApi
         
         public IGuardsInfo<PaymentGuardContext> GetHandler()
         {
-            return Guards.From(() => new PaymentGuardContext
+            return Guards.From(() =>
                 {
-                    Data = "test"
+                    var context = new PaymentGuardContext();
+                    context.Data["test"] = "test";
+                    return context;
                 },
                 ValidateRequest,
                 PayToPaymentGateway,
@@ -38,7 +40,7 @@ namespace StateBliss.SampleApi
             context.PersistToRepo_CallCount++;
             _ordersRepository.UpdateOrder(order);
 
-            if (context.Data == "test")
+            if (context.Data["test"] == "test")
             {
                 context.Continue = true;   
             }

@@ -7,38 +7,58 @@ namespace StateBliss
 {
     public class State<TEntity, TState> : State<TState> where TState : Enum
     {
-        private readonly TEntity _entity;
         private readonly PropertyInfo _entityStatePropInfo;
         private readonly PropertyInfo _entityUidPropInfo;
-        
+
+        public State(Expression<Func<TEntity, Guid>> uidPropertySelector,
+            Expression<Func<TEntity, TState>> statePropertySelector, string name = null,
+            bool registerToDefaultStateMachineManager = true)
+            : this(default, uidPropertySelector, statePropertySelector,  name, registerToDefaultStateMachineManager)
+        {
+        }
+
         public State(TEntity entity, Expression<Func<TEntity, Guid>> uidPropertySelector, 
             Expression<Func<TEntity, TState>> statePropertySelector, string name = null,
             bool registerToDefaultStateMachineManager = true) 
             : base(default, name, registerToDefaultStateMachineManager)
         {
-            _entity = entity;
+            var entityType = typeof(TEntity);
             var entityStateName = statePropertySelector.GetFieldName();
-            _entityStatePropInfo = _entity.GetType().GetProperty(entityStateName);
+            _entityStatePropInfo = entityType.GetProperty(entityStateName);
             
             var entityUidName = uidPropertySelector.GetFieldName();
-            _entityUidPropInfo = _entity.GetType().GetProperty(entityUidName);
+            _entityUidPropInfo = entityType.GetProperty(entityUidName);
 
-            Id = (Guid)_entityUidPropInfo.GetValue(_entity);
+            if (entity != null)
+            {
+                SetEntityInternal(entity);
+                Id = (Guid) _entityUidPropInfo.GetValue(entity);
+            }
         }
 
         public override TState Current => GetEntityState();
 
-        private TState GetEntityState() => (TState)_entityStatePropInfo.GetValue(_entity);
+        private TState GetEntityState() => (TState)_entityStatePropInfo.GetValue(GetEntity());
+        
+        public override void SetEntity(object entity)
+        {
+            SetEntityInternal(entity);
+        }
+        
+        private void SetEntityInternal(object entity)
+        {
+            if (entity == null) throw new Exception($"{nameof(entity)} must not be null");
+            Id = (Guid)_entityUidPropInfo.GetValue(entity);
+            base.SetEntity(entity);
+        }
 
         internal override void SetEntityState(int newState)
         {
             var state = newState.ToEnum<TState>();
-            _entityStatePropInfo.SetValue(_entity, state);
+            _entityStatePropInfo.SetValue(GetEntity(), state);
         }
 
-        public TEntity Entity => _entity;
-
-        protected override object GetEntity() => Entity;
+        public TEntity Entity => (TEntity)GetEntity();
 
         public new State<TEntity, TState> Define(Action<IStateFromBuilder<TState>> builderAction)
         {
@@ -81,9 +101,7 @@ namespace StateBliss
         }
 
         object IState<TState>.Entity => GetEntity();
-
-        protected virtual object GetEntity() => null;
-
+        
         public new virtual TState Current => base.Current.ToEnum<TState>(); 
         
         internal override void SetEntityState(int newState)
@@ -150,7 +168,8 @@ namespace StateBliss
     public abstract class State
     {
         private volatile int _current;
-
+        private object Entity;
+        
         protected State(Guid id)
         {
             Id = id;            
@@ -170,6 +189,12 @@ namespace StateBliss
         internal StateTransitionBuilder StateTransitionBuilder { get; set; }
 
         internal abstract bool ChangeTo(int newState);
-        
+
+        protected virtual object GetEntity() => Entity;
+
+        public virtual void SetEntity(object entity)
+        {
+            Entity = entity;
+        }
     }
 }

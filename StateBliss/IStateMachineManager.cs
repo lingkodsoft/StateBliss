@@ -9,7 +9,7 @@ namespace StateBliss
         bool ChangeState<TEntity, TState>(State<TEntity, TState> state, TState newState) where TState : Enum;
         bool ChangeState<TState>(State<TState> state, TState newState) where TState : Enum;
         bool ChangeState<TState>(TState newState, Guid id) where TState : Enum;
-        void Trigger<TState>(StateContext<TState> trigger) where TState : Enum;
+        void Trigger<TState>(StateChangeTrigger<TState> trigger) where TState : Enum;
         State<TState> GetState<TState>(Guid id) where TState : Enum;
         void SetStateFactory(StateFactory stateFactory);
         event EventHandler<(Exception exception, State state, int fromState, int toState)> OnHandlerException;

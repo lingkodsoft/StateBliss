@@ -17,11 +17,9 @@ namespace StateBliss.SampleApi
         
         public Type EnumType => typeof(OrderState);
         
-        public State DefineState(Guid id)
+        public State DefineState()
         {
-            var order = _ordersRepository.GetOrders().Single(a => a.Uid == id);
-            
-            return new State<Order, OrderState>(order, a => a.Uid, a => a.State)
+            return new State<Order, OrderState>(a => a.Uid, a => a.State)
                 .Define(b =>
                 {
                     b.From(OrderState.Initial).To(OrderState.Paid)

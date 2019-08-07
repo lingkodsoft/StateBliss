@@ -25,6 +25,66 @@ You can do this. See unit tests for more examples.
   
   public class OrderHandler
   {      
+          public State DefineState()
+          {
+              return new State<Order, OrderState>(a => a.Uid, a => a.State)
+                  .Define(b =>
+                  {
+                      b.From(OrderState.Initial).To(OrderState.Paid)
+                          .Changing(_orderStateGuardsForChangingFromInitialToPaid.GetHandler());
+                      
+                      b.From(OrderState.Paid).To(OrderState.Processing);
+                      b.From(OrderState.Processing).To(OrderState.Processed);
+                      
+                  });
+          }
+          
+  
+            public void DefineState(Order order)
+              {
+                  var context = new PaymentGuardContext();
+  
+                  var state = new State<Order, OrderState>(order, a => a.Uid, a => a.State)
+                      .Define(b =>
+                      {
+                          b.From(OrderState.Initial).To(OrderState.Paid)
+                              .Changing(OnTransitioningStateFromInitialToPaidHandler)
+                              .Changed(OnTransitionedStateFromInitialToPaidHandler);
+  
+                          b.From(OrderState.Paid).To(OrderState.Processed);
+                          b.From(OrderState.Processed).To(OrderState.Delivered);
+  
+                          b.OnEntering(OrderState.Paid, Guards.From(context,
+                              ValidateRequest,
+                              PayToPaymentGateway,
+                              PersistOrderToRepository
+                          ));
+  
+                          b.DisableSameStateTransitionFor(OrderState.Paid);
+  
+                      });
+  
+                  var hasChangedState = state.ChangeTo(OrderState.Paid);
+  
+  //        Assert.Equal(OrderState.Paid, order.State);
+              }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
       private class PaymentGuardContext : GuardContext<OrderState>
       {
       }
