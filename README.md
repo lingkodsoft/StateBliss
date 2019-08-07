@@ -39,7 +39,10 @@ You can do this. See unit tests and SampleApi for more examples.
       {
           if (stateType == typeof(OrderState))
           {
-              return new State<Order, OrderState>(a => a.Uid, a => a.State)
+
+               var order = _ordersRepository.GetOrders().Single(a => a.Uid == id);            
+               
+               return new State<Order, OrderState>(order, a => a.Uid, a => a.State)
                   .Define(b =>
                   {
                       b.From(OrderState.Initial).To(OrderState.Paid)
