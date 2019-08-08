@@ -399,13 +399,14 @@ namespace StateBliss
             {
                 try
                 {
-                    actionInfo.Context.Continue = false;
+                    var context = (GuardStateContext) actionInfo.Context; 
+                    context.Continue = false;
                     
                     actionInfo.Execute(state, fromState, toState);
 
-                    if (actionInfo.Context.Continue) continue;
+                    if (context.Continue) continue;
 
-                    if (actionInfo.Context.ThrowExceptionWhenDiscontinued)
+                    if (context.ThrowExceptionWhenDiscontinued)
                     {
                         throw new StateEnterGuardHandlerDiscontinuedException();
                     }

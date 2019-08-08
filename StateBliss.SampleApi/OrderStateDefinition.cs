@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using StateBliss.SampleApi.Controllers;
 
 namespace StateBliss.SampleApi
 {
@@ -23,12 +24,23 @@ namespace StateBliss.SampleApi
                 .Define(b =>
                 {
                     b.From(OrderState.Initial).To(OrderState.Paid)
-                        .Changing(_orderStateGuardsForChangingFromInitialToPaid.GetHandler());
+                        .Changing(_orderStateGuardsForChangingFromInitialToPaid.GetHandler())
+                        .Changed(Handlers.From<PayOrderChangeTrigger>(ChangedHandler1, ChangedHandler2));
                     
                     b.From(OrderState.Paid).To(OrderState.Processing);
                     b.From(OrderState.Processing).To(OrderState.Processed);
                     
                 });
+        }
+
+        private void ChangedHandler2(PayOrderChangeTrigger context)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ChangedHandler1(PayOrderChangeTrigger context)
+        {
+            throw new NotImplementedException();
         }
     }
 }

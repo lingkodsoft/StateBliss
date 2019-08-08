@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace StateBliss
 {
+
+
     public abstract class StateContext
     {
         protected StateContext(Type stateType)
@@ -19,13 +21,6 @@ namespace StateBliss
         public int FromState { get; internal set; }
         public int ToState { get; internal set; }
         public State State { get; internal set; }
-        
-        /// <summary>
-        /// When Continue is set to false on a handler, setting ThrowExceptionWhenDiscontinued to true will throw StateEnterGuardDiscontinuedException.
-        /// </summary>
-        public bool ThrowExceptionWhenDiscontinued { get; set; }
-        public bool Continue { get; set; }
-
         public Dictionary<string, object> Data
         {
             get => _data ?? (_data = new Dictionary<string, object>());
@@ -56,17 +51,6 @@ namespace StateBliss
 
         public StateContext() : base(typeof(TState))
         {
-        }
-    }
-
-    public class StateContext<TState, TParentContext> : StateContext<TState>
-        where TParentContext : ParentStateContext<TState>
-        where TState : Enum
-    {
-        public new TParentContext ParentContext
-        {
-            get => (TParentContext)base.ParentContext;
-            internal set => base.ParentContext = value;
         }
     }
 }

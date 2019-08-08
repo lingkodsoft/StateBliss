@@ -15,7 +15,7 @@ namespace StateBliss
         IEnumerable<OnGuardHandler<TContext>> Guards { get; }
         Func<TContext> ContextProvider { get; }
     }
-        
+
     public class GuardsInfo<TContext> : IGuardsInfo<TContext>
         where TContext : StateContext
     {

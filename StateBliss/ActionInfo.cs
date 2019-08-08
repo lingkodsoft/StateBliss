@@ -4,29 +4,33 @@ namespace StateBliss
 {
     internal abstract class ActionInfo
     {
-        protected ActionInfo(StateContext context)
+        protected ActionInfo(object context, bool isTriggerAction)
         {
             Context = context;
+            IsTriggerAction = isTriggerAction;
         }
+        
+        internal bool IsTriggerAction { get; private set; }
         
         public abstract void Execute(State state, int fromState, int toState);
         public abstract void SetTarget(object target);
-        internal StateContext Context { get; set; }
+        internal object Context { get; set; }
 
     }
 
     internal class ActionInfo<TState, TContext> : ActionInfo<TState>
         where TState : Enum
-        where TContext : StateContext<TState>, new()
+        where TContext : StateContext, new()
     {
 
-        public ActionInfo(TContext context, Delegate handler, HandlerType handlerType) : base(handler, handlerType, context)
+        public ActionInfo(TContext context, Delegate handler, HandlerType handlerType) 
+            : base(handler, handlerType, context, false)
         {
             base.Context = context ?? new TContext();
         }
         
         public ActionInfo(TContext context, string methodName, HandlerType handlerType, object target) 
-            : base(methodName, handlerType, target, context)
+            : base(methodName, handlerType, target, context, false)
         {
             base.Context = context ?? new TContext();
         }
@@ -40,9 +44,9 @@ namespace StateBliss
                 _handlerType == HandlerType.OnExitGuard ||
                 _handlerType == HandlerType.OnEditGuard)
             {
-                Context.FromState = fromState.ToEnum<TState>();
-                Context.ToState = toState.ToEnum<TState>();
-                Context.State = (IState<TState>)state;
+                Context.FromState = fromState;
+                Context.ToState = toState;
+                Context.State = state;
                 ((OnGuardHandler<TContext>)_method)(Context);
             }
             else
@@ -59,16 +63,16 @@ namespace StateBliss
         protected readonly HandlerType _handlerType;
         protected object _target;
 
-        public ActionInfo(Delegate handler, HandlerType handlerType, StateContext<TState> context)
-            :base(context)
+        public ActionInfo(Delegate handler, HandlerType handlerType, object context, bool isTriggerAction)
+            :base(context, isTriggerAction)
         {
             Context = context;
             _method = handler;
             _handlerType = handlerType;
         }
 
-        public ActionInfo(string methodName, HandlerType handlerType, object target, StateContext<TState> context)
-            :base(context)
+        public ActionInfo(string methodName, HandlerType handlerType, object target, object context, bool isTriggerAction)
+            :base(context, isTriggerAction)
         {
             Context = context;
             _handlerType = handlerType;

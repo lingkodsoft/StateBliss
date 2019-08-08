@@ -133,25 +133,25 @@ namespace StateBliss
         }
         
         public void GuardsForEntry<TContext>(TState state, IGuardsInfo<TContext> guardInfo)
-            where TContext : StateContext<TState>, new()
+            where TContext : GuardStateContext<TState>, new()
         {
             StateTransitionBuilder.AddOnStateEnterGuards(state.ToInt(), guardInfo.Context,  guardInfo.Guards);
         }
         
         public void GuardsForExit<TContext>(TState state, IGuardsInfo<TContext> guardInfo)
-            where TContext : StateContext<TState>, new()
+            where TContext : GuardStateContext<TState>, new()
         {
             StateTransitionBuilder.AddOnStateExitGuards(state.ToInt(), guardInfo.Context,  guardInfo.Guards);
         }
 
         public void GuardsForEdit<TContext>(TState state, IGuardsInfo<TContext> guardInfo)
-            where TContext : StateContext<TState>, new()
+            where TContext : GuardStateContext<TState>, new()
         {
             StateTransitionBuilder.AddOnStateEditGuards(state.ToInt(), guardInfo.Context, guardInfo.Guards);
         }
 
         public void GuardsForChanging<TContext>(TState fromState, TState toState, IGuardsInfo<TContext> guardInfo)
-            where TContext : StateContext<TState>, new()
+            where TContext : GuardStateContext<TState>, new()
         {
             StateTransitionBuilder.AddOnStateChangingGuards(fromState.ToInt(), toState.ToInt(), guardInfo.Context, guardInfo.Guards);
         }

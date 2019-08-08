@@ -13,6 +13,8 @@
         <e p="ExpressionExtensions.cs" t="Include" />
         <e p="Guards.cs" t="Include" />
         <e p="GuardsInfo.cs" t="Include" />
+        <e p="GuardStateContext.cs" t="Include" />
+        <e p="Handlers.cs" t="Include" />
         <e p="HandlerType.cs" t="Include" />
         <e p="IParentStateContext.cs" t="Include" />
         <e p="IState.cs" t="Include" />
@@ -20,6 +22,8 @@
         <e p="IStateMachineManager.cs" t="Include" />
         <e p="IStateToBuilder.cs" t="Include" />
         <e p="IStateTransitionBuilder.cs" t="Include" />
+        <e p="ITriggerInfo.cs" t="Include" />
+        <e p="ITriggersInfoForContext.cs" t="Include" />
         <e p="NoRuleDefinedForStateTransitionException.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
@@ -46,6 +50,7 @@
         <e p="OnStateExitHandler.cs" t="Include" />
         <e p="OnStateTransitionedHandler.cs" t="Include" />
         <e p="OnStateTransitioningHandler.cs" t="Include" />
+        <e p="OnTriggerHandler.cs" t="Include" />
         <e p="SameStateTransitionDisabledException.cs" t="Include" />
         <e p="State.cs" t="Include" />
         <e p="StateBliss.csproj" t="IncludeRecursive" />
@@ -58,6 +63,8 @@
         <e p="StateTransitionBuilder.cs" t="Include" />
         <e p="StateTransitionInfo.cs" t="Include" />
         <e p="StateTypeMismatchException.cs" t="Include" />
+        <e p="TriggerActionInfo.cs" t="Include" />
+        <e p="TriggerInfo.cs" t="Include" />
       </e>
       <e p="StateBliss.SampleApi" t="IncludeRecursive">
         <e p="appsettings.Development.json" t="Include" />
