@@ -56,7 +56,7 @@ namespace StateBliss
         }
 
         public void OnEntering<TContext>(TState state, IHandlersInfo<TContext> handlers)
-            where TContext : HandlerStateContext<TState>, new()
+            where TContext : GuardStateContext<TState>, new()
         {
             AddOnStateEnterGuards(state.ToInt(), handlers.Context, handlers.Guards);
         }
@@ -73,7 +73,7 @@ namespace StateBliss
         }
 
         public void OnExiting<TContext>(TState state, IHandlersInfo<TContext> handlers)
-            where TContext : HandlerStateContext<TState>, new()
+            where TContext : GuardStateContext<TState>, new()
         {
             AddOnStateExitGuards(state.ToInt(), handlers.Context, handlers.Guards);
         }
@@ -92,7 +92,7 @@ namespace StateBliss
         }
 
         public void OnEditing<TContext>(TState state, IHandlersInfo<TContext> handlers)
-            where TContext : HandlerStateContext<TState>, new()
+            where TContext : GuardStateContext<TState>, new()
         {
             AddOnStateEditGuards(state.ToInt(), handlers.Context, handlers.Guards);
         }
@@ -118,7 +118,7 @@ namespace StateBliss
         }
 
         public IStateTransitionBuilder<TState> Changed<TContext>(IHandlersInfo<TContext> handlers) 
-            where TContext : StateContext, new()
+            where TContext : HandlerStateContext, new()
         {          
             AddStateChangeHandlerWithContext(HandlerType.OnTransitionedWithContext, _stateTransitionInfo.From, _stateTransitionInfo.To, _context as TContext, handlers.Guards);
             return this;
@@ -151,7 +151,7 @@ namespace StateBliss
         }
 
         public IStateTransitionBuilder<TState> Changing<TContext>(IHandlersInfo<TContext> handlers) 
-            where TContext : HandlerStateContext<TState>, new()
+            where TContext : GuardStateContext<TState>, new()
         {
             AddOnStateChangingGuards(_stateTransitionInfo.From, _stateTransitionInfo.To, handlers.Context, handlers.Guards);
             return this;
@@ -222,28 +222,28 @@ namespace StateBliss
 
         internal void AddOnStateEnterGuards<TContext>(int state, TContext context,
             IEnumerable<OnStateEventHandler<TContext>> guards)
-            where TContext : HandlerStateContext<TState>, new()
+            where TContext : GuardStateContext<TState>, new()
         {
             AddGuardHandler(HandlerType.OnEnterGuard, -1, state, context, guards);
         }
 
         internal void AddOnStateExitGuards<TContext>(int state, TContext context,
             IEnumerable<OnStateEventHandler<TContext>> guards)
-            where TContext : HandlerStateContext<TState>, new()
+            where TContext : GuardStateContext<TState>, new()
         {
             AddGuardHandler(HandlerType.OnExitGuard, state, -1, context, guards);
         }
 
         internal void AddOnStateEditGuards<TContext>(int state, TContext context,
             IEnumerable<OnStateEventHandler<TContext>> guards)
-            where TContext : HandlerStateContext<TState>, new()
+            where TContext : GuardStateContext<TState>, new()
         {
             AddGuardHandler(HandlerType.OnEnterGuard, state, state, context, guards);
         }
         
         internal void AddOnStateChangingGuards<TContext>(int fromState, int toState, TContext context,
             IEnumerable<OnStateEventHandler<TContext>> guards)
-            where TContext : HandlerStateContext<TState>, new()
+            where TContext : GuardStateContext<TState>, new()
         {
             AddGuardHandler(HandlerType.OnTransitioningGuard, fromState, toState, context, guards);
         }
@@ -270,7 +270,7 @@ namespace StateBliss
 
         private void AddGuardHandler<TContext>(HandlerType handlerType, int fromState, int toState, TContext context,
             IEnumerable<OnStateEventHandler<TContext>> guards)
-            where TContext : HandlerStateContext<TState>, new()
+            where TContext : GuardStateContext<TState>, new()
         {
             AddHandlerWithContext(handlerType, fromState, toState, context, guards);
         }
@@ -316,28 +316,7 @@ namespace StateBliss
             {
                 foreach (var handlerInfo in stateTransitionInfo.Handlers)
                 {
-                    if (context is StateContext stateContext)
-                    {
-                        if (handlerInfo.Item1.Context is StateContext handlerContext)
-                        {
-                            handlerContext.ParentContext = stateContext.ParentContext;    
-                        }
-                        else if (handlerInfo.Item1.Context is ParentStateContext triggerContext)
-                        {
-                            triggerContext.Context = stateContext;
-                        }
-                    } 
-//                    else if (context is ParentStateContext triggerContext)
-//                    {
-//                        if (handlerInfo.Item1.Context is StateContext handlerContext)
-//                        {
-//                            handlerContext.ParentContext = triggerContext;    
-//                        }
-//                        else if (handlerInfo.Item1.IsTriggerAction)
-//                        {
-//                            handlerInfo.Item1.Context = context;
-//                        }
-//                    }
+                    handlerInfo.Item1.Context.ParentContext = context.ParentContext;
                 }
             }
         }

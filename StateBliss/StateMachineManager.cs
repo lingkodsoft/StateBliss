@@ -265,7 +265,7 @@ namespace StateBliss
             int fromState;
             int toState;
             StateTransitionBuilder<TState> stateTransitionBuilder;
-            
+
             _lock.EnterUpgradeableReadLock();
             try
             {
@@ -339,28 +339,32 @@ namespace StateBliss
                 }
                 
                 state.SetEntityState(newState.ToInt());
-        
+
                 //OnExit of current state
                 foreach (var actionInfo in stateTransitionBuilder.GetOnExitHandlers(fromState))
                 {
+                    actionInfo.Context.ChangeStateSucceeded = true;
                     QueueActionForExecution(actionInfo, state, fromState, toState);
                 }
 
                 //OnEnter of new state
                 foreach (var actionInfo in stateTransitionBuilder.GetOnEnterHandlers(toState))
                 {
+                    actionInfo.Context.ChangeStateSucceeded = true;
                     QueueActionForExecution(actionInfo, state, fromState, toState);
                 }
 
                 //OnTransitioned
                 foreach (var actionInfo in stateTransitionBuilder.GetOnTransitionedHandlers(fromState, toState))
                 {
+                    actionInfo.Context.ChangeStateSucceeded = true;
                     QueueActionForExecution(actionInfo, state, fromState, toState);
                 }
                 
                 //OnTransitionedWithContext
                 foreach (var actionInfo in stateTransitionBuilder.GetOnTransitionedWithContextHandlers(fromState, toState))
                 {
+                    actionInfo.Context.ChangeStateSucceeded = true;
                     QueueActionForExecution(actionInfo, state, fromState, toState);
                 }
                 
@@ -405,7 +409,7 @@ namespace StateBliss
             {
                 try
                 {
-                    var context = (HandlerStateContext) actionInfo.Context; 
+                    var context = (GuardStateContext) actionInfo.Context; 
                     context.Continue = false;
                     
                     actionInfo.Execute(state, fromState, toState);

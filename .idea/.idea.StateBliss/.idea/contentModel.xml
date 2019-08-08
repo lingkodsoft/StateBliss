@@ -13,6 +13,7 @@
         </e>
         <e p="bin" t="ExcludeRecursive" />
         <e p="Contexts" t="Include">
+          <e p="GuardStateContext.cs" t="Include" />
           <e p="HandlerStateContext.cs" t="Include" />
           <e p="IParentStateContext.cs" t="Include" />
           <e p="ITriggersInfoForContext.cs" t="Include" />
@@ -94,6 +95,7 @@
         <e p="OrderState.cs" t="Include" />
         <e p="OrderStateDefinition.cs" t="Include" />
         <e p="OrderStateGuardsForChangingFromInitialToPaid.cs" t="Include" />
+        <e p="PaymentGuardContext.cs" t="Include" />
         <e p="PaymentHandlerContext.cs" t="Include" />
         <e p="Program.cs" t="Include" />
         <e p="Properties" t="Include">

@@ -4,7 +4,7 @@ namespace StateBliss
 {
     internal abstract class ActionInfo
     {
-        protected ActionInfo(object context, bool isTriggerAction)
+        protected ActionInfo(StateContext context, bool isTriggerAction)
         {
             Context = context;
             IsTriggerAction = isTriggerAction;
@@ -14,7 +14,7 @@ namespace StateBliss
         
         public abstract void Execute(State state, int fromState, int toState);
         public abstract void SetTarget(object target);
-        internal object Context { get; set; }
+        internal StateContext Context { get; set; }
 
     }
 
@@ -64,7 +64,7 @@ namespace StateBliss
         protected readonly HandlerType _handlerType;
         protected object _target;
 
-        public ActionInfo(Delegate handler, HandlerType handlerType, object context, bool isTriggerAction)
+        public ActionInfo(Delegate handler, HandlerType handlerType, StateContext context, bool isTriggerAction)
             :base(context, isTriggerAction)
         {
             Context = context;
@@ -72,7 +72,7 @@ namespace StateBliss
             _handlerType = handlerType;
         }
 
-        public ActionInfo(string methodName, HandlerType handlerType, object target, object context, bool isTriggerAction)
+        public ActionInfo(string methodName, HandlerType handlerType, object target, StateContext context, bool isTriggerAction)
             :base(context, isTriggerAction)
         {
             Context = context;
