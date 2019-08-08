@@ -1,6 +1,6 @@
 namespace StateBliss.SampleApi
 {
-    public class OrderStateGuardsForChangingFromInitialToPaid : IStateDefinitionHandler<PaymentGuardContext>
+    public class OrderStateGuardsForChangingFromInitialToPaid : IStateDefinitionHandler<PaymentHandlerContext>
     {
         private readonly OrdersRepository _ordersRepository;
 
@@ -9,11 +9,11 @@ namespace StateBliss.SampleApi
             _ordersRepository = ordersRepository;
         }
         
-        public IGuardsInfo<PaymentGuardContext> GetHandler()
+        public IHandlersInfo<PaymentHandlerContext> GetHandler()
         {
-            return Guards.From(() =>
+            return Handlers.From(() =>
                 {
-                    var context = new PaymentGuardContext();
+                    var context = new PaymentHandlerContext();
                     context.Data["test"] = "test";
                     return context;
                 },
@@ -22,19 +22,19 @@ namespace StateBliss.SampleApi
                 PersistOrderToRepository);
         }
         
-        private void ValidateRequest(PaymentGuardContext context)
+        private void ValidateRequest(PaymentHandlerContext context)
         {
             context.ValidateRequest_CallCount++;
             context.Continue = true;
         }
 
-        private void PayToPaymentGateway(PaymentGuardContext context)
+        private void PayToPaymentGateway(PaymentHandlerContext context)
         {
             context.PayToGateway_CallCount++;
             context.Continue = true;
         }
 
-        private void PersistOrderToRepository(PaymentGuardContext context)
+        private void PersistOrderToRepository(PaymentHandlerContext context)
         {
             var order = context.ParentContext.Order;
             context.PersistToRepo_CallCount++;

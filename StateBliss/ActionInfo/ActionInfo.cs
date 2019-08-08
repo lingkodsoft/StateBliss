@@ -42,12 +42,13 @@ namespace StateBliss
             if (_handlerType == HandlerType.OnEnterGuard || 
                 _handlerType == HandlerType.OnTransitioningGuard ||
                 _handlerType == HandlerType.OnExitGuard ||
-                _handlerType == HandlerType.OnEditGuard)
+                _handlerType == HandlerType.OnEditGuard ||
+                _handlerType == HandlerType.OnTransitionedWithContext)
             {
                 Context.FromState = fromState;
                 Context.ToState = toState;
                 Context.State = state;
-                ((OnGuardHandler<TContext>)_method)(Context);
+                ((OnStateEventHandler<TContext>)_method)(Context);
             }
             else
             {

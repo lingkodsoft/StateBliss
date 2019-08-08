@@ -2,7 +2,7 @@ using System;
 
 namespace StateBliss
 {
-    public abstract class GuardStateContext : StateContext
+    public abstract class HandlerStateContext : StateContext
     {
         /// <summary>
         /// When Continue is set to false on a handler, setting ThrowExceptionWhenDiscontinued to true will throw StateEnterGuardDiscontinuedException.
@@ -10,12 +10,12 @@ namespace StateBliss
         public bool ThrowExceptionWhenDiscontinued { get; set; }
         public bool Continue { get; set; }
 
-        protected GuardStateContext(Type stateType) : base(stateType)
+        protected HandlerStateContext(Type stateType) : base(stateType)
         {
         }
     }
     
-    public class GuardStateContext<TState> : GuardStateContext
+    public class HandlerStateContext<TState> : HandlerStateContext
         where TState : Enum
     {
         public new TState FromState
@@ -35,12 +35,12 @@ namespace StateBliss
             internal set => base.State = (State)value;
         }
 
-        public GuardStateContext() : base(typeof(TState))
+        public HandlerStateContext() : base(typeof(TState))
         {
         }
     }
     
-    public class GuardStateContext<TState, TParentContext> : GuardStateContext<TState>
+    public class HandlerStateContext<TState, TParentContext> : HandlerStateContext<TState>
         where TParentContext : ParentStateContext<TState>
         where TState : Enum
     {

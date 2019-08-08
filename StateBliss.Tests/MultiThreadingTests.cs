@@ -30,7 +30,7 @@ namespace StateBliss.Tests
         {
             // Arrange
             var guid = Guid.NewGuid();
-            var context = new GuardStateContext<MyStates>();
+            var context = new HandlerStateContext<MyStates>();
             context.Data["calltimes"] = 0;
 
             var stateFactory = StateFactoryTestHelper.SetupStateFactory(guid, () => 
@@ -41,7 +41,7 @@ namespace StateBliss.Tests
                         b.From(MyStates.NotClicked).To(MyStates.Clicked);
 //                        b.OnEdited(MyStates.NotClicked, OnEditHandler1);
                         
-                        b.OnEditing(MyStates.NotClicked, Guards.From(context, 
+                        b.OnEditing(MyStates.NotClicked, Handlers.From(context, 
                             OnEditingHandler1, OnEditingHandler2));
                     })
             );
@@ -96,7 +96,7 @@ namespace StateBliss.Tests
             
         }
 
-        private void OnEditingHandler1(GuardStateContext<MyStates> context)
+        private void OnEditingHandler1(HandlerStateContext<MyStates> context)
         {
 //            Interlocked.Increment(ref CallTimes_OnEditHandlerForNotClicked);
             var calltimes = (int)context.Data["calltimes"];
@@ -105,7 +105,7 @@ namespace StateBliss.Tests
             context.Continue = true;
         }
         
-        private void OnEditingHandler2(GuardStateContext<MyStates> context)
+        private void OnEditingHandler2(HandlerStateContext<MyStates> context)
         {
             context.Continue = true;
         }

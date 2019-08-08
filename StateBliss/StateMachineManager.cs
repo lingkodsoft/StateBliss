@@ -358,6 +358,12 @@ namespace StateBliss
                     QueueActionForExecution(actionInfo, state, fromState, toState);
                 }
                 
+                //OnTransitionedWithContext
+                foreach (var actionInfo in stateTransitionBuilder.GetOnTransitionedWithContextHandlers(fromState, toState))
+                {
+                    QueueActionForExecution(actionInfo, state, fromState, toState);
+                }
+                
                 return true;                
             }
             finally
@@ -399,7 +405,7 @@ namespace StateBliss
             {
                 try
                 {
-                    var context = (GuardStateContext) actionInfo.Context; 
+                    var context = (HandlerStateContext) actionInfo.Context; 
                     context.Continue = false;
                     
                     actionInfo.Execute(state, fromState, toState);

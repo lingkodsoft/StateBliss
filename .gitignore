@@ -4,6 +4,12 @@
 .vs/
 .idea/
 
+bin/
+obj/
+
+
+StateBliss.SampleApi/bin/
+StateBliss.SampleApi/obj/
 StateBliss/bin/
 StateBliss/obj/
 StateBliss.Tests/bin/

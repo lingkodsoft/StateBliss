@@ -2,7 +2,7 @@ namespace StateBliss.SampleApi
 {
     public interface IStateDefinitionHandler<TContext> : IStateDefinitionHandler where TContext : StateContext
     {
-        IGuardsInfo<TContext> GetHandler();
+        IHandlersInfo<TContext> GetHandler();
     }
 
     public interface IStateDefinitionHandler

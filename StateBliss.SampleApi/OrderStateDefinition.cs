@@ -25,7 +25,10 @@ namespace StateBliss.SampleApi
                 {
                     b.From(OrderState.Initial).To(OrderState.Paid)
                         .Changing(_orderStateGuardsForChangingFromInitialToPaid.GetHandler())
-                        .Changed(Handlers.From<PayOrderChangeTrigger>(ChangedHandler1, ChangedHandler2));
+                        .Changed(Handlers.From(() => new PaymentHandlerContext(),
+                            ChangedHandler1, ChangedHandler2
+                            
+                            ));
                     
                     b.From(OrderState.Paid).To(OrderState.Processing);
                     b.From(OrderState.Processing).To(OrderState.Processed);
@@ -33,14 +36,15 @@ namespace StateBliss.SampleApi
                 });
         }
 
-        private void ChangedHandler2(PayOrderChangeTrigger context)
+        private void ChangedHandler2(PaymentHandlerContext context)
         {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
         }
 
-        private void ChangedHandler1(PayOrderChangeTrigger context)
+        private void ChangedHandler1(PaymentHandlerContext context)
         {
-            throw new NotImplementedException();
+            
+            // throw new NotImplementedException();
         }
     }
 }

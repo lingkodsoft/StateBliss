@@ -4,10 +4,24 @@ namespace StateBliss
 {
     public static class Handlers
     {
-        public static ITriggerInfo<TContext> From<TContext>(params OnTriggerHandler<TContext>[] actions)
-            where TContext : ParentStateContext
+        public static IHandlersInfo<TContext> From<TContext>(params OnStateEventHandler<TContext>[] actions)
+            where TContext : HandlerStateContext
         {
-            return new TriggerInfo<TContext>(actions);
+            return new HandlersInfo<TContext>(actions);
+        }
+        
+        public static IHandlersInfo<TContext> From<TContext>(TContext context, 
+            params OnStateEventHandler<TContext>[] actions)
+            where TContext : HandlerStateContext
+        {
+            return new HandlersInfo<TContext>(context, actions);
+        }
+        
+        public static IHandlersInfo<TContext> From<TContext>(Func<TContext> contextProvider, 
+            params OnStateEventHandler<TContext>[] actions)
+            where TContext : HandlerStateContext
+        {
+            return new HandlersInfo<TContext>(contextProvider, actions);
         }
     }
 }
