@@ -2,7 +2,7 @@ using StateBliss.SampleApi.Controllers;
 
 namespace StateBliss.SampleApi
 {
-    public class PaymentGuardContext : GuardStateContext<OrderState, PayOrderChangeTrigger>
+    public class PaymentGuardContext : GuardStateContext<OrderState>
     {
         public int ValidateRequest_CallCount;
         public int PayToGateway_CallCount;

@@ -8,7 +8,8 @@ namespace StateBliss
         /// When Continue is set to false on a handler, setting ThrowExceptionWhenDiscontinued to true will throw StateEnterGuardDiscontinuedException.
         /// </summary>
         public bool ThrowExceptionWhenDiscontinued { get; set; }
-        public bool Continue { get; set; }
+
+        public bool Continue { get; set; } = true;
 
         protected GuardStateContext(Type stateType) : base(stateType)
         {
@@ -39,15 +40,15 @@ namespace StateBliss
         {
         }
     }
-    
-    public class GuardStateContext<TState, TParentContext> : GuardStateContext<TState>
-        where TParentContext : TriggerCommand<TState>
-        where TState : Enum
-    {
-        public new TParentContext ParentContext
-        {
-            get => (TParentContext)base.ParentContext;
-            internal set => base.ParentContext = value;
-        }
-    }
+//    
+//    public class GuardStateContext<TState, TParentContext> : GuardStateContext<TState>
+//        where TParentContext : TriggerCommand<TState>
+//        where TState : Enum
+//    {
+//        public new TParentContext ParentContext
+//        {
+//            get => (TParentContext)base.ParentContext;
+//            internal set => base.ParentContext = value;
+//        }
+//    }
 }

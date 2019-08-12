@@ -318,24 +318,10 @@ namespace StateBliss
                     return false;
                 }
 
-                //OnChangingGuards
+                //OnChanging
                 if (!ExecuteGuardHandlers(state, fromState, toState, stateTransitionBuilder.GetOnChangingGuardHandlers(fromState, toState)))
                 {
                     return false;
-                }
-                
-                //OnTransitioning
-                foreach (var actionInfo in stateTransitionBuilder.GetOnTransitioningHandlers(fromState, toState))
-                {
-                    try
-                    {
-                        actionInfo.Execute(state, fromState, toState);
-                    }
-                    catch (Exception e)
-                    {
-                        OnHandlerException?.Invoke(this, (e, state, fromState, toState));
-                        throw;
-                    }
                 }
                 
                 state.SetEntityState(newState.ToInt());
@@ -404,7 +390,7 @@ namespace StateBliss
                 try
                 {
                     var context = (GuardStateContext) actionInfo.Context; 
-                    context.Continue = false;
+                    //context.Continue = false;
                     
                     actionInfo.Execute(state, fromState, toState);
 
