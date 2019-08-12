@@ -65,13 +65,13 @@ namespace StateBliss.SampleApi
                 return StateMachineManager.Default;
             });
             
-            var stateDefinitionHandlerTypes = this.GetType().Assembly.GetTypes()
-                .Where(a => typeof(IStateDefinitionHandler).IsAssignableFrom(a) && a.IsClass && !a.IsAbstract);
-                
-            foreach (var type in stateDefinitionHandlerTypes)
-            {
-                services.AddSingleton(type);
-            }
+//            var stateDefinitionHandlerTypes = this.GetType().Assembly.GetTypes()
+//                .Where(a => typeof(IStateDefinitionHandler).IsAssignableFrom(a) && a.IsClass && !a.IsAbstract);
+//                
+//            foreach (var type in stateDefinitionHandlerTypes)
+//            {
+//                services.AddSingleton(type);
+//            }
         }
 
         private void PopulateInitialDataForTesting(OrdersRepository ordersRepository)

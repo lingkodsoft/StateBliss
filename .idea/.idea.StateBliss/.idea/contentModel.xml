@@ -7,34 +7,29 @@
         <e p="Microsoft.DiaSymReader.Native.1.7.0\runtimes\win\native\Microsoft.DiaSymReader.Native.x86.dll" t="Include" />
       </e>
       <e p="StateBliss" t="IncludeRecursive">
-        <e p="ActionInfo" t="Include">
-          <e p="ActionInfo.cs" t="Include" />
-          <e p="HandlersInfo.cs" t="Include" />
-        </e>
+        <e p="ActionInfo.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="Contexts" t="Include">
           <e p="GuardStateContext.cs" t="Include" />
           <e p="HandlerStateContext.cs" t="Include" />
-          <e p="IParentStateContext.cs" t="Include" />
-          <e p="ITriggersInfoForContext.cs" t="Include" />
           <e p="StateContext.cs" t="Include" />
+          <e p="TriggerCommand.cs" t="Include" />
         </e>
         <e p="Delegates" t="Include">
-          <e p="OnStateEditHandler.cs" t="Include" />
-          <e p="OnStateEnterHandler.cs" t="Include" />
           <e p="OnStateEventHandler.cs" t="Include" />
-          <e p="OnStateExitHandler.cs" t="Include" />
-          <e p="OnStateTransitionedHandler.cs" t="Include" />
-          <e p="OnStateTransitioningHandler.cs" t="Include" />
         </e>
-        <e p="EnumExtensions.cs" t="Include" />
         <e p="Exceptions" t="Include">
           <e p="NoRuleDefinedForStateTransitionException.cs" t="Include" />
           <e p="SameStateTransitionDisabledException.cs" t="Include" />
           <e p="StateEnterGuardHandlerDiscontinuedException.cs" t="Include" />
           <e p="StateTypeMismatchException.cs" t="Include" />
         </e>
-        <e p="ExpressionExtensions.cs" t="Include" />
+        <e p="extensions" t="Include">
+          <e p="EnumExtensions.cs" t="Include" />
+          <e p="ExpressionExtensions.cs" t="Include" />
+          <e p="ObjectExtensions.cs" t="Include" />
+          <e p="StateExtensions.cs" t="Include" />
+        </e>
         <e p="Handlers.cs" t="Include" />
         <e p="HandlerType.cs" t="Include" />
         <e p="IState.cs" t="Include" />
@@ -67,7 +62,6 @@
           <e p="StateTransitionBuilder.cs" t="Include" />
         </e>
         <e p="StateChangeTrigger.cs" t="Include" />
-        <e p="StateExtensions.cs" t="Include" />
         <e p="StateFactory.cs" t="Include" />
         <e p="StateMachineManager.cs" t="Include" />
         <e p="StateTransitionInfo.cs" t="Include" />
@@ -95,8 +89,8 @@
         <e p="OrderState.cs" t="Include" />
         <e p="OrderStateDefinition.cs" t="Include" />
         <e p="OrderStateGuardsForChangingFromInitialToPaid.cs" t="Include" />
+        <e p="PaymentCommand.cs" t="Include" />
         <e p="PaymentGuardContext.cs" t="Include" />
-        <e p="PaymentHandlerContext.cs" t="Include" />
         <e p="Program.cs" t="Include" />
         <e p="Properties" t="Include">
           <e p="launchSettings.json" t="Include" />

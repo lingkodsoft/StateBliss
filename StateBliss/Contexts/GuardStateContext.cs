@@ -41,7 +41,7 @@ namespace StateBliss
     }
     
     public class GuardStateContext<TState, TParentContext> : GuardStateContext<TState>
-        where TParentContext : ParentStateContext<TState>
+        where TParentContext : TriggerCommand<TState>
         where TState : Enum
     {
         public new TParentContext ParentContext

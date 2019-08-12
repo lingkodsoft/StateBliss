@@ -58,17 +58,17 @@ namespace StateBliss
             }
         }
         
-        public static void Trigger<TState>(StateChangeTrigger<TState> trigger)
+        public static void Trigger<TState>(TriggerCommand<TState> trigger)
             where TState : Enum
         {
             ((IStateMachineManager) Default).Trigger(trigger);
         }
         
-        void IStateMachineManager.Trigger<TState>(StateChangeTrigger<TState> trigger)
+        void IStateMachineManager.Trigger<TState>(TriggerCommand<TState> trigger)
         {
             var state = GetState<TState>(trigger.Uid);
-            trigger.Context.State = state;
-            trigger.ChangeStateSucceeded = state.ChangeTo(trigger.NextState, trigger.Context);
+            trigger.State = state;
+            trigger.ChangeStateSucceeded = state.ChangeTo(trigger.NextState, trigger);
         }
         
         private void TriggerStateChange(string triggerName)
@@ -343,28 +343,22 @@ namespace StateBliss
                 //OnExit of current state
                 foreach (var actionInfo in stateTransitionBuilder.GetOnExitHandlers(fromState))
                 {
-                    actionInfo.Context.ChangeStateSucceeded = true;
+                    actionInfo.Command.ChangeStateSucceeded = true;
                     QueueActionForExecution(actionInfo, state, fromState, toState);
                 }
 
                 //OnEnter of new state
                 foreach (var actionInfo in stateTransitionBuilder.GetOnEnterHandlers(toState))
                 {
-                    actionInfo.Context.ChangeStateSucceeded = true;
+                    actionInfo.Command.ChangeStateSucceeded = true;
                     QueueActionForExecution(actionInfo, state, fromState, toState);
                 }
 
-                //OnTransitioned
-                foreach (var actionInfo in stateTransitionBuilder.GetOnTransitionedHandlers(fromState, toState))
+                //OnChanged
+                var handlers = stateTransitionBuilder.GetOnChangedHandlers(fromState, toState).ToArray();
+                foreach (var actionInfo in handlers)
                 {
-                    actionInfo.Context.ChangeStateSucceeded = true;
-                    QueueActionForExecution(actionInfo, state, fromState, toState);
-                }
-                
-                //OnTransitionedWithContext
-                foreach (var actionInfo in stateTransitionBuilder.GetOnTransitionedWithContextHandlers(fromState, toState))
-                {
-                    actionInfo.Context.ChangeStateSucceeded = true;
+                    actionInfo.Command.ChangeStateSucceeded = true;
                     QueueActionForExecution(actionInfo, state, fromState, toState);
                 }
                 
@@ -403,7 +397,7 @@ namespace StateBliss
             Dispose(false);
         }
         
-        private bool ExecuteGuardHandlers<TState>(State<TState> state, int fromState, int toState, ActionInfo<TState>[] handlers) where TState : Enum
+        private bool ExecuteGuardHandlers<TState>(State<TState> state, int fromState, int toState, ActionInfo[] handlers) where TState : Enum
         {
             foreach (var actionInfo in handlers)
             {

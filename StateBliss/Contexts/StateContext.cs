@@ -26,7 +26,7 @@ namespace StateBliss
             get => _data ?? (_data = new Dictionary<string, object>());
         }
         
-        public ParentStateContext ParentContext { get; internal set; }
+        public TriggerCommand ParentContext { get; internal set; }
     }
     
     public class StateContext<TState> : StateContext

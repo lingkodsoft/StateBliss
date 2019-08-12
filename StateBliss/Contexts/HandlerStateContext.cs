@@ -35,7 +35,7 @@ namespace StateBliss
     }
     
     public class HandlerStateContext<TState, TParentContext> : HandlerStateContext<TState>
-        where TParentContext : ParentStateContext<TState>
+        where TParentContext : TriggerCommand<TState>
         where TState : Enum
     {
         public new TParentContext ParentContext
@@ -44,4 +44,6 @@ namespace StateBliss
             internal set => base.ParentContext = value;
         }
     }
+    
+    
 }
