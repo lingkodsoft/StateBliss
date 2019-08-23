@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace StateBliss
 {
-    internal class StateTransitionInfo
+    public class StateTransitionInfo
     {
         public int From;
         public int To;

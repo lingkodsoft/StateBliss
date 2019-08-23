@@ -39,6 +39,9 @@ namespace StateBliss.SampleApi.Controllers
             
             _stateMachineManager.Trigger(cmd);
 
+            _stateMachineManager.Trigger(new TriggerCommand<OrderState>(OrderState.Paid, Order.TestUid,
+                d => d["order"] = new Order()));
+
             var succeeded = cmd.ChangeStateSucceeded && cmd.State.Current == OrderState.Paid;
 
             if (!succeeded)

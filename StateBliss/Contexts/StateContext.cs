@@ -44,9 +44,9 @@ namespace StateBliss
             set => base.ToState = value.ToInt();
         }
         
-        public IState<TState> State{
-            get => (IState<TState>)base.State;
-            internal set => base.State = (State)value;
+        public State<TState> State{
+            get => (State<TState>)base.State;
+            internal set => base.State = value;
         }
 
         public StateContext() : base(typeof(TState))

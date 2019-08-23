@@ -539,6 +539,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicTests.cs" />
     <Compile Include="GuardContextTests.cs" />
     <Compile Include="MultiThreadingTests.cs" />
     <Compile Include="OrderTests.cs" />

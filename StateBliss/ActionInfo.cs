@@ -2,7 +2,7 @@ using System;
 
 namespace StateBliss
 {
-    internal abstract class ActionInfo
+    public abstract class ActionInfo
     {
         protected ActionInfo(TriggerCommand command, bool isTriggerAction)
         {
@@ -28,7 +28,7 @@ namespace StateBliss
         }
     }
     
-    internal class ActionInfo<TContext> : ActionInfo
+    public class ActionInfo<TContext> : ActionInfo
         where TContext : new()
     {
         private readonly string _methodName;
@@ -184,7 +184,7 @@ namespace StateBliss
     internal class ActionInfo<TState, TTriggerCommand, TContext> : ActionInfo
         where TState : Enum
         where TContext : new()
-        where TTriggerCommand : TriggerCommand<TState>
+        where TTriggerCommand : TriggerCommand<TState>, new()
     {
         private readonly string _methodName;
         private readonly HandlerType _handlerType;
@@ -270,7 +270,7 @@ namespace StateBliss
     }
     
     
-    internal class GuardActionInfo<TState, TTriggerCommand, TContext> : ActionInfo
+    public class GuardActionInfo<TState, TTriggerCommand, TContext> : ActionInfo
         where TState : Enum
         where TContext : GuardStateContext<TState>, new()
         where TTriggerCommand : TriggerCommand<TState>
@@ -329,7 +329,7 @@ namespace StateBliss
                 {
                     StateContext.FromState = fromState.ToEnum<TState>();
                     StateContext.ToState = toState.ToEnum<TState>();
-                    StateContext.State = (IState<TState>) state;
+                    StateContext.State = state;
                     _handler(cmd, StateContext);
                 }
             }
@@ -340,7 +340,7 @@ namespace StateBliss
         }
     }
     
-    internal class GuardActionInfo<TState, TTriggerCommand> : ActionInfo
+    public class GuardActionInfo<TState, TTriggerCommand> : ActionInfo
         where TState : Enum
         where TTriggerCommand : TriggerCommand<TState>
     {
@@ -399,7 +399,7 @@ namespace StateBliss
                 {
                     StateContext.FromState = fromState.ToEnum<TState>();
                     StateContext.ToState = toState.ToEnum<TState>();
-                    StateContext.State = (IState<TState>)state;
+                    StateContext.State = state;
                     _handler(cmd, StateContext);
                 }
             }
@@ -410,7 +410,7 @@ namespace StateBliss
         }
     }
     
-    internal class GuardActionInfo<TState> : ActionInfo
+    public class GuardActionInfo<TState> : ActionInfo
         where TState : Enum
     {
         private readonly string _methodName;
@@ -463,7 +463,7 @@ namespace StateBliss
             {
                 StateContext.FromState = fromState.ToEnum<TState>();
                 StateContext.ToState = toState.ToEnum<TState>();
-                StateContext.State = (IState<TState>)state;
+                StateContext.State = state;
                 _handler((TriggerCommand<TState>)Command, StateContext);
             }
             else

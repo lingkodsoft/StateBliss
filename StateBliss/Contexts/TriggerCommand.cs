@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace StateBliss
 {
@@ -13,18 +14,27 @@ namespace StateBliss
         
         public Guid Uid { get; set; }
 
+        public IDictionary<string, object> Data => new Dictionary<string, object>(); 
         public bool ChangeStateSucceeded { get; internal set; }
     }
     
-    public abstract class TriggerCommand<TState> : TriggerCommand
+    public class TriggerCommand<TState> : TriggerCommand
         where TState : Enum
     {
+        public TriggerCommand(TState nextState, Guid uid, Action<IDictionary<string, object>> setData = null) 
+            : base(typeof(TState))
+        {
+            Uid = uid;
+            NextState = nextState;
+            setData?.Invoke(Data);
+        }
+        
         public TriggerCommand() : base(typeof(TState))
         {
         }
 
         public TState NextState { get; set; }
 
-        public IState<TState> State {get; internal set; }
+        public State State {get; internal set; }
     }
 }

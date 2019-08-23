@@ -17,6 +17,7 @@
         </e>
         <e p="Delegates" t="Include">
           <e p="OnStateEventHandler.cs" t="Include" />
+          <e p="StateChangeHandler.cs" t="Include" />
         </e>
         <e p="Exceptions" t="Include">
           <e p="NoRuleDefinedForStateTransitionException.cs" t="Include" />
@@ -28,11 +29,12 @@
           <e p="EnumExtensions.cs" t="Include" />
           <e p="ExpressionExtensions.cs" t="Include" />
           <e p="ObjectExtensions.cs" t="Include" />
-          <e p="StateExtensions.cs" t="Include" />
         </e>
+        <e p="FindStateResult.cs" t="Include" />
         <e p="Handlers.cs" t="Include" />
         <e p="HandlerType.cs" t="Include" />
-        <e p="IState.cs" t="Include" />
+        <e p="IFindState.cs" t="Include" />
+        <e p="IStateHandlerDefinition.cs" t="Include" />
         <e p="IStateMachineManager.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
@@ -63,44 +65,16 @@
         </e>
         <e p="StateChangeTrigger.cs" t="Include" />
         <e p="StateFactory.cs" t="Include" />
+        <e p="StateHandlerDefinition.cs" t="Include" />
         <e p="StateMachineManager.cs" t="Include" />
         <e p="StateTransitionInfo.cs" t="Include" />
       </e>
       <e p="StateBliss.SampleApi" t="IncludeRecursive">
-        <e p="appsettings.Development.json" t="Include" />
-        <e p="appsettings.json" t="Include" />
-        <e p="bin" t="ExcludeRecursive" />
-        <e p="Controllers" t="Include">
-          <e p="PayOrderTriggerContext.cs" t="Include" />
-          <e p="ValuesController.cs" t="Include" />
-        </e>
-        <e p="IStateDefinition.cs" t="Include" />
-        <e p="IStateDefinitionHandler.cs" t="Include" />
-        <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
-            <e p="netcoreapp2.2" t="Include">
-              <e p="StateBliss.SampleApi.AssemblyInfo.cs" t="Include" />
-              <e p="StateBliss.SampleApi.RazorAssemblyInfo.cs" t="Include" />
-            </e>
-          </e>
-        </e>
-        <e p="Order.cs" t="Include" />
-        <e p="OrdersRepository.cs" t="Include" />
-        <e p="OrderState.cs" t="Include" />
-        <e p="OrderStateDefinition.cs" t="Include" />
-        <e p="OrderStateGuardsForChangingFromInitialToPaid.cs" t="Include" />
-        <e p="PaymentCommand.cs" t="Include" />
-        <e p="PaymentGuardContext.cs" t="Include" />
-        <e p="Program.cs" t="Include" />
-        <e p="Properties" t="Include">
-          <e p="launchSettings.json" t="Include" />
-        </e>
-        <e p="Startup.cs" t="Include" />
         <e p="StateBliss.SampleApi.csproj" t="IncludeRecursive" />
-        <e p="StateProvider.cs" t="Include" />
       </e>
       <e p="StateBliss.sln" t="IncludeFlat" />
       <e p="StateBliss.Tests" t="IncludeRecursive">
+        <e p="BasicTests.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="GuardContextTests.cs" t="Include" />
         <e p="MultiThreadingTests.cs" t="Include" />
@@ -115,7 +89,9 @@
         <e p="StateFactoryTestHelper.cs" t="Include" />
       </e>
     </e>
-    <e p="C:\Users\lingkodsoft\.Rider2019.1\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\lingkodsoft\.Rider2019.1\system\resharper-host\local\Transient\ReSharperHost\v191\SolutionCaches\_StateBliss.269002201.00" t="ExcludeRecursive" />
+    <e p="C:\Users\mike\.Rider2019.2\config\consoles\db" t="IncludeRecursive" />
+    <e p="C:\Users\mike\.Rider2019.2\config\extensions" t="IncludeRecursive" />
+    <e p="C:\Users\mike\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\mike\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_StateBliss.269002201.00" t="ExcludeRecursive" />
   </component>
 </project>

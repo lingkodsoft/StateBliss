@@ -76,88 +76,89 @@ namespace StateBliss.SampleApi
                         .Changed(ChangedHandler5)
                         .Changed<PayOrderChangeTrigger>(ChangedHandler3)
                         .Changed<OtherCommand>(ChangedHandler4)
-                        
+
                         .Changed<PayOrderChangeTrigger, (int id, string data)>(
                             () => (1, "test1"),
                             ChangedHandler9)
 
                         .Changed<PayOrderChangeTrigger, (int id, string data)>(
                             () => (1, "test2"),
-                            ChangedHandler10, 
+                            ChangedHandler10,
                             ChangedHandler11)
-                    
+
                         .Changed(new TestTarget(), t => t.ChangeHandler20)
-                        
-                        .Changed<TestTarget, PayOrderChangeTrigger>(new TestTarget(), t => t.ChangeHandler21)
-                        
-                        .Changed<TestTarget, PayOrderChangeTrigger, (int id, string localData)>(
+
+                        .Changed<PayOrderChangeTrigger, TestTarget>(new TestTarget(), t => t.ChangeHandler21)
+
+                        .Changed<PayOrderChangeTrigger, TestTarget, (int id, string localData)>(
                             new TestTarget(), () => (2, "test3"), t => t.ChangeHandler22, t => t.ChangeHandler23)
-                        
-                    
-                        
+
                         .Changing(ChangingHandler5)
                         .Changing<PayOrderChangeTrigger>(ChangingHandler3)
                         .Changing<OtherCommand>(ChangingHandler4)
-                        
+
                         .Changing<PayOrderChangeTrigger>(
                             ChangingHandler25,
                             ChangingHandler26)
+
+                        .Changing<PayOrderChangeTrigger>(ChangingHandler9)
                         
-                        .Changing<PayOrderChangeTrigger, GuardStateContext<OrderState>>(
-                            () => new GuardStateContext<OrderState>(),  
+                        .Changing<PayOrderChangeTrigger, TestGuardContext>(
+                            () => new TestGuardContext(),
                             ChangingHandler9)
 
                         .Changing<PayOrderChangeTrigger, TestGuardContext>(
-                            () => new TestGuardContext(), 
-                            ChangingHandler10, 
+                            () => new TestGuardContext(),
+                            ChangingHandler10,
                             ChangingHandler11)
-                    
+
                         .Changing(new TestTarget(), t => t.ChangingHandler20)
-                        
-                        .Changing<TestTarget, PayOrderChangeTrigger>(new TestTarget(), t => t.ChangingHandler21)
-                        
-                        .Changing<TestTarget, PayOrderChangeTrigger, TestGuardContext>(
-                            new TestTarget(), () => new TestGuardContext(), 
-                            t => t.ChangingHandler22, t => t.ChangingHandler23)
+
+                        .Changing<PayOrderChangeTrigger, TestTarget>(new TestTarget(), t => t.ChangingHandler21)
+
+                        .Changing<PayOrderChangeTrigger, TestTarget, TestGuardContext>(
+                            new TestTarget(), () => new TestGuardContext(),
+                            t => t.ChangingHandler22, t => t.ChangingHandler23);
 
                         
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-//                        .Changed(
-//                            Handlers.From<OrderState, PaymentCommand>(
-//                                () => new PaymentCommand(),
-//                            ChangedHandler6,
-//                            ChangedHandler7
-//                        ))
-                        
-//                        .Changed(Handlers.From(() => new PaymentCommand(),
-//                             ChangedHandler6,
-//                             ChangedHandler7
-//                            ))
-                        
-                        ;
-//                        .Changed(Handlers.From(() => new PaymentCommand(),
-//                            ChangedHandler3, ChangedHandler4));
-                        //.Changing<PaymentCommand>(ChangingHandler1);
-                        
-                    
                     
                     b.From(OrderState.Paid).To(OrderState.Processing);
                     b.From(OrderState.Processing).To(OrderState.Processed);
-//                    
-//                    b.OnExiting(OrderState.Initial, Handlers.From(() => new PaymentGuardContext(),
-//                                OnExitingHandler1, OnExitingHandler2
-//                        ));
+
+                    b.OnEntered(OrderState.Paid, OnEnteredHandler1);
                     
+                    b.OnEntered<PayOrderChangeTrigger>(OrderState.Paid, OnEnteredHandler2, OnEnteredHandler20);
+                    
+                    b.OnEntered<PayOrderChangeTrigger, TestGuardContext>(OrderState.Paid,
+                        () => new TestGuardContext(),
+                        OnEnteredHandler3,
+                        OnEnteredHandler4);
                 });
+        }
+
+        private void OnEnteredHandler4(PayOrderChangeTrigger command, TestGuardContext context)
+        {
+             
+        }        
+
+        private void OnEnteredHandler3(PayOrderChangeTrigger command, TestGuardContext context)
+        {
+    
+        }
+
+        private void OnEnteredHandler20(PayOrderChangeTrigger command, StateContext<OrderState> context)
+        {
+
+        }
+
+        private void OnEnteredHandler2(PayOrderChangeTrigger command, StateContext<OrderState> context)
+        {
+            
+        }
+
+        private void OnEnteredHandler1(TriggerCommand<OrderState> command)
+        {
+            
         }
 
         private void ChangingHandler26(PayOrderChangeTrigger command, GuardStateContext<OrderState> context)

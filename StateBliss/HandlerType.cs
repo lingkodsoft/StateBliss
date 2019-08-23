@@ -1,6 +1,6 @@
 namespace StateBliss
 {
-    internal enum HandlerType
+    public enum HandlerType
     {
         OnEntering,
         OnEntered,
