@@ -16,7 +16,6 @@
           <e p="NoRuleDefinedForStateTransitionException.cs" t="Include" />
           <e p="SameStateTransitionDisabledException.cs" t="Include" />
           <e p="StateEnterGuardHandlerDiscontinuedException.cs" t="Include" />
-          <e p="StateTypeMismatchException.cs" t="Include" />
         </e>
         <e p="extensions" t="Include">
           <e p="EnumExtensions.cs" t="Include" />

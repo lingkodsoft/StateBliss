@@ -1,8 +1,28 @@
+using System;
+
 namespace StateBliss
 {
+    
+    public class StateChangeInfo<TState> : StateChangeInfo
+        where TState : Enum
+    {
+        public new TState FromState
+        {
+            get => base.FromState.ToEnum<TState>();
+            set => base.FromState = value.ToInt();
+        }
+
+        public new TState ToState
+        {
+            get => base.ToState.ToEnum<TState>();
+            set => base.ToState = value.ToInt();
+        }
+    }
+
     public class StateChangeInfo
     {
         internal object Data { get; set; }
+        public T DataAs<T>() => (T)Data;
         internal int FromState { get; set; }
         internal int ToState { get; set; }
         

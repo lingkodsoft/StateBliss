@@ -2,7 +2,7 @@ using System;
 
 namespace StateBliss
 {
-    public static class ObjectExtensions
+    internal static class ObjectExtensions
     {
         public static void WhenSome<T>(this T target, Action<T> action)
         {
