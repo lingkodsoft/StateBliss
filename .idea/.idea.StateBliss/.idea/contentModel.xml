@@ -9,14 +9,7 @@
       <e p="StateBliss" t="IncludeRecursive">
         <e p="ActionInfo.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
-        <e p="Contexts" t="Include">
-          <e p="GuardStateContext.cs" t="Include" />
-          <e p="HandlerStateContext.cs" t="Include" />
-          <e p="StateContext.cs" t="Include" />
-          <e p="TriggerCommand.cs" t="Include" />
-        </e>
         <e p="Delegates" t="Include">
-          <e p="OnStateEventHandler.cs" t="Include" />
           <e p="StateChangeHandler.cs" t="Include" />
         </e>
         <e p="Exceptions" t="Include">
@@ -30,9 +23,7 @@
           <e p="ExpressionExtensions.cs" t="Include" />
           <e p="ObjectExtensions.cs" t="Include" />
         </e>
-        <e p="Handlers.cs" t="Include" />
         <e p="HandlerType.cs" t="Include" />
-        <e p="IFindState.cs" t="Include" />
         <e p="IStateHandlerDefinition.cs" t="Include" />
         <e p="IStateMachineManager.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
@@ -62,8 +53,7 @@
           <e p="IStateTransitionBuilder.cs" t="Include" />
           <e p="StateTransitionBuilder.cs" t="Include" />
         </e>
-        <e p="StateChangeTrigger.cs" t="Include" />
-        <e p="StateFactory.cs" t="Include" />
+        <e p="StateChangeInfo.cs" t="Include" />
         <e p="StateHandlerDefinition.cs" t="Include" />
         <e p="StateMachineManager.cs" t="Include" />
         <e p="StateTransitionInfo.cs" t="Include" />

@@ -5,24 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bca49a86-855e-4154-a37f-5fe7b9bb7e0e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/StateBliss/StateChangeInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.StateBliss/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StateBliss/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.StateBliss/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StateBliss/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/obj/Debug/netcoreapp2.2/StateBliss.SampleApi.RazorAssemblyInfo.cache" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/obj/Debug/netcoreapp2.2/StateBliss.SampleApi.RazorAssemblyInfo.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/obj/Debug/netcoreapp2.2/StateBliss.SampleApi.RazorAssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/obj/Debug/netcoreapp2.2/StateBliss.SampleApi.RazorAssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/obj/Debug/netcoreapp2.2/StateBliss.SampleApi.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/obj/Debug/netcoreapp2.2/StateBliss.SampleApi.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/obj/StateBliss.SampleApi.csproj.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/obj/StateBliss.SampleApi.csproj.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/obj/StateBliss.SampleApi.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/obj/StateBliss.SampleApi.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/obj/project.assets.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss/ActionInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/ActionInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/Contexts/GuardStateContext.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/Contexts/HandlerStateContext.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/Contexts/StateContext.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/Contexts/TriggerCommand.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/Delegates/OnStateEventHandler.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss/Delegates/StateChangeHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/Delegates/StateChangeHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss/FindStateResult.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss/IStateHandlerDefinition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/IStateHandlerDefinition.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/Handlers.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/IFindState.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss/IStateMachineManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/IStateMachineManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss/State.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/State.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss/StateBuilder/IStateFromBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/StateBuilder/IStateFromBuilder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss/StateBuilder/IStateTransitionBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/StateBuilder/IStateTransitionBuilder.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss/StateBuilder/StateTransitionBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/StateBuilder/StateTransitionBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/StateChangeTrigger.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/StateFactory.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss/StateHandlerDefinition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/StateHandlerDefinition.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" afterDir="false" />
     </list>
@@ -61,30 +60,25 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Contexts/HandlerStateContext.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Contexts/GuardStateContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/Exceptions/NoRuleDefinedForStateTransitionException.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/StateFactory.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/Exceptions/SameStateTransitionDisabledException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/Exceptions/StateTypeMismatchException.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/Controllers/PayOrderTriggerContext.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/Controllers/PayOrderTriggerContext.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/Exceptions/StateEnterGuardHandlerDiscontinuedException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/IStateMachineManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/StateHandlerDefinition.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/Extensions/ExpressionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/Extensions/ObjectExtensions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/IFindState.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/Extensions/EnumExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/HandlerType.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/StateChangeInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/StateBuilder/IStateFromBuilder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/StateTransitionInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/StateBuilder/IStateToBuilder.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Handlers.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/StateBuilder/IStateTransitionBuilder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/StateBuilder/StateTransitionBuilder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.Tests/GuardContextTests.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Delegates/OnStateEventHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.Tests/packages.config" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.Tests/StateFactoryTestHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.Tests/MultiThreadingTests.cs" root0="SKIP_HIGHLIGHTING" />
@@ -96,8 +90,6 @@
     <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/Order.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/Startup.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/Program.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Contexts/StateContext.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Contexts/TriggerCommand.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/StateProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/PaymentGuardContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/OrdersRepository.cs" root0="FORCE_HIGHLIGHTING" />
@@ -110,7 +102,6 @@
     <setting file="file://$PROJECT_DIR$/StateBliss/ActionInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/State.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/StateChangeTrigger.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/IStateHandlerDefinition.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
@@ -124,7 +115,6 @@
         <option value="$PROJECT_DIR$/StateBliss/Delegates/OnStateTransitionedHandler.cs" />
         <option value="$PROJECT_DIR$/StateBliss/Delegates/OnStateTransitioningHandler.cs" />
         <option value="$PROJECT_DIR$/StateBliss/IGuardsInfoWithContext.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/Contexts/HandlerStateContext.cs" />
         <option value="$PROJECT_DIR$/StateBliss.SampleApi/PaymentHandlerContext.cs" />
         <option value="$PROJECT_DIR$/StateBliss/Contexts/IParentStateContext.cs" />
         <option value="$PROJECT_DIR$/StateBliss/IHandlersInfo.cs" />
@@ -143,30 +133,31 @@
         <option value="$PROJECT_DIR$/StateBliss/StateChangeTrigger.cs" />
         <option value="$PROJECT_DIR$/StateBliss.SampleApi/Controllers/PayOrderTriggerContext.cs" />
         <option value="$PROJECT_DIR$/StateBliss.SampleApi/PaymentGuardContext.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/Contexts/GuardStateContext.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/Contexts/TriggerCommand.cs" />
         <option value="$PROJECT_DIR$/StateBliss.SampleApi/Controllers/ValuesController.cs" />
         <option value="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" />
         <option value="$PROJECT_DIR$/StateBliss/HandlerType.cs" />
         <option value="$PROJECT_DIR$/StateBliss/StateTransitionInfo.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/Contexts/StateContext.cs" />
         <option value="$PROJECT_DIR$/StateBliss/StateFactory.cs" />
         <option value="$PROJECT_DIR$/StateBliss/IState.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/Delegates/OnStateEventHandler.cs" />
         <option value="$PROJECT_DIR$/StateBliss.Tests/StateFactoryTestHelper.cs" />
         <option value="$PROJECT_DIR$/StateBliss/IFindState.cs" />
         <option value="$PROJECT_DIR$/StateBliss/FindStateResult.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/IStateMachineManager.cs" />
         <option value="$PROJECT_DIR$/StateBliss/IStateHandlerDefinition.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/StateHandlerDefinition.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/State.cs" />
-        <option value="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" />
         <option value="$PROJECT_DIR$/StateBliss/StateBuilder/IStateTransitionBuilder.cs" />
         <option value="$PROJECT_DIR$/StateBliss/StateBuilder/IStateFromBuilder.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/StateBuilder/StateTransitionBuilder.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/Delegates/StateChangeHandler.cs" />
         <option value="$PROJECT_DIR$/StateBliss/ActionInfo.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/IStateMachineManager.cs" />
+        <option value="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/StateHandlerDefinition.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/Contexts/GuardStateContext.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/Delegates/OnStateEventHandler.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/StateBuilder/StateTransitionBuilder.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/Contexts/StateContext.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/Contexts/HandlerStateContext.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/Contexts/TriggerCommand.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/Delegates/StateChangeHandler.cs" />
         <option value="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/State.cs" />
       </list>
     </option>
   </component>
@@ -341,7 +332,7 @@
       <workItem from="1566305462009" duration="4682000" />
       <workItem from="1566396667935" duration="1242000" />
       <workItem from="1566629774436" duration="856000" />
-      <workItem from="1566630694107" duration="8755000" />
+      <workItem from="1566630694107" duration="11419000" />
     </task>
     <servers />
   </component>
@@ -391,59 +382,61 @@
     <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="341" y="0" width="698" height="728" key="#StateBliss.SampleApi:_IIS_Express" />
+    <state x="341" y="0" width="698" height="728" key="#StateBliss.SampleApi:_IIS_Express/1366.768" />
     <state x="363" y="99" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" />
     <state x="363" y="99" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/1366.768" />
     <state width="967" height="436" key="DebuggerActiveHint" />
     <state width="967" height="436" key="DebuggerActiveHint/1366.768" />
     <state x="740" y="274" key="FileChooserDialogImpl" />
     <state x="740" y="274" key="FileChooserDialogImpl/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.0.bottom" />
-    <state width="1323" height="98" key="GridCell.Tab.0.bottom/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.0.bottom" />
+    <state width="1323" height="203" key="GridCell.Tab.0.bottom/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.0.bottom/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.0.center" />
-    <state width="1323" height="98" key="GridCell.Tab.0.center/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.0.center" />
+    <state width="1323" height="203" key="GridCell.Tab.0.center/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.0.center/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.0.left" />
-    <state width="1323" height="98" key="GridCell.Tab.0.left/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.0.left" />
+    <state width="1323" height="203" key="GridCell.Tab.0.left/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.0.left/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.0.right" />
-    <state width="1323" height="98" key="GridCell.Tab.0.right/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.0.right" />
+    <state width="1323" height="203" key="GridCell.Tab.0.right/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.0.right/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.1.bottom" />
-    <state width="1323" height="98" key="GridCell.Tab.1.bottom/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.1.bottom" />
+    <state width="1323" height="203" key="GridCell.Tab.1.bottom/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.1.bottom/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.1.center" />
-    <state width="1323" height="98" key="GridCell.Tab.1.center/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.1.center" />
+    <state width="1323" height="203" key="GridCell.Tab.1.center/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.1.center/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.1.left" />
-    <state width="1323" height="98" key="GridCell.Tab.1.left/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.1.left" />
+    <state width="1323" height="203" key="GridCell.Tab.1.left/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.1.left/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.1.right" />
-    <state width="1323" height="98" key="GridCell.Tab.1.right/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.1.right" />
+    <state width="1323" height="203" key="GridCell.Tab.1.right/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.1.right/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.2.bottom" />
-    <state width="1323" height="98" key="GridCell.Tab.2.bottom/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.2.bottom" />
+    <state width="1323" height="203" key="GridCell.Tab.2.bottom/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.2.bottom/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.2.center" />
-    <state width="1323" height="98" key="GridCell.Tab.2.center/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.2.center" />
+    <state width="1323" height="203" key="GridCell.Tab.2.center/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.2.center/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.2.left" />
-    <state width="1323" height="98" key="GridCell.Tab.2.left/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.2.left" />
+    <state width="1323" height="203" key="GridCell.Tab.2.left/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.2.left/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.2.right" />
-    <state width="1323" height="98" key="GridCell.Tab.2.right/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.2.right" />
+    <state width="1323" height="203" key="GridCell.Tab.2.right/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.2.right/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.3.bottom" />
-    <state width="1323" height="98" key="GridCell.Tab.3.bottom/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.3.bottom" />
+    <state width="1323" height="203" key="GridCell.Tab.3.bottom/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.3.bottom/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.3.center" />
-    <state width="1323" height="98" key="GridCell.Tab.3.center/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.3.center" />
+    <state width="1323" height="203" key="GridCell.Tab.3.center/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.3.center/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.3.left" />
-    <state width="1323" height="98" key="GridCell.Tab.3.left/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.3.left" />
+    <state width="1323" height="203" key="GridCell.Tab.3.left/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.3.left/1920.1080" />
-    <state width="1323" height="98" key="GridCell.Tab.3.right" />
-    <state width="1323" height="98" key="GridCell.Tab.3.right/1366.768" />
+    <state width="1323" height="203" key="GridCell.Tab.3.right" />
+    <state width="1323" height="203" key="GridCell.Tab.3.right/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.3.right/1920.1080" />
     <state width="1877" height="347" key="GridCell.Tab.4.bottom" />
     <state width="1877" height="347" key="GridCell.Tab.4.bottom/1920.1080" />
@@ -481,7 +474,7 @@
               <option value="179" />
             </startOffsets>
             <endOffsets>
-              <option value="256" />
+              <option value="248" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="263" />
@@ -491,10 +484,10 @@
           <line>48</line>
           <properties documentPath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" initialLine="49">
             <startOffsets>
-              <option value="2318" />
+              <option value="2333" />
             </startOffsets>
             <endOffsets>
-              <option value="2416" />
+              <option value="2431" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="264" />
@@ -504,10 +497,10 @@
           <line>15</line>
           <properties documentPath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" initialLine="15">
             <startOffsets>
-              <option value="369" />
+              <option value="361" />
             </startOffsets>
             <endOffsets>
-              <option value="467" />
+              <option value="451" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="265" />
@@ -540,16 +533,55 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs</url>
-          <line>31</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" initialLine="31">
+          <line>30</line>
+          <properties documentPath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" initialLine="30">
             <startOffsets>
-              <option value="1022" />
+              <option value="988" />
             </startOffsets>
             <endOffsets>
-              <option value="1058" />
+              <option value="989" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="270" />
+          <option name="timeStamp" value="271" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs</url>
+          <line>46</line>
+          <properties documentPath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" initialLine="46">
+            <startOffsets>
+              <option value="1532" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1533" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="272" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/StateBliss/StateMachineManager.cs</url>
+          <line>102</line>
+          <properties documentPath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" initialLine="114">
+            <startOffsets>
+              <option value="4504" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4505" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="273" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/StateBliss/StateHandlerDefinition.cs</url>
+          <line>41</line>
+          <properties documentPath="$PROJECT_DIR$/StateBliss/StateHandlerDefinition.cs" initialLine="41">
+            <startOffsets>
+              <option value="1339" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1340" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="274" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

@@ -78,34 +78,34 @@ namespace StateBliss
             stateTransitionInfo.Handlers.Add((actionInfo, handlerType));
         }
 
-        private void AddHandlerWithContext<TTriggerCommand>(HandlerType handlerType, int fromState, int toState,
-            TTriggerCommand context,
-            IEnumerable<OnStateEventHandler<TState, TTriggerCommand>> handlers)
-            where TTriggerCommand : TriggerCommand<TState>
-        {
-            var stateType = typeof(TState);
-            if (context != null && context.StateType != stateType)
-                throw new StateTypeMismatchException(
-                    $"The type {context.StateType.FullName} is not matched to the required type {stateType.FullName}");
-
-            var stateTransitionInfo = _stateHandlerDefinition.Transitions.SingleOrDefault(a => a.From == fromState && a.To == toState);
-            if (stateTransitionInfo == null)
-            {
-                stateTransitionInfo = new StateTransitionInfo
-                {
-                    From = fromState,
-                    To = toState
-                };
-                _stateHandlerDefinition.AddTransition(stateTransitionInfo);
-            }
-
-//            foreach (var handler in handlers)
-//                stateTransitionInfo.Handlers.Add((
-//                    new ActionInfo<TState>(handler, handlerType),
-//                    handlerType));
-//            
-//            
-        }
+//        private void AddHandlerWithContext<TTriggerCommand>(HandlerType handlerType, int fromState, int toState,
+//            TTriggerCommand context,
+//            IEnumerable<OnStateEventHandler<TState, TTriggerCommand>> handlers)
+//            where TTriggerCommand : TriggerCommand<TState>
+//        {
+//            var stateType = typeof(TState);
+//            if (context != null && context.StateType != stateType)
+//                throw new StateTypeMismatchException(
+//                    $"The type {context.StateType.FullName} is not matched to the required type {stateType.FullName}");
+//
+//            var stateTransitionInfo = _stateHandlerDefinition.Transitions.SingleOrDefault(a => a.From == fromState && a.To == toState);
+//            if (stateTransitionInfo == null)
+//            {
+//                stateTransitionInfo = new StateTransitionInfo
+//                {
+//                    From = fromState,
+//                    To = toState
+//                };
+//                _stateHandlerDefinition.AddTransition(stateTransitionInfo);
+//            }
+//
+////            foreach (var handler in handlers)
+////                stateTransitionInfo.Handlers.Add((
+////                    new ActionInfo<TState>(handler, handlerType),
+////                    handlerType));
+////            
+////            
+//        }
 
         public void SetContext(object context)
         {

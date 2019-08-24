@@ -36,10 +36,30 @@ namespace StateBliss
         protected abstract void OnDefineState();
     }
 
+    internal class AggregateStateHandlerDefinition<TState> : StateHandlerDefinition<TState> where TState : Enum
+    {
+        public AggregateStateHandlerDefinition(IStateDefinition[] definitions)
+        {
+            foreach (var definition in definitions)
+            {
+                foreach (var transition in definition.Transitions)
+                {
+                    AddTransition(transition);
+                }
+                
+                AddDisabledSameStateTransitions(definition.DisabledSameStateTransitions.ToArray());
+            }
+        }
+        
+        public override void Define(IStateFromBuilder<TState> builder)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    
     public abstract class StateHandlerDefinition<TState> : StateHandlerDefinition where TState : Enum
     {
         private StateTransitionBuilder<TState> StateTransitionBuilder;
-        internal StateTransitionBuilder<TState> Builder { get; set; }
 
         protected StateHandlerDefinition() : base(typeof(TState))
         {

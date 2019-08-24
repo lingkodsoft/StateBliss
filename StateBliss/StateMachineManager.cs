@@ -22,7 +22,7 @@ namespace StateBliss
         private static readonly StateMachineManager _default = new StateMachineManager();
         private ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
-        public static StateMachineManager Default => _default;
+        public static IStateMachineManager Default => _default;
         
         public StateMachineManager()
         {
@@ -33,7 +33,7 @@ namespace StateBliss
         public event EventHandler<(Exception exception, State state, int fromState, int toState)> OnHandlerException;
 
         private List<IStateDefinition> _stateDefinitions = new List<IStateDefinition>();
-        public void Register(IEnumerable<Assembly> assemblyDefinitions, Func<Type, object> serviceProvider = null)
+        void IStateMachineManager.Register(IEnumerable<Assembly> assemblyDefinitions, Func<Type, object> serviceProvider = null)
         {
             Start();
             
@@ -64,75 +64,49 @@ namespace StateBliss
             }
         }
 
-        public void Register(IEnumerable<IStateDefinition> definitions)
+        public static void Register(IEnumerable<Assembly> assemblyDefinitions, Func<Type, object> serviceProvider = null)
         {
-            Start();
-//            UnregisterStateFromDefaultInstance(state);
-//            state.Manager = this;
-            
-//            if (!_managedStates.ContainsKey(state.Id))
-//            {
-//                var value = new WeakReference<State>(state);
-//                while (!_managedStates.TryAdd(state.Id, value))
-//                {
-//                    _spinWait.SpinOnce();
-//                } 
-//            }
-            RemovedDereferenceStatesFromDefaultInstance();
+            Default.Register(assemblyDefinitions, serviceProvider);
         }
 
-//        public static void Trigger(string triggerName)
+
+        public static void Trigger<TState>(TState currentState, TState nextState, object data)
+            where TState : Enum
+        {
+            Default.Trigger(currentState, nextState, data);
+        }
+
+//        public void Register(IEnumerable<IStateDefinition> definitions)
 //        {
-//            foreach (var wrManager in _managers)
-//            {
-//                if (wrManager.TryGetTarget(out var manager))
-//                {
-//                    manager.TriggerStateChange(triggerName);
-//                }
-//            }
+//            Start();
+////            UnregisterStateFromDefaultInstance(state);
+////            state.Manager = this;
+//            
+////            if (!_managedStates.ContainsKey(state.Id))
+////            {
+////                var value = new WeakReference<State>(state);
+////                while (!_managedStates.TryAdd(state.Id, value))
+////                {
+////                    _spinWait.SpinOnce();
+////                } 
+////            }
+//            RemovedDereferenceStatesFromDefaultInstance();
 //        }
-//        
-//        public static void Trigger<TState>(TriggerCommand<TState> trigger)
-//            where TState : Enum
-//        {
-//            ((IStateMachineManager) Default).Trigger(trigger);
-//        }
-        
-//        void IStateMachineManager.Trigger<TState>(TriggerCommand<TState> trigger)
-//        {
-//            var state = GetState<TState>(trigger.Uid);
-//            trigger.State = state;
-////            trigger.ChangeStateSucceeded = state.ChangeTo(trigger.NextState, trigger);
-//        }
-        
-        public void Trigger<TState>(TState currentState, TState nextState, object context) where TState : Enum
+
+        void IStateMachineManager.Trigger<TState>(TState currentState, TState nextState, object data)
         {
             var currentStateObject = GetState(currentState);
-            ChangeStateInternal(nextState, currentStateObject, context);
+            ChangeStateInternal(nextState, currentStateObject, data);
         }
         
         public State<TState> GetState<TState>(TState currentState) where TState : Enum
         {
-            return new State<TState>(currentState,
-                (StateHandlerDefinition<TState>) _stateDefinitions.Single(a => a.EnumType == typeof(TState)), this);
+            var definitions = _stateDefinitions.Where(a => a.EnumType == typeof(TState)).ToArray();
+            var definition = definitions.Count() > 1
+                ? new AggregateStateHandlerDefinition<TState>(definitions)
+                : definitions.Single();
+            return new State<TState>(currentState, (StateHandlerDefinition<TState>) definition, this);
         }
-        
-        
-//        private void TriggerStateChange(string triggerName)
-//        {
-//            foreach (var wrState in _managedStates.Values)
-//            {
-//                if (wrState.TryGetTarget(out var s))
-//                {
-////                    var triggerInfo = s.StateTransitionBuilder.Triggers.SingleOrDefault(a => a.trigger == triggerName);
-////
-////                    if (triggerInfo.fromState == null || triggerInfo.state.Current == triggerInfo.fromState)
-////                    {
-////                        triggerInfo.state?.ChangeTo(triggerInfo.toState);
-////                    }
-//                }
-//            }
-//        }
         
         private void RemoveDereferencedManagers()
         {
@@ -265,53 +239,13 @@ namespace StateBliss
                 spin.SpinOnce();
             }
         }
-//
-//        public static void SetDefaultStateFactory(StateFactory stateFactory)
-//        {
-//            Default.SetStateFactory(stateFactory);
-//        }
-
-//        public void SetStateFactory(StateFactory stateFactory)
-//        {
-//            _stateFactory = stateFactory;
-//        }
-        
-//        public static bool ChangeState<TState>(TState newState, Guid id) where TState : Enum
-//        {
-//            return Default.ChangeStateInternal(newState, id);
-//        }
-        
-//        public static State<TState> GetState<TState>(Guid id) where TState : Enum
-//        {
-//            return (State<TState>) Default._stateFactory(typeof(TState), id);
-//        }
-//        
-//        State<TState> IStateMachineManager.GetState<TState>(Guid id)
-//        {
-//            return GetStateInternal<TState>(id);
-//        }
-//
-//        private State<TState> GetStateInternal<TState>(Guid id) where TState : Enum
-//        {
-//            return (State<TState>) _stateFactory(typeof(TState), id);
-//        }
-//        
-//        bool IStateMachineManager.ChangeState<TState>(TState newState, Guid id)
-//        {
-//            return ChangeStateInternal(newState, id, null);
-//        }
-
-//        public bool ChangeState<TState>(State<TState> state, TState newState) where TState : Enum
-//        {
-//            return ChangeStateInternal(newState, null, state);
-//        }
 
         public void RegisterHandlerDefinition(IEnumerable<IStateDefinition> handlerDefinitions)
         {
             //TODO: RegisterHandlerDefinition
         }
         
-        private bool ChangeStateInternal<TState>(TState newState, State<TState> state, object context) where TState : Enum
+        private bool ChangeStateInternal<TState>(TState newState, State<TState> state, object data) where TState : Enum
         {
             int fromState;
             int toState;
@@ -321,7 +255,7 @@ namespace StateBliss
             try
             {
                 stateHandlerDefinition = state.HandlerDefinition;
-                fromState = state.Current.ToInt();
+                fromState = state.Value.ToInt();
                 toState = newState.ToInt();
 
                 //trigger handlers
@@ -333,7 +267,7 @@ namespace StateBliss
                     }
 
                     //On edit guards
-                    if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnEditGuardHandlers(fromState), context))
+                    if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnEditGuardHandlers(fromState), data))
                     {
                         return false;
                     }
@@ -354,19 +288,19 @@ namespace StateBliss
                 }
 
                 //OnExitGuards of new state
-                if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnExitGuardHandlers(fromState), context))
+                if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnExitGuardHandlers(fromState), data))
                 {
                     return false;
                 }
 
                 //OnEnterGuards of new state
-                if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnEnterGuardHandlers(fromState), context))
+                if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnEnterGuardHandlers(fromState), data))
                 {
                     return false;
                 }
 
                 //OnChanging
-                if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnChangingGuardHandlers(fromState, toState), context))
+                if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnChangingGuardHandlers(fromState, toState), data))
                 {
                     return false;
                 }
@@ -427,7 +361,7 @@ namespace StateBliss
             Dispose(false);
         }
         
-        private bool ExecuteGuardHandlers<TState>(State<TState> state, int fromState, int toState, ActionInfo[] handlers, object context) where TState : Enum
+        private bool ExecuteGuardHandlers<TState>(State<TState> state, int fromState, int toState, ActionInfo[] handlers, object data) where TState : Enum
         {
             foreach (var actionInfo in handlers)
             {
@@ -437,7 +371,7 @@ namespace StateBliss
                     {
                         FromState = fromState.ToEnum<TState>(),
                         ToState = toState.ToEnum<TState>(),
-                        TriggerContext = context,
+                        Data = data,
                     };
                     changeInfo.Continue = true;
                     actionInfo.Execute(changeInfo);

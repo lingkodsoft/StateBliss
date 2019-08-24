@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace StateBliss
 {
     public interface IStateMachineManager : IDisposable
     {
-        void Register(IEnumerable<IStateDefinition> definitions);
+        void Register(IEnumerable<Assembly> assemblyDefinitions, Func<Type, object> serviceProvider = null);
+        void Trigger<TState>(TState currentState, TState nextState, object context) where TState : Enum;
+        
+//        void Register(IEnumerable<IStateDefinition> definitions);
 //        State<TState> ChangeState<TState>(State<TState> state, TState newState) where TState : Enum;
 //        bool ChangeState<TState>(TState newState, Guid id) where TState : Enum;
 //        void Trigger<TState>(TriggerCommand<TState> trigger) where TState : Enum;
