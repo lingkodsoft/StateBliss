@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,20 +16,53 @@ namespace StateBliss
         private Task _taskRunner;
         private CancellationTokenSource _taskRunnercts;
         private SpinWait _spinWait = new SpinWait();
-        private StateFactory _stateFactory;
+//        private StateFactory _stateFactory;
         private readonly ManualResetEvent _resetEvent = new ManualResetEvent(false);
         private static readonly List<WeakReference<StateMachineManager>> _managers = new List<WeakReference<StateMachineManager>>();
         private static readonly StateMachineManager _default = new StateMachineManager();
-        public static StateMachineManager Default => _default;
         private ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
+        public static StateMachineManager Default => _default;
+        
         public StateMachineManager()
         {
-            _managers.Add(new WeakReference<StateMachineManager>(this));
-            RemoveDereferencedManagers();
+          //  _managers.Add(new WeakReference<StateMachineManager>(this));
+          //  RemoveDereferencedManagers();
         }
 
-        public event EventHandler<(Exception exception, State state, int fromState, int toState)> OnHandlerException; 
+        public event EventHandler<(Exception exception, State state, int fromState, int toState)> OnHandlerException;
+
+        private List<IStateDefinition> _stateDefinitions = new List<IStateDefinition>();
+        public void Register(IEnumerable<Assembly> assemblyDefinitions, Func<Type, object> serviceProvider = null)
+        {
+            Start();
+            
+            foreach (var assembly in assemblyDefinitions)
+            {
+                foreach (var type in assembly.GetTypes()
+                    .Where(a => a.IsClass && typeof(IStateDefinition).IsAssignableFrom(a)))
+                {
+                    var definition = serviceProvider == null
+                        ? (IStateDefinition) Activator.CreateInstance(type)
+                        : (IStateDefinition) serviceProvider(type);
+                    
+                    var definitionHandlerType = typeof(StateHandlerDefinition<>).MakeGenericType(definition.EnumType);
+                    if (!definitionHandlerType.IsInstanceOfType(definition))
+                    {
+                        throw new ArgumentException("StateDefinition must be of type StateHandlerDefinition<TState>");
+                    }
+
+                    definition.Define();
+                    
+                    if (!definition.Transitions.Any())
+                    {
+                        throw new InvalidOperationException("At least one transition must be defined. You may inherit from StateHandlerDefinition<TState> and define transitions");
+                    }
+
+                    _stateDefinitions.Add(definition);
+                }
+            }
+        }
 
         public void Register(IEnumerable<IStateDefinition> definitions)
         {
@@ -71,46 +105,52 @@ namespace StateBliss
 ////            trigger.ChangeStateSucceeded = state.ChangeTo(trigger.NextState, trigger);
 //        }
         
-        public void Trigger<TState>(TState nextState, object id, object context)
+        public void Trigger<TState>(TState currentState, TState nextState, object context) where TState : Enum
         {
-            //TODO: Trigger<TState>(TState nextState, object id, object context)
+            var currentStateObject = GetState(currentState);
+            ChangeStateInternal(nextState, currentStateObject, context);
         }
         
-        private void TriggerStateChange(string triggerName)
+        public State<TState> GetState<TState>(TState currentState) where TState : Enum
         {
-            foreach (var wrState in _managedStates.Values)
-            {
-                if (wrState.TryGetTarget(out var s))
-                {
-//                    var triggerInfo = s.StateTransitionBuilder.Triggers.SingleOrDefault(a => a.trigger == triggerName);
-//
-//                    if (triggerInfo.fromState == null || triggerInfo.state.Current == triggerInfo.fromState)
-//                    {
-//                        triggerInfo.state?.ChangeTo(triggerInfo.toState);
-//                    }
-                }
-            }
+            return new State<TState>(currentState,
+                (StateHandlerDefinition<TState>) _stateDefinitions.Single(a => a.EnumType == typeof(TState)), this);
         }
+        
+        
+//        private void TriggerStateChange(string triggerName)
+//        {
+//            foreach (var wrState in _managedStates.Values)
+//            {
+//                if (wrState.TryGetTarget(out var s))
+//                {
+////                    var triggerInfo = s.StateTransitionBuilder.Triggers.SingleOrDefault(a => a.trigger == triggerName);
+////
+////                    if (triggerInfo.fromState == null || triggerInfo.state.Current == triggerInfo.fromState)
+////                    {
+////                        triggerInfo.state?.ChangeTo(triggerInfo.toState);
+////                    }
+//                }
+//            }
+//        }
         
         private void RemoveDereferencedManagers()
         {
             _managers.RemoveAll(a => !a.TryGetTarget(out var s));
         }
-        
-        private void UnregisterStateFromDefaultInstance(State state)
-        {
-            var defaultStateManager = (StateMachineManager)Default;
-//            defaultStateManager._managedStates.TryRemove(state.Id, out var s);
-        }
-        
+//        
+//        private void UnregisterStateFromDefaultInstance(State state)
+//        {
+//            _managedStates.TryRemove(state.Id, out var s);
+//        }
+//        
         private void RemovedDereferenceStatesFromDefaultInstance()
         {
-            var defaultStateManager = (StateMachineManager)Default;
-            foreach (var kv in defaultStateManager._managedStates)
+            foreach (var kv in _managedStates)
             {
                 if (!kv.Value.TryGetTarget(out var state))
                 {
-                    defaultStateManager._managedStates.TryRemove(kv.Key, out var s);
+                    _managedStates.TryRemove(kv.Key, out var s);
                 }
             }
         }
@@ -167,7 +207,13 @@ namespace StateBliss
                 
                 try
                 {
-                    item.actionInfo.Execute(item.state, item.fromState, item.toState);
+                    var changeInfo = new StateChangeInfo
+                    {
+                        FromState = item.fromState,
+                        ToState = item.toState,
+                        //TriggerContext = item.context,
+                    };
+                    item.actionInfo.Execute(changeInfo);
                 }
                 catch (Exception e)
                 {
@@ -219,37 +265,37 @@ namespace StateBliss
                 spin.SpinOnce();
             }
         }
+//
+//        public static void SetDefaultStateFactory(StateFactory stateFactory)
+//        {
+//            Default.SetStateFactory(stateFactory);
+//        }
 
-        public static void SetDefaultStateFactory(StateFactory stateFactory)
-        {
-            Default.SetStateFactory(stateFactory);
-        }
-
-        public void SetStateFactory(StateFactory stateFactory)
-        {
-            _stateFactory = stateFactory;
-        }
+//        public void SetStateFactory(StateFactory stateFactory)
+//        {
+//            _stateFactory = stateFactory;
+//        }
         
-        public static bool ChangeState<TState>(TState newState, Guid id) where TState : Enum
-        {
-            return Default.ChangeStateInternal(newState, id);
-        }
+//        public static bool ChangeState<TState>(TState newState, Guid id) where TState : Enum
+//        {
+//            return Default.ChangeStateInternal(newState, id);
+//        }
         
-        public static State<TState> GetState<TState>(Guid id) where TState : Enum
-        {
-            return (State<TState>) Default._stateFactory(typeof(TState), id);
-        }
-        
-        State<TState> IStateMachineManager.GetState<TState>(Guid id)
-        {
-            return GetStateInternal<TState>(id);
-        }
-
-        private State<TState> GetStateInternal<TState>(Guid id) where TState : Enum
-        {
-            return (State<TState>) _stateFactory(typeof(TState), id);
-        }
-        
+//        public static State<TState> GetState<TState>(Guid id) where TState : Enum
+//        {
+//            return (State<TState>) Default._stateFactory(typeof(TState), id);
+//        }
+//        
+//        State<TState> IStateMachineManager.GetState<TState>(Guid id)
+//        {
+//            return GetStateInternal<TState>(id);
+//        }
+//
+//        private State<TState> GetStateInternal<TState>(Guid id) where TState : Enum
+//        {
+//            return (State<TState>) _stateFactory(typeof(TState), id);
+//        }
+//        
 //        bool IStateMachineManager.ChangeState<TState>(TState newState, Guid id)
 //        {
 //            return ChangeStateInternal(newState, id, null);
@@ -265,7 +311,7 @@ namespace StateBliss
             //TODO: RegisterHandlerDefinition
         }
         
-        private bool ChangeStateInternal<TState>(TState newState, Guid? id, State<TState> state = null) where TState : Enum
+        private bool ChangeStateInternal<TState>(TState newState, State<TState> state, object context) where TState : Enum
         {
             int fromState;
             int toState;
@@ -274,10 +320,6 @@ namespace StateBliss
             _lock.EnterUpgradeableReadLock();
             try
             {
-                if (state == null)
-                {
-                    state = GetStateInternal<TState>(id.Value);
-                }
                 stateHandlerDefinition = state.HandlerDefinition;
                 fromState = state.Current.ToInt();
                 toState = newState.ToInt();
@@ -285,13 +327,13 @@ namespace StateBliss
                 //trigger handlers
                 if (fromState == toState)
                 {
-                    if (stateHandlerDefinition.DisabledSameStateTransition.Any(a => a.Equals(newState)))
+                    if (stateHandlerDefinition.DisabledSameStateTransitions.Any(a => a.Equals(newState)))
                     {
                         throw new SameStateTransitionDisabledException();
                     }
 
                     //On edit guards
-                    if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnEditGuardHandlers(fromState)))
+                    if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnEditGuardHandlers(fromState), context))
                     {
                         return false;
                     }
@@ -312,19 +354,19 @@ namespace StateBliss
                 }
 
                 //OnExitGuards of new state
-                if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnExitGuardHandlers(fromState)))
+                if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnExitGuardHandlers(fromState), context))
                 {
                     return false;
                 }
 
                 //OnEnterGuards of new state
-                if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnEnterGuardHandlers(fromState)))
+                if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnEnterGuardHandlers(fromState), context))
                 {
                     return false;
                 }
 
                 //OnChanging
-                if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnChangingGuardHandlers(fromState, toState)))
+                if (!ExecuteGuardHandlers(state, fromState, toState, stateHandlerDefinition.GetOnChangingGuardHandlers(fromState, toState), context))
                 {
                     return false;
                 }
@@ -334,14 +376,12 @@ namespace StateBliss
                 //OnExit of current state
                 foreach (var actionInfo in stateHandlerDefinition.GetOnExitHandlers(fromState))
                 {
-                    actionInfo.Command.ChangeStateSucceeded = true;
                     QueueActionForExecution(actionInfo, state, fromState, toState);
                 }
 
                 //OnEnter of new state
                 foreach (var actionInfo in stateHandlerDefinition.GetOnEnteredHandlers(toState))
                 {
-                    actionInfo.Command.ChangeStateSucceeded = true;
                     QueueActionForExecution(actionInfo, state, fromState, toState);
                 }
 
@@ -349,7 +389,6 @@ namespace StateBliss
                 var handlers = stateHandlerDefinition.GetOnChangedHandlers(fromState, toState).ToArray();
                 foreach (var actionInfo in handlers)
                 {
-                    actionInfo.Command.ChangeStateSucceeded = true;
                     QueueActionForExecution(actionInfo, state, fromState, toState);
                 }
                 
@@ -388,20 +427,24 @@ namespace StateBliss
             Dispose(false);
         }
         
-        private bool ExecuteGuardHandlers<TState>(State<TState> state, int fromState, int toState, ActionInfo[] handlers) where TState : Enum
+        private bool ExecuteGuardHandlers<TState>(State<TState> state, int fromState, int toState, ActionInfo[] handlers, object context) where TState : Enum
         {
             foreach (var actionInfo in handlers)
             {
                 try
                 {
-                    var context = (GuardStateContext) actionInfo.Context; 
-                    //context.Continue = false;
-                    
-                    actionInfo.Execute(state, fromState, toState);
+                    var changeInfo = new StateChangeInfo<TState>
+                    {
+                        FromState = fromState.ToEnum<TState>(),
+                        ToState = toState.ToEnum<TState>(),
+                        TriggerContext = context,
+                    };
+                    changeInfo.Continue = true;
+                    actionInfo.Execute(changeInfo);
 
-                    if (context.Continue) continue;
+                    if (changeInfo.Continue) continue;
 
-                    if (context.ThrowExceptionWhenDiscontinued)
+                    if (changeInfo.ThrowExceptionWhenDiscontinued)
                     {
                         throw new StateEnterGuardHandlerDiscontinuedException();
                     }

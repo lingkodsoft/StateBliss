@@ -30,7 +30,6 @@
           <e p="ExpressionExtensions.cs" t="Include" />
           <e p="ObjectExtensions.cs" t="Include" />
         </e>
-        <e p="FindStateResult.cs" t="Include" />
         <e p="Handlers.cs" t="Include" />
         <e p="HandlerType.cs" t="Include" />
         <e p="IFindState.cs" t="Include" />
@@ -89,9 +88,7 @@
         <e p="StateFactoryTestHelper.cs" t="Include" />
       </e>
     </e>
-    <e p="C:\Users\mike\.Rider2019.2\config\consoles\db" t="IncludeRecursive" />
-    <e p="C:\Users\mike\.Rider2019.2\config\extensions" t="IncludeRecursive" />
-    <e p="C:\Users\mike\.Rider2019.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\mike\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_StateBliss.269002201.00" t="ExcludeRecursive" />
+    <e p="C:\Users\lingkodsoft\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\lingkodsoft\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_StateBliss.269002201.00" t="ExcludeRecursive" />
   </component>
 </project>

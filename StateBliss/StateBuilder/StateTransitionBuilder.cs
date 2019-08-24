@@ -34,69 +34,9 @@ namespace StateBliss
             return this;
         }
 
-        public void TriggerTo(TState nextState, string trigger)
-        {
-            Triggers.Add((trigger, null, nextState.ToInt()));
-        }
-
-        public void OnEntered<TTriggerCommand>(TState state, OnStateEventHandler<TState, TTriggerCommand> handler)
-            where TTriggerCommand : TriggerCommand<TState>
-        {
-            AddHandler(-1, state.ToInt(), HandlerType.OnEntered,
-                new ActionInfo<TState, TTriggerCommand>(null, handler, HandlerType.OnEntered));
-        }
-
-        public void OnEntered(TState state, OnStateEventHandler<TState, TriggerCommand<TState>> handler)
-        {
-            AddHandler(-1, state.ToInt(), HandlerType.OnEntered,
-                new ActionInfo<TState, TriggerCommand<TState>>(null, handler, HandlerType.OnEntered));
-        }
-
-        public void OnEntered<TTriggerCommand, TContext>(TState state, Func<TContext> contextProvider,
-            params OnStateEventHandler<TState, TTriggerCommand, TContext>[] handlers)
-            where TContext : new()
-            where TTriggerCommand : TriggerCommand<TState>, new()
-        {
-            foreach (var handler in handlers)
-                AddHandler(-1, state.ToInt(), HandlerType.OnEntered,
-                    new ActionInfo<TState, TTriggerCommand, TContext>(null, contextProvider, handler, HandlerType.OnEntered));
-        }
-
-        public void OnEntered<TTriggerCommand>(TState state, params OnStateEventHandler<TState, TTriggerCommand, StateContext<TState>>[] handlers) where TTriggerCommand : TriggerCommand<TState>, new()
-        {
-            var context = new StateContext<TState>();
-            foreach (var handler in handlers)
-                AddHandler(-1, state.ToInt(), HandlerType.OnEntered,
-                    new ActionInfo<TState, TTriggerCommand, StateContext<TState>>(null, () => context, handler, HandlerType.OnEntered));
-        }
-
-        public void OnEntered<TTriggerCommand, T>(TState state, T target, Expression<Func<T, OnStateEventHandler<TState, TTriggerCommand>>> handler)
-            where T : class
-            where TTriggerCommand : TriggerCommand<TState>
-        {
-            AddHandler(-1, state.ToInt(), HandlerType.OnEntered,
-                new ActionInfo<TState, TTriggerCommand>(null, handler.GetMethodName(), HandlerType.OnEntered, target));
-        }
-
-        public void OnEntered<T>(TState state, T target, Expression<Func<T, OnStateEventHandler<TState, TriggerCommand<TState>>>> handler)
-        {
-            AddHandler(-1, state.ToInt(), HandlerType.OnEntered,
-                new ActionInfo<TState, TriggerCommand<TState>>(null, handler.GetMethodName(), HandlerType.OnEntered, target));
-        }
-
-        public void OnEntered<TTriggerCommand, T, TContext>(TState state, T target, Func<TContext> contextProvider,
-            params Expression<Func<T, OnStateEventHandler<TState, TTriggerCommand, TContext>>>[] handlers)
-            where TContext : new()
-            where TTriggerCommand : TriggerCommand<TState>, new()
-        {
-            foreach (var handler in handlers)
-                AddHandler(-1, state.ToInt(), HandlerType.OnEntered,
-                    new ActionInfo<TState, TTriggerCommand, TContext>(null, contextProvider, handler.GetMethodName(), HandlerType.OnEntered, target));
-        }
-
         public void DisableSameStateTransitionFor(params TState[] states)
         {
-            _stateHandlerDefinition.AddDisabledSameStateTransitions(states);
+            _stateHandlerDefinition.AddDisabledSameStateTransitions(states.Select(a => a.ToInt()).ToArray());
         }
 
         public IStateTransitionBuilder<TState> To(TState state)
@@ -106,153 +46,22 @@ namespace StateBliss
             return this;
         }
 
-        public IStateTransitionBuilder<TState> Changing<TTriggerCommand>(
-            OnStateEventGuardHandler<TState, TTriggerCommand, GuardStateContext<TState>> handler)
-            where TTriggerCommand : TriggerCommand<TState>
-        {
-            AddHandler(_stateTransitionInfo.From, _stateTransitionInfo.To, HandlerType.OnChanging,
-                new GuardActionInfo<TState, TTriggerCommand>(null, handler, HandlerType.OnChanging));
-            return this;
-        }
+     
 
-        public IStateTransitionBuilder<TState> Changing(
-            OnStateEventGuardHandler<TState, TriggerCommand<TState>> handler)
-        {
-            AddHandler(_stateTransitionInfo.From, _stateTransitionInfo.To, HandlerType.OnChanging,
-                new GuardActionInfo<TState>(handler, HandlerType.OnChanging));
-            return this;
-        }
-
-        public IStateTransitionBuilder<TState> Changing<TTriggerCommand>(
-            params OnStateEventGuardHandler<TState, TTriggerCommand, GuardStateContext<TState>>[] handlers)
-            where TTriggerCommand : TriggerCommand<TState>
-        {
-            foreach (var handler in handlers)
-                AddHandler(_stateTransitionInfo.From, _stateTransitionInfo.To, HandlerType.OnChanging,
-                    new GuardActionInfo<TState, TTriggerCommand, GuardStateContext<TState>>(null,
-                        () => new GuardStateContext<TState>(), handler, HandlerType.OnChanging));
-            return this;
-        }
-
-        public IStateTransitionBuilder<TState> Changing<TTriggerCommand, TContext>(Func<TContext> contextProvider,
-            params OnStateEventGuardHandler<TState, TTriggerCommand, TContext>[] handlers)
-            where TTriggerCommand : TriggerCommand<TState>, new()
-            where TContext : GuardStateContext<TState>, new()
-        {
-            foreach (var handler in handlers)
-                AddHandler(_stateTransitionInfo.From, _stateTransitionInfo.To, HandlerType.OnChanging,
-                    new GuardActionInfo<TState, TTriggerCommand, TContext>(null, contextProvider, handler,
-                        HandlerType.OnChanging));
-            return this;
-        }
-
-        public IStateTransitionBuilder<TState> Changing<TTriggerCommand, T>(T target,
-            Expression<Func<T, OnStateEventGuardHandler<TState, TTriggerCommand>>> handler)
-            where T : class where TTriggerCommand : TriggerCommand<TState>
-        {
-            AddHandler(_stateTransitionInfo.From, _stateTransitionInfo.To, HandlerType.OnChanging,
-                new GuardActionInfo<TState, TTriggerCommand>(null, handler.GetMethodName(), HandlerType.OnChanging,
-                    target));
-            return this;
-        }
-
-        public IStateTransitionBuilder<TState> Changing<T>(T target,
-            Expression<Func<T, OnStateEventGuardHandler<TState, TriggerCommand<TState>>>> handler) where T : class
-        {
-            AddHandler(_stateTransitionInfo.From, _stateTransitionInfo.To, HandlerType.OnChanging,
-                new GuardActionInfo<TState>(handler.GetMethodName(), HandlerType.OnChanging, target));
-            return this;
-        }
-
-        public IStateTransitionBuilder<TState> Changing<TTriggerCommand, T, TContext>(T target,
-            Func<TContext> contextProvider,
-            params Expression<Func<T, OnStateEventGuardHandler<TState, TTriggerCommand, TContext>>>[] handlers)
+        public IStateTransitionBuilder<TState> Changing<T, TTriggerContext>(T target, Expression<Func<T, StateChangeHandler<TState, TTriggerContext>>> handler) 
             where T : class
-            where TTriggerCommand : TriggerCommand<TState>, new()
-            where TContext : GuardStateContext<TState>, new()
         {
-            foreach (var handler in handlers)
-                AddHandler(_stateTransitionInfo.From, _stateTransitionInfo.To, HandlerType.OnChanging,
-                    new GuardActionInfo<TState, TTriggerCommand, TContext>(null, contextProvider,
-                        handler.GetMethodName(),
-                        HandlerType.OnChanging, target));
+            throw new NotImplementedException();
+        }
+
+        public IStateTransitionBuilder<TState> Changing<T>(T target, Expression<Func<T, StateChangeHandler<TState>>> handler) where T : class
+        {
+            AddHandler(_stateTransitionInfo.From, _stateTransitionInfo.To, HandlerType.OnChanging,
+                new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnChanging, target));
             return this;
         }
 
-        public IStateTransitionBuilder<TState> Changing<TTriggerCommand>(TState state, 
-            params OnStateEventHandler<TState, TTriggerCommand, GuardStateContext<TState>>[] handlers)
-            where TTriggerCommand : TriggerCommand<TState>, new()
-        {
-            var context = new GuardStateContext<TState>();
-            foreach (var handler in handlers)
-                AddHandler(-1, state.ToInt(), HandlerType.OnEntered,
-                    new ActionInfo<TState, TTriggerCommand, GuardStateContext<TState>>(null, () => context, handler, HandlerType.OnEntered));
-            return this;
-        }
-
-        public IStateTransitionBuilder<TState> Changed<TTriggerCommand>(
-            OnStateEventHandler<TState, TTriggerCommand> handler) where TTriggerCommand : TriggerCommand<TState>
-        {
-            AddHandler(_stateTransitionInfo.From, _stateTransitionInfo.To, HandlerType.OnChanged,
-                new ActionInfo<TState, TTriggerCommand>(null, handler, HandlerType.OnChanged));
-            return this;
-        }
-
-        public IStateTransitionBuilder<TState> Changed(OnStateEventHandler<TState, TriggerCommand<TState>> handler)
-        {
-            AddHandler(_stateTransitionInfo.From, _stateTransitionInfo.To, HandlerType.OnChanged,
-                new ActionInfo<TState, TriggerCommand<TState>>(null, handler, HandlerType.OnChanged));
-            return this;
-        }
-
-        public IStateTransitionBuilder<TState> Changed<TTriggerCommand, TContext>(Func<TContext> contextProvider,
-            params OnStateEventHandler<TState, TTriggerCommand, TContext>[] handlers)
-            where TTriggerCommand : TriggerCommand<TState>, new() where TContext : new()
-        {
-            foreach (var handler in handlers)
-                AddHandler(_stateTransitionInfo.From, _stateTransitionInfo.To, HandlerType.OnChanged,
-                    new ActionInfo<TState, TTriggerCommand, TContext>(null, contextProvider, handler,
-                        HandlerType.OnChanged));
-            return this;
-        }
-
-        public IStateTransitionBuilder<TState> Changed<TTriggerCommand, T>(T target,
-            Expression<Func<T, OnStateEventHandler<TState, TTriggerCommand>>> handler) where T : class
-            where TTriggerCommand : TriggerCommand<TState>
-        {
-            AddHandler(_stateTransitionInfo.From, _stateTransitionInfo.To, HandlerType.OnChanged,
-                new ActionInfo<TState, TTriggerCommand>(null, handler.GetMethodName(), HandlerType.OnChanged, target));
-            return this;
-        }
-
-        public IStateTransitionBuilder<TState> Changed<T>(T target,
-            Expression<Func<T, OnStateEventHandler<TState, TriggerCommand<TState>>>> handler)
-        {
-            AddHandler(_stateTransitionInfo.From, _stateTransitionInfo.To, HandlerType.OnChanged,
-                new ActionInfo<TState, TriggerCommand<TState>>(null, handler.GetMethodName(), HandlerType.OnChanged,
-                    target));
-            return this;
-        }
-
-        public IStateTransitionBuilder<TState> Changed<TTriggerCommand, T, TContext>(T target,
-            Func<TContext> contextProvider,
-            params Expression<Func<T, OnStateEventHandler<TState, TTriggerCommand, TContext>>>[] handlers)
-            where TTriggerCommand : TriggerCommand<TState>, new() where TContext : new()
-        {
-            foreach (var handler in handlers)
-                AddHandler(_stateTransitionInfo.From, _stateTransitionInfo.To, HandlerType.OnChanged,
-                    new ActionInfo<TState, TTriggerCommand, TContext>(null, contextProvider, handler.GetMethodName(),
-                        HandlerType.OnChanged, target));
-            return this;
-        }
-
-        public IStateTransitionBuilder<TState> TriggeredBy(string trigger)
-        {
-            Triggers.Add((trigger, _stateTransitionInfo.From, _stateTransitionInfo.To));
-            return this;
-        }
-
-
+     
         private void AddHandler(int fromState, int toState, HandlerType handlerType, ActionInfo actionInfo)
         {
             var stateTransitionInfo = _stateHandlerDefinition.Transitions.SingleOrDefault(a => a.From == fromState && a.To == toState);
@@ -290,10 +99,12 @@ namespace StateBliss
                 _stateHandlerDefinition.AddTransition(stateTransitionInfo);
             }
 
-            foreach (var handler in handlers)
-                stateTransitionInfo.Handlers.Add((
-                    new ActionInfo<TState, TTriggerCommand>(context, handler, handlerType),
-                    handlerType));
+//            foreach (var handler in handlers)
+//                stateTransitionInfo.Handlers.Add((
+//                    new ActionInfo<TState>(handler, handlerType),
+//                    handlerType));
+//            
+//            
         }
 
         public void SetContext(object context)
@@ -302,12 +113,12 @@ namespace StateBliss
             foreach (var handlerInfo in stateTransitionInfo.Handlers)
                 handlerInfo.Item1.Context = context;
         }
-
-        public void SetCommand(TriggerCommand command)
-        {
-            foreach (var stateTransitionInfo in _stateHandlerDefinition.Transitions)
-            foreach (var handlerInfo in stateTransitionInfo.Handlers)
-                handlerInfo.Item1.Command = command;
-        }
+//
+//        public void SetCommand(TriggerCommand command)
+//        {
+//            foreach (var stateTransitionInfo in _stateHandlerDefinition.Transitions)
+//            foreach (var handlerInfo in stateTransitionInfo.Handlers)
+//                handlerInfo.Item1.Command = command;
+//        }
     }
 }

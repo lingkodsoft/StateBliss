@@ -7,33 +7,33 @@ namespace StateBliss
     {
         IStateToBuilder<TState> From(TState state);
 
-        void OnEntered<TTriggerCommand>(TState state, OnStateEventHandler<TState, TTriggerCommand> handler)
-            where TTriggerCommand : TriggerCommand<TState>;
-        
-        void OnEntered(TState state, OnStateEventHandler<TState, TriggerCommand<TState>> handler);
-        
-        void OnEntered<TTriggerCommand, TContext>(TState state, Func<TContext> contextProvider, 
-            params OnStateEventHandler<TState, TTriggerCommand, TContext>[] handlers)
-            where TContext : new()
-            where TTriggerCommand : TriggerCommand<TState>, new();
-       
-        void OnEntered<TTriggerCommand>(TState state, 
-            params OnStateEventHandler<TState, TTriggerCommand, StateContext<TState>>[] handlers)
-            where TTriggerCommand : TriggerCommand<TState>, new();
-        
-        void OnEntered<TTriggerCommand, T>(TState state, T target, Expression<Func<T, OnStateEventHandler<TState, TTriggerCommand>>> handler)
-            where T : class
-            where TTriggerCommand : TriggerCommand<TState>;
-        
-        void OnEntered<T>(TState state, T target, Expression<Func<T, OnStateEventHandler<TState, TriggerCommand<TState>>>> handler);
-
-        void OnEntered<TTriggerCommand, T, TContext>(TState state, T target, Func<TContext> contextProvider,
-            params Expression<Func<T, OnStateEventHandler<TState, TTriggerCommand, TContext>>>[] handlers)
-            where TContext : new()
-            where TTriggerCommand : TriggerCommand<TState>, new();
-
-
-
+//        void OnEntered<TTriggerCommand>(TState state, OnStateEventHandler<TState, TTriggerCommand> handler)
+//            where TTriggerCommand : TriggerCommand<TState>;
+//        
+//        void OnEntered(TState state, OnStateEventHandler<TState, TriggerCommand<TState>> handler);
+//        
+//        void OnEntered<TTriggerCommand, TContext>(TState state, Func<TContext> contextProvider, 
+//            params OnStateEventHandler<TState, TTriggerCommand, TContext>[] handlers)
+//            where TContext : new()
+//            where TTriggerCommand : TriggerCommand<TState>, new();
+//       
+//        void OnEntered<TTriggerCommand>(TState state, 
+//            params OnStateEventHandler<TState, TTriggerCommand, StateContext<TState>>[] handlers)
+//            where TTriggerCommand : TriggerCommand<TState>, new();
+//        
+//        void OnEntered<TTriggerCommand, T>(TState state, T target, Expression<Func<T, OnStateEventHandler<TState, TTriggerCommand>>> handler)
+//            where T : class
+//            where TTriggerCommand : TriggerCommand<TState>;
+//        
+//        void OnEntered<T>(TState state, T target, Expression<Func<T, OnStateEventHandler<TState, TriggerCommand<TState>>>> handler);
+//
+//        void OnEntered<TTriggerCommand, T, TContext>(TState state, T target, Func<TContext> contextProvider,
+//            params Expression<Func<T, OnStateEventHandler<TState, TTriggerCommand, TContext>>>[] handlers)
+//            where TContext : new()
+//            where TTriggerCommand : TriggerCommand<TState>, new();
+//
+//
+//
 
 
 
@@ -80,6 +80,6 @@ namespace StateBliss
 //            where TContext : GuardStateContext<TState>, new();
 
         void DisableSameStateTransitionFor(params TState[] states);
-        void TriggerTo(TState nextState, string trigger);
+//        void TriggerTo(TState nextState, string trigger);
     }
 }

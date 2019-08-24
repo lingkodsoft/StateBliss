@@ -5,39 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bca49a86-855e-4154-a37f-5fe7b9bb7e0e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StateBliss/Delegates/StateChangeHandler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StateBliss/FindStateResult.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StateBliss/IFindState.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StateBliss/IStateHandlerDefinition.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StateBliss/StateHandlerDefinition.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.StateBliss/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StateBliss/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.StateBliss/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StateBliss/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/Controllers/ValuesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/Controllers/ValuesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/bin/Debug/netcoreapp2.2/StateBliss.SampleApi.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/bin/Debug/netcoreapp2.2/StateBliss.SampleApi.deps.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/bin/Debug/netcoreapp2.2/StateBliss.SampleApi.runtimeconfig.dev.json" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/bin/Debug/netcoreapp2.2/StateBliss.SampleApi.runtimeconfig.dev.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/obj/Debug/netcoreapp2.2/StateBliss.SampleApi.RazorAssemblyInfo.cache" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/obj/Debug/netcoreapp2.2/StateBliss.SampleApi.RazorAssemblyInfo.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/obj/Debug/netcoreapp2.2/StateBliss.SampleApi.RazorAssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/obj/Debug/netcoreapp2.2/StateBliss.SampleApi.RazorAssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/obj/Debug/netcoreapp2.2/StateBliss.SampleApi.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/obj/Debug/netcoreapp2.2/StateBliss.SampleApi.assets.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/obj/StateBliss.SampleApi.csproj.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/obj/StateBliss.SampleApi.csproj.nuget.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/obj/StateBliss.SampleApi.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/obj/StateBliss.SampleApi.csproj.nuget.g.props" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss.SampleApi/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.SampleApi/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss.Tests/StateBliss.Tests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.Tests/StateBliss.Tests.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss.Tests/StateFactoryTestHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.Tests/StateFactoryTestHelper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss/ActionInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/ActionInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss/Contexts/GuardStateContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/Contexts/GuardStateContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss/Contexts/HandlerStateContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/Contexts/HandlerStateContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss/Contexts/StateContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/Contexts/StateContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss/Contexts/TriggerCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/Contexts/TriggerCommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss/Extensions/StateExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss/HandlerType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/HandlerType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss/IState.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/Delegates/StateChangeHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/Delegates/StateChangeHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/FindStateResult.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/IStateHandlerDefinition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/IStateHandlerDefinition.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss/IStateMachineManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/IStateMachineManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss/State.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/State.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss/StateBuilder/IStateFromBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/StateBuilder/IStateFromBuilder.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss/StateBuilder/IStateTransitionBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/StateBuilder/IStateTransitionBuilder.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss/StateBuilder/StateTransitionBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/StateBuilder/StateTransitionBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/StateHandlerDefinition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/StateHandlerDefinition.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StateBliss/StateTransitionInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/StateTransitionInfo.cs" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -73,75 +60,58 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/659CD5F0-C4CE-410C-B23A-6CADD71BB76F/25/2b2bdd8c/Task.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Delegates/OnStateEventHandler.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/659CD5F0-C4CE-410C-B23A-6CADD71BB76F/4f/56389386/ValueTuple`4.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/Contexts/HandlerStateContext.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/Contexts/GuardStateContext.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/Exceptions/NoRuleDefinedForStateTransitionException.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/StateFactory.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/Exceptions/SameStateTransitionDisabledException.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/Exceptions/StateTypeMismatchException.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/Controllers/PayOrderTriggerContext.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/Exceptions/StateEnterGuardHandlerDiscontinuedException.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/IStateMachineManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/StateHandlerDefinition.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/Extensions/ExpressionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/Extensions/ObjectExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/IFindState.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/Extensions/EnumExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/HandlerType.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/StateBuilder/IStateFromBuilder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/StateTransitionInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/StateBuilder/IStateToBuilder.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/StateBuilder/IStateFromBuilder.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/xunit/xunit/ec78fa1342ba4918d68752713dd7dc8f418288b8/src/xunit.assert/Asserts/ExceptionAsserts.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/57139BFC-E1DA-4913-8884-2BBBF31D74D3/d5/5ecc1609/Enum.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/57139BFC-E1DA-4913-8884-2BBBF31D74D3/bc/ad028302/Action`2.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/xunit/xunit/ec78fa1342ba4918d68752713dd7dc8f418288b8/src/xunit.assert/Asserts/EqualityAsserts.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/127E718A-C42E-4542-A71B-54CEC3EF156B/18/1e86c897/WebHostBuilder.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/xunit/xunit/ec78fa1342ba4918d68752713dd7dc8f418288b8/src/xunit.assert/Asserts/Record.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss.Tests/GuardContextTests.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Extensions/EnumExtensions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4156DEFD-3D50-4A5F-A099-C2B49343A450/fb/9b7a9962/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss.Tests/MultiThreadingTests.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Extensions/ExpressionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss.Tests/OrderTests.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/xunit/xunit/ec78fa1342ba4918d68752713dd7dc8f418288b8/src/xunit.execution/Sdk/Frameworks/Runners/TestInvoker.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Extensions/ObjectExtensions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/659CD5F0-C4CE-410C-B23A-6CADD71BB76F/dd/71754677/__Error.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4156DEFD-3D50-4A5F-A099-C2B49343A450/2c/23fb5390/RuntimeMethodInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/Handlers.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/StateBuilder/IStateTransitionBuilder.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/StateBuilder/StateTransitionBuilder.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss.Tests/GuardContextTests.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/Delegates/OnStateEventHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.Tests/packages.config" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4156DEFD-3D50-4A5F-A099-C2B49343A450/9f/abfb1919/Enum.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Exceptions/NoRuleDefinedForStateTransitionException.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss.Tests/StateBlissTests.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7180A13B-CC1C-4F74-9764-E16AA9BEFCCD/27/1fd94e50/PropertyExpression.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.Tests/StateFactoryTestHelper.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/41214D29-AEF2-49F2-BACE-2A17F5BF98F7/e9/e0b56daf/ReaderWriterLockSlim.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Exceptions/SameStateTransitionDisabledException.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Exceptions/StateEnterGuardHandlerDiscontinuedException.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateGuardsForChangingFromInitialToPaid.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Exceptions/StateTypeMismatchException.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/IStateDefinitionHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss.Tests/MultiThreadingTests.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss.Tests/OrderTests.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss.Tests/StateBlissTests.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/OrderState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/IStateDefinition.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/IFindState.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/Order.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Contexts/GuardStateContext.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Contexts/HandlerStateContext.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/OrdersRepository.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Delegates/StateChangeHandler.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/FindStateResult.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/PaymentGuardContext.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/IStateHandlerDefinition.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/Program.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/StateHandlerDefinition.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/Startup.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/Contexts/StateContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/Contexts/TriggerCommand.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/Controllers/ValuesController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/Handlers.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/HandlerType.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/StateMachineManager.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/StateBuilder/StateTransitionBuilder.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/StateBuilder/IStateTransitionBuilder.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/ActionInfo.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/IStateMachineManager.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/StateProvider.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/Controllers/PayOrderTriggerContext.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/PaymentGuardContext.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/OrdersRepository.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/IStateDefinitionHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/PaymentCommand.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/State.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateGuardsForChangingFromInitialToPaid.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/Controllers/ValuesController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/StateMachineManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/Delegates/StateChangeHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/ActionInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/State.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/StateBliss/StateChangeTrigger.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/659CD5F0-C4CE-410C-B23A-6CADD71BB76F/f8/5edb0553/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss.SampleApi/OrderState.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/StateBliss/StateFactory.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/708129CF-4E54-4A2E-810D-663C40E72AFB/99/06b36b1c/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/57139BFC-E1DA-4913-8884-2BBBF31D74D3/da/1176e514/Object.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/StateBliss/IStateHandlerDefinition.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -176,27 +146,27 @@
         <option value="$PROJECT_DIR$/StateBliss/Contexts/GuardStateContext.cs" />
         <option value="$PROJECT_DIR$/StateBliss/Contexts/TriggerCommand.cs" />
         <option value="$PROJECT_DIR$/StateBliss.SampleApi/Controllers/ValuesController.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/StateBuilder/IStateFromBuilder.cs" />
         <option value="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" />
         <option value="$PROJECT_DIR$/StateBliss/HandlerType.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/StateBuilder/StateTransitionBuilder.cs" />
         <option value="$PROJECT_DIR$/StateBliss/StateTransitionInfo.cs" />
         <option value="$PROJECT_DIR$/StateBliss/Contexts/StateContext.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/ActionInfo.cs" />
         <option value="$PROJECT_DIR$/StateBliss/StateFactory.cs" />
         <option value="$PROJECT_DIR$/StateBliss/IState.cs" />
         <option value="$PROJECT_DIR$/StateBliss/Delegates/OnStateEventHandler.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/IStateHandlerDefinition.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/State.cs" />
         <option value="$PROJECT_DIR$/StateBliss.Tests/StateFactoryTestHelper.cs" />
         <option value="$PROJECT_DIR$/StateBliss/IFindState.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/IStateMachineManager.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/StateHandlerDefinition.cs" />
         <option value="$PROJECT_DIR$/StateBliss/FindStateResult.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/StateBuilder/IStateTransitionBuilder.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/Delegates/StateChangeHandler.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/IStateMachineManager.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/IStateHandlerDefinition.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/StateHandlerDefinition.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/State.cs" />
         <option value="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/StateBuilder/IStateTransitionBuilder.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/StateBuilder/IStateFromBuilder.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/StateBuilder/StateTransitionBuilder.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/Delegates/StateChangeHandler.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/ActionInfo.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" />
       </list>
     </option>
   </component>
@@ -370,6 +340,8 @@
       <workItem from="1566294557126" duration="639000" />
       <workItem from="1566305462009" duration="4682000" />
       <workItem from="1566396667935" duration="1242000" />
+      <workItem from="1566629774436" duration="856000" />
+      <workItem from="1566630694107" duration="8755000" />
     </task>
     <servers />
   </component>
@@ -400,41 +372,78 @@
         </entry>
       </map>
     </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="363" y="99" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" />
+    <state x="363" y="99" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/1366.768" />
+    <state width="967" height="436" key="DebuggerActiveHint" />
+    <state width="967" height="436" key="DebuggerActiveHint/1366.768" />
     <state x="740" y="274" key="FileChooserDialogImpl" />
     <state x="740" y="274" key="FileChooserDialogImpl/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.0.bottom" />
+    <state width="1323" height="98" key="GridCell.Tab.0.bottom" />
+    <state width="1323" height="98" key="GridCell.Tab.0.bottom/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.0.bottom/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.0.center" />
+    <state width="1323" height="98" key="GridCell.Tab.0.center" />
+    <state width="1323" height="98" key="GridCell.Tab.0.center/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.0.center/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.0.left" />
+    <state width="1323" height="98" key="GridCell.Tab.0.left" />
+    <state width="1323" height="98" key="GridCell.Tab.0.left/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.0.left/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.0.right" />
+    <state width="1323" height="98" key="GridCell.Tab.0.right" />
+    <state width="1323" height="98" key="GridCell.Tab.0.right/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.0.right/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.1.bottom" />
+    <state width="1323" height="98" key="GridCell.Tab.1.bottom" />
+    <state width="1323" height="98" key="GridCell.Tab.1.bottom/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.1.bottom/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.1.center" />
+    <state width="1323" height="98" key="GridCell.Tab.1.center" />
+    <state width="1323" height="98" key="GridCell.Tab.1.center/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.1.center/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.1.left" />
+    <state width="1323" height="98" key="GridCell.Tab.1.left" />
+    <state width="1323" height="98" key="GridCell.Tab.1.left/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.1.left/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.1.right" />
+    <state width="1323" height="98" key="GridCell.Tab.1.right" />
+    <state width="1323" height="98" key="GridCell.Tab.1.right/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.1.right/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.2.bottom" />
+    <state width="1323" height="98" key="GridCell.Tab.2.bottom" />
+    <state width="1323" height="98" key="GridCell.Tab.2.bottom/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.2.bottom/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.2.center" />
+    <state width="1323" height="98" key="GridCell.Tab.2.center" />
+    <state width="1323" height="98" key="GridCell.Tab.2.center/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.2.center/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.2.left" />
+    <state width="1323" height="98" key="GridCell.Tab.2.left" />
+    <state width="1323" height="98" key="GridCell.Tab.2.left/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.2.left/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.2.right" />
+    <state width="1323" height="98" key="GridCell.Tab.2.right" />
+    <state width="1323" height="98" key="GridCell.Tab.2.right/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.2.right/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.3.bottom" />
+    <state width="1323" height="98" key="GridCell.Tab.3.bottom" />
+    <state width="1323" height="98" key="GridCell.Tab.3.bottom/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.3.bottom/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.3.center" />
+    <state width="1323" height="98" key="GridCell.Tab.3.center" />
+    <state width="1323" height="98" key="GridCell.Tab.3.center/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.3.center/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.3.left" />
+    <state width="1323" height="98" key="GridCell.Tab.3.left" />
+    <state width="1323" height="98" key="GridCell.Tab.3.left/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.3.left/1920.1080" />
-    <state width="1877" height="347" key="GridCell.Tab.3.right" />
+    <state width="1323" height="98" key="GridCell.Tab.3.right" />
+    <state width="1323" height="98" key="GridCell.Tab.3.right/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.3.right/1920.1080" />
     <state width="1877" height="347" key="GridCell.Tab.4.bottom" />
     <state width="1877" height="347" key="GridCell.Tab.4.bottom/1920.1080" />
@@ -444,526 +453,103 @@
     <state width="1877" height="347" key="GridCell.Tab.4.left/1920.1080" />
     <state width="1877" height="347" key="GridCell.Tab.4.right" />
     <state width="1877" height="347" key="GridCell.Tab.4.right/1920.1080" />
-    <state x="769" y="220" key="RiderGenerateDialog" />
+    <state x="433" y="129" key="RiderGenerateDialog" />
+    <state x="433" y="129" key="RiderGenerateDialog/1366.768" />
     <state x="769" y="220" key="RiderGenerateDialog/1920.1080" />
+    <state x="331" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" />
+    <state x="331" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/1366.768" />
+    <state x="206" y="100" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" />
+    <state x="206" y="100" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/1366.768" />
     <state x="616" y="240" key="run.anything.popup" />
     <state x="616" y="240" key="run.anything.popup/1920.1080" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/1366.768" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/1920.1080" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <breakpoint enabled="true" suspend="NONE" type="DotNet Exception Breakpoints">
+        <breakpoint suspend="NONE" type="DotNet Exception Breakpoints">
           <properties exception="System.Threading.ThreadAbortException" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="1" />
         </breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/Controllers/ValuesController.cs</url>
-          <line>25</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/Controllers/ValuesController.cs" initialLine="25">
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs</url>
+          <line>11</line>
+          <properties documentPath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" initialLine="11">
             <startOffsets>
-              <option value="786" />
+              <option value="179" />
             </startOffsets>
             <endOffsets>
-              <option value="787" />
+              <option value="256" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="208" />
+          <option name="timeStamp" value="263" />
         </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/StateBliss/StateMachineManager.cs</url>
-          <line>69</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" initialLine="69">
+          <line>48</line>
+          <properties documentPath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" initialLine="49">
             <startOffsets>
-              <option value="2845" />
+              <option value="2318" />
             </startOffsets>
             <endOffsets>
-              <option value="2867" />
+              <option value="2416" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="209" />
+          <option name="timeStamp" value="264" />
         </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss/StateMachineManager.cs</url>
-          <line>351</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" initialLine="359">
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs</url>
+          <line>15</line>
+          <properties documentPath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" initialLine="15">
             <startOffsets>
-              <option value="12894" />
+              <option value="369" />
             </startOffsets>
             <endOffsets>
-              <option value="12941" />
+              <option value="467" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="210" />
+          <option name="timeStamp" value="265" />
         </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss/ActionInfo.cs</url>
-          <line>229</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss/ActionInfo.cs" initialLine="221">
-            <startOffsets>
-              <option value="8287" />
-            </startOffsets>
-            <endOffsets>
-              <option value="8288" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="214" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss/ActionInfo.cs</url>
-          <line>147</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss/ActionInfo.cs" initialLine="150">
-            <startOffsets>
-              <option value="5148" />
-            </startOffsets>
-            <endOffsets>
-              <option value="5149" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="215" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss/ActionInfo.cs</url>
-          <line>73</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss/ActionInfo.cs" initialLine="76">
-            <startOffsets>
-              <option value="2425" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2426" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="216" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>224</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="99">
-            <startOffsets>
-              <option value="7971" />
-            </startOffsets>
-            <endOffsets>
-              <option value="7972" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="217" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>220</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="95">
-            <startOffsets>
-              <option value="7877" />
-            </startOffsets>
-            <endOffsets>
-              <option value="7878" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="218" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>216</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="91">
-            <startOffsets>
-              <option value="7788" />
-            </startOffsets>
-            <endOffsets>
-              <option value="7789" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="219" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>212</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="87">
-            <startOffsets>
-              <option value="7708" />
-            </startOffsets>
-            <endOffsets>
-              <option value="7709" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="220" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>208</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="83">
-            <startOffsets>
-              <option value="7588" />
-            </startOffsets>
-            <endOffsets>
-              <option value="7589" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="221" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>204</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="79">
-            <startOffsets>
-              <option value="7467" />
-            </startOffsets>
-            <endOffsets>
-              <option value="7468" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="222" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>80</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="35">
-            <startOffsets>
-              <option value="2767" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2779" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="226" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>84</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="39">
-            <startOffsets>
-              <option value="2941" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2953" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="227" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>38</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="38">
-            <startOffsets>
-              <option value="1288" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1289" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="232" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>34</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="34">
-            <startOffsets>
-              <option value="1152" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1153" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="233" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>30</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="30">
-            <startOffsets>
-              <option value="1016" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1017" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="234" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>26</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="26">
-            <startOffsets>
-              <option value="911" />
-            </startOffsets>
-            <endOffsets>
-              <option value="912" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="235" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>200</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="202">
-            <startOffsets>
-              <option value="7323" />
-            </startOffsets>
-            <endOffsets>
-              <option value="7347" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="236" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>195</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="197">
-            <startOffsets>
-              <option value="7152" />
-            </startOffsets>
-            <endOffsets>
-              <option value="7176" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="237" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>169</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="171">
-            <startOffsets>
-              <option value="6341" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6342" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="239" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>184</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="186">
-            <startOffsets>
-              <option value="6815" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6816" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="241" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>179</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="181">
-            <startOffsets>
-              <option value="6649" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6650" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="242" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>174</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="176">
-            <startOffsets>
-              <option value="6495" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6496" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="243" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>42</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="42">
-            <startOffsets>
-              <option value="1434" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1435" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="244" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>47</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="47">
-            <startOffsets>
-              <option value="1616" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1617" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="245" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>52</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="52">
-            <startOffsets>
-              <option value="1785" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1786" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="246" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/StateBliss/StateBuilder/StateTransitionBuilder.cs</url>
           <line>57</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="57">
+          <properties documentPath="$PROJECT_DIR$/StateBliss/StateBuilder/StateTransitionBuilder.cs" initialLine="202">
             <startOffsets>
-              <option value="1954" />
+              <option value="1978" />
             </startOffsets>
             <endOffsets>
-              <option value="1955" />
+              <option value="1979" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="247" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss/StateMachineManager.cs</url>
-          <line>326</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" initialLine="321">
-            <startOffsets>
-              <option value="11746" />
-            </startOffsets>
-            <endOffsets>
-              <option value="11870" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="248" />
+          <option name="timeStamp" value="267" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>189</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="189">
+          <url>file://$PROJECT_DIR$/StateBliss/StateBuilder/StateTransitionBuilder.cs</url>
+          <line>53</line>
+          <properties documentPath="$PROJECT_DIR$/StateBliss/StateBuilder/StateTransitionBuilder.cs" initialLine="198">
             <startOffsets>
-              <option value="6972" />
+              <option value="1780" />
             </startOffsets>
             <endOffsets>
-              <option value="6973" />
+              <option value="1816" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="249" />
+          <option name="timeStamp" value="268" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/Controllers/ValuesController.cs</url>
-          <line>44</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/Controllers/ValuesController.cs" initialLine="41">
+          <url>file://$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs</url>
+          <line>31</line>
+          <properties documentPath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" initialLine="31">
             <startOffsets>
-              <option value="1377" />
+              <option value="1022" />
             </startOffsets>
             <endOffsets>
-              <option value="1458" />
+              <option value="1058" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="250" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss/StateMachineManager.cs</url>
-          <line>328</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" initialLine="323">
-            <startOffsets>
-              <option value="11909" />
-            </startOffsets>
-            <endOffsets>
-              <option value="11922" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="251" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss/StateMachineManager.cs</url>
-          <line>403</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" initialLine="398">
-            <startOffsets>
-              <option value="14389" />
-            </startOffsets>
-            <endOffsets>
-              <option value="14432" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="252" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>164</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="164">
-            <startOffsets>
-              <option value="6174" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6175" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="253" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>149</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="139">
-            <startOffsets>
-              <option value="5796" />
-            </startOffsets>
-            <endOffsets>
-              <option value="5797" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="254" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>154</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="144">
-            <startOffsets>
-              <option value="5922" />
-            </startOffsets>
-            <endOffsets>
-              <option value="5923" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="255" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs</url>
-          <line>159</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/OrderStateDefinition.cs" initialLine="159">
-            <startOffsets>
-              <option value="6031" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6032" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="258" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss.SampleApi/Controllers/ValuesController.cs</url>
-          <line>47</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss.SampleApi/Controllers/ValuesController.cs" initialLine="47">
-            <startOffsets>
-              <option value="1500" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1501" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="259" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/StateBliss/StateMachineManager.cs</url>
-          <line>320</line>
-          <properties documentPath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" initialLine="315">
-            <startOffsets>
-              <option value="11517" />
-            </startOffsets>
-            <endOffsets>
-              <option value="11629" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="260" />
+          <option name="timeStamp" value="270" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

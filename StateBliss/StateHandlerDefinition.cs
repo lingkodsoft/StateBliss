@@ -4,19 +4,50 @@ using System.Linq;
 
 namespace StateBliss
 {
-    public abstract class StateHandlerDefinition<TState> : IStateDefinition where TState : Enum
+    public abstract class StateHandlerDefinition : IStateDefinition
     {
         private readonly List<StateTransitionInfo> _stateTransitions = new List<StateTransitionInfo>();
-        private readonly List<TState> _disabledSameStateTransition = new List<TState>();
-        
-        private StateTransitionBuilder<TState> StateTransitionBuilder;
-        
+        private readonly List<int> _disabledSameStateTransitions = new List<int>();
 
-        internal IReadOnlyList<TState> DisabledSameStateTransition => _disabledSameStateTransition;
-        internal StateTransitionBuilder<TState> Builder { get; set; }
+        protected StateHandlerDefinition(Type enumType)
+        {
+            EnumType = enumType;
+        }
+        
+        public void AddDisabledSameStateTransitions(int[] states)
+        {
+            _disabledSameStateTransitions.AddRange(states);
+        }
+
         public IReadOnlyList<StateTransitionInfo> Transitions => _stateTransitions;
+        public IReadOnlyList<int> DisabledSameStateTransitions => _disabledSameStateTransitions;
+        public Type EnumType { get; }
 
-        void IStateDefinition.Define()
+        public void AddTransition(StateTransitionInfo stateTransitionInfo)
+        {
+            _stateTransitions.Add(stateTransitionInfo);
+        }
+        
+        public void Define()
+        {
+            OnDefineState();
+        }
+
+        protected abstract void OnDefineState();
+    }
+
+    public abstract class StateHandlerDefinition<TState> : StateHandlerDefinition where TState : Enum
+    {
+        private StateTransitionBuilder<TState> StateTransitionBuilder;
+        internal StateTransitionBuilder<TState> Builder { get; set; }
+
+        protected StateHandlerDefinition() : base(typeof(TState))
+        {
+        }
+        
+        public abstract void Define(IStateFromBuilder<TState> builder);
+
+        protected override void OnDefineState()
         {
             if (StateTransitionBuilder != null)
             {
@@ -26,21 +57,6 @@ namespace StateBliss
             Define(StateTransitionBuilder);
         }
 
-        public abstract void Define(IStateFromBuilder<TState> builder);
-        
-        
-        internal void AddDisabledSameStateTransitions(TState[] states)
-        {
-            _disabledSameStateTransition.AddRange(states);
-        }
-
-        internal void AddTransition(StateTransitionInfo stateTransitionInfo)
-        {
-            _stateTransitions.Add(stateTransitionInfo);
-        }
-
-        
-        
         internal ActionInfo[] GetOnTransitioningHandlers(int fromState, int toState)
         {
             return GetHandlers(HandlerType.OnChanging, fromState, toState);
@@ -94,7 +110,7 @@ namespace StateBliss
         internal TState[] GetNextStates(TState state)
         {
             var stateFilter = state.ToInt();
-            return _stateTransitions.Where(a => a.From == stateFilter)
+            return Transitions.Where(a => a.From == stateFilter)
                 .Select(a => a.To.ToEnum<TState>()).ToArray();
         }
         
@@ -118,7 +134,7 @@ namespace StateBliss
             else
                 filter = s => s.To == to;
 
-            return  _stateTransitions
+            return  Transitions
                 .Where(filter)
                 .SelectMany(a => a.Handlers)
                 .Where(a => a.Item2 == handlerType)

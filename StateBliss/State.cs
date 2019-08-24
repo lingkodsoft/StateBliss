@@ -22,8 +22,8 @@ namespace StateBliss
         private readonly int _current;
         private readonly Type _enumType;
         private readonly IStateMachineManager _manager;
-
-        public State(TState state, 
+        
+        internal State(TState state, 
             StateHandlerDefinition<TState> stateHandlerDefinition,
             IStateMachineManager stateMachineManager = null)
         {

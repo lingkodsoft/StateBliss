@@ -43,27 +43,27 @@ namespace StateBliss
 //            params OnStateEventHandler<TState, TTriggerCommand, GuardStateContext<TState>>[] handlers)
 //            where TTriggerCommand : TriggerCommand<TState>, new();
         
-        IStateTransitionBuilder<TState> Changed<TTriggerCommand>(OnStateEventHandler<TState, TTriggerCommand> handler)
-            where TTriggerCommand : TriggerCommand<TState>;
-        
-        IStateTransitionBuilder<TState> Changed(OnStateEventHandler<TState, TriggerCommand<TState>> handler);
-        
-        IStateTransitionBuilder<TState> Changed<TTriggerCommand, TContext>(Func<TContext> contextProvider, 
-            params OnStateEventHandler<TState, TTriggerCommand, TContext>[] handlers)
-            where TContext : new()
-            where TTriggerCommand : TriggerCommand<TState>, new();
-       
-        IStateTransitionBuilder<TState> Changed<TTriggerCommand, T>(T target, Expression<Func<T, OnStateEventHandler<TState, TTriggerCommand>>> handler)
-            where T : class
-            where TTriggerCommand : TriggerCommand<TState>;
-        
-        IStateTransitionBuilder<TState> Changed<T>(T target, Expression<Func<T, OnStateEventHandler<TState, TriggerCommand<TState>>>> handler);
-        
-        IStateTransitionBuilder<TState> Changed<TTriggerCommand, T, TContext>(T target, Func<TContext> contextProvider, 
-            params Expression<Func<T,OnStateEventHandler<TState, TTriggerCommand, TContext>>>[] handlers)
-            where TContext : new()
-            where TTriggerCommand : TriggerCommand<TState>, new();
-        
-        IStateTransitionBuilder<TState> TriggeredBy(string trigger);
+//        IStateTransitionBuilder<TState> Changed<TTriggerCommand>(OnStateEventHandler<TState, TTriggerCommand> handler)
+//            where TTriggerCommand : TriggerCommand<TState>;
+//        
+//        IStateTransitionBuilder<TState> Changed(OnStateEventHandler<TState, TriggerCommand<TState>> handler);
+//        
+//        IStateTransitionBuilder<TState> Changed<TTriggerCommand, TContext>(Func<TContext> contextProvider, 
+//            params OnStateEventHandler<TState, TTriggerCommand, TContext>[] handlers)
+//            where TContext : new()
+//            where TTriggerCommand : TriggerCommand<TState>, new();
+//       
+//        IStateTransitionBuilder<TState> Changed<TTriggerCommand, T>(T target, Expression<Func<T, OnStateEventHandler<TState, TTriggerCommand>>> handler)
+//            where T : class
+//            where TTriggerCommand : TriggerCommand<TState>;
+//        
+//        IStateTransitionBuilder<TState> Changed<T>(T target, Expression<Func<T, OnStateEventHandler<TState, TriggerCommand<TState>>>> handler);
+//        
+//        IStateTransitionBuilder<TState> Changed<TTriggerCommand, T, TContext>(T target, Func<TContext> contextProvider, 
+//            params Expression<Func<T,OnStateEventHandler<TState, TTriggerCommand, TContext>>>[] handlers)
+//            where TContext : new()
+//            where TTriggerCommand : TriggerCommand<TState>, new();
+//        
+//        IStateTransitionBuilder<TState> TriggeredBy(string trigger);
     }
 }

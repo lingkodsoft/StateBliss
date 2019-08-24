@@ -8,53 +8,36 @@ namespace StateBliss.Tests
         [Fact]
         public void Tests()
         {
-            var definitions = new[] { new DefineOrderState() };
-//            var findStates = new[] { new FindOrderState() }; 
-                
-            StateMachineManager.Default.Register(definitions);
+            // Arrange
+            StateMachineManager.Default.Register(new [] { typeof(BasicTests).Assembly });
+            var currentState = AuthenticationState.Unauthenticated;
             
-            StateMachineManager.Default.Trigger(OrderTestState.Paid, 1, (1, "test"));
+            // Act
+            StateMachineManager.Default.Trigger(currentState, AuthenticationState.Authenticated, (1, "test"));
             
-            
-            //StateMachineManager.Default.Define()
-            
+            // Assert
         }
 
-        public class DefineOrderState : StateHandlerDefinition<OrderTestState>
+        public class DefineAuthenticationState : StateHandlerDefinition<AuthenticationState>
         {
-            public override void Define(IStateFromBuilder<OrderTestState> builder)
+            public override void Define(IStateFromBuilder<AuthenticationState> builder)
             {
-                builder.From(OrderTestState.Initial).To(OrderTestState.Paid)
+                builder.From(AuthenticationState.Unauthenticated).To(AuthenticationState.Authenticated)
                     .Changing(this, a => a.ChangingHandler1);
 
             }
 
-            private void ChangingHandler1<TTriggerContext>(StateChangeInfo<OrderTestState, TTriggerContext> changeinfo)
+            private void ChangingHandler1(StateChangeInfo<AuthenticationState> changeinfo)
             {
-                
                 throw new NotImplementedException();
             }
         }
-//
-//        public class FindOrderState : IFindState<OrderTestState>
-//        {
-//            public FindStateResult<OrderTestState> Find(object id)
-//            {
-//                throw new System.NotImplementedException();
-//            }
-//
-////            public FindStateResult Find<TState>(object id) where TState : Enum
-////            {
-////                throw new NotImplementedException();
-////            }
-////            
-//            
-//        }
+
     }
 
-    public enum OrderTestState
+    public enum AuthenticationState
     {
-        Initial,
-        Paid
+        Unauthenticated,
+        Authenticated
     }
 }

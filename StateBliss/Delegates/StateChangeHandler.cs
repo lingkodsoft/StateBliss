@@ -12,13 +12,34 @@ namespace StateBliss
         where TState : Enum
     {
     }
+    
+    public class StateChangeInfo
+    {
+        internal object TriggerContext { get; set; }
+        internal int FromState { get; set; }
+        internal int ToState { get; set; }
+        
+        /// <summary>
+        /// When Continue is set to false on a handler, setting ThrowExceptionWhenDiscontinued to true will throw StateEnterGuardDiscontinuedException.
+        /// Only applies to Changing, OnEntering and OnExiting transitions
+        /// </summary>
+        public bool ThrowExceptionWhenDiscontinued { get; set; }
 
-    public class StateChangeInfo<TState, TTriggerContext>
+        /// <summary>
+        /// Only applies to Changing, OnEntering and OnExiting transitions
+        /// </summary>
+        public bool Continue { get; set; } = true;
+        
+    }
+
+    public class StateChangeInfo<TState, TTriggerContext> : StateChangeInfo
         where TState : Enum
     {
-        public object Id { get; set; }
-        public object FindResultContext { get; set; }
-        public TState FromState { get; set; }
-        public TState ToState { get; set; }
+        public TTriggerContext TriggerContext { get => (TTriggerContext)base.TriggerContext;
+            set => base.TriggerContext = value;
+        }
+        
+        public TState FromState { get => base.FromState.ToEnum<TState>(); set => base.FromState = value.ToInt(); }
+        public TState ToState  { get => base.ToState.ToEnum<TState>(); set => base.ToState = value.ToInt(); }
     }
 }
