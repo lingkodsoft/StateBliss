@@ -10,6 +10,19 @@
     public class BasicTests
     {
         [Fact]
+        public void GetNextStatesTest()
+        {
+            // Arrange
+            StateMachineManager.Register(new [] { typeof(BasicTests).Assembly });
+
+            // Act
+            var nextStates = StateMachineManager.GetNextStates(AuthenticationState.Unauthenticated);
+            
+            // Assert
+            Assert.Equal(AuthenticationState.Authenticated , nextStates.Last());
+        }
+
+        [Fact]
         public void Tests()
         {
             // Arrange
