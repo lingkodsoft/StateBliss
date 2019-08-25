@@ -28,10 +28,11 @@
             // Arrange
             StateMachineManager.Register(new [] { typeof(BasicTests).Assembly }); //Register at bootstrap of your application, i.e. Startup
             var currentState = AuthenticationState.Unauthenticated;
+            var nextState = AuthenticationState.Authenticated;
             var data = new Dictionary<string, object>();
             
             // Act
-            var changeInfo = StateMachineManager.Trigger(currentState, AuthenticationState.Authenticated, data);
+            var changeInfo = StateMachineManager.Trigger(currentState, nextState, data);
             
             // Assert
             Assert.True(changeInfo.StateChangedSucceeded);
@@ -39,6 +40,7 @@
             Assert.Equal("ChangingHandler2", changeInfo.Data["key2"]);
         }
 
+        //this class gets regitered automatically by calling StateMachineManager.Register
         public class AuthenticationStateDefinition : StateDefinition<AuthenticationState>
         {
             public override void Define(IStateFromBuilder<AuthenticationState> builder)
