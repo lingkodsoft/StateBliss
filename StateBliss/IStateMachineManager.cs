@@ -1,18 +1,15 @@
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace StateBliss
 {
     public interface IStateMachineManager : IDisposable
     {
-        void Register(State state);
-        bool ChangeState<TEntity, TState>(State<TEntity, TState> state, TState newState) where TState : Enum;
-        bool ChangeState<TState>(State<TState> state, TState newState) where TState : Enum;
-        bool ChangeState<TState>(TState newState, Guid id) where TState : Enum;
-        void Trigger<TState>(StateChangeTrigger<TState> trigger) where TState : Enum;
-        State<TState> GetState<TState>(Guid id) where TState : Enum;
-        void SetStateFactory(StateFactory stateFactory);
-        event EventHandler<(Exception exception, State state, int fromState, int toState)> OnHandlerException;
+        void Register(IEnumerable<Assembly> assemblyDefinitions, Func<Type, object> serviceProvider = null);
+        StateChangeResult<TState, TData> Trigger<TState, TData>(TState currentState, TState nextState, TData context) where TState : Enum;
+        event EventHandler<(Exception exception,StateChangeInfo changeInfo)> OnHandlerException;
         void Start();
         void Stop();
         Task WaitAllHandlersProcessedAsync(int waitDelayMilliseconds = 100);

@@ -539,12 +539,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GuardContextTests.cs" />
-    <Compile Include="MultiThreadingTests.cs" />
-    <Compile Include="OrderTests.cs" />
-    <Compile Include="StateBlissTests.cs" />
+    <Compile Include="BasicTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StateFactoryTestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StateBliss\StateBliss.csproj">

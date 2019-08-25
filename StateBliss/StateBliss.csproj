@@ -13,24 +13,54 @@
         <Version>1.0.1</Version>
         <AssemblyVersion>1.0.2.0</AssemblyVersion>
         <FileVersion>1.0.2.0</FileVersion>
-        <PackageVersion>1.0.3</PackageVersion>
+        <PackageVersion>1.0.4</PackageVersion>
         <Description>Finite state machine with fluent syntax. i.e.
-return new State&lt;Order, OrderState&gt;(order, a =&gt; a.Uid, a =&gt; a.State)
-                .Define(b =&gt;
-                {
-                    b.From(OrderState.Initial).To(OrderState.Paid)
-                        .Changing(ChangingHandler);                    
-                    b.From(OrderState.Paid).To(OrderState.Processing);
-                    b.From(OrderState.Processing).To(OrderState.Processed);                    
-                });
 
-//trigger state change
-var cmd = new StateContext&lt;OrderState&gt;()
+public class DefineAuthenticationState2 : StateDefinition&lt;AuthenticationState&gt;
 {
-    Uid = uid,
-    ToState = OrderState.Paid
-};
-StateMachineManager.Trigger(cmd);</Description>
+	public override void Define(IStateFromBuilder&lt;AuthenticationState&gt; builder)
+	{
+		builder.From(AuthenticationState.Unauthenticated).To(AuthenticationState.Authenticated)
+			.Changing(this, a =&gt; a.ChangingHandler1);
+
+	}
+
+	private void ChangingHandler2(StateChangeGuardInfo&lt;AuthenticationState&gt; changeinfo)
+	{
+		var data = changeinfo.DataAs&lt;Dictionary&lt;string, object&gt;&gt;();
+		data["key2"] = "ChangingHandler2";
+	}
+}
+
+public class BasicTests //xUnit
+{
+		
+	public enum AuthenticationState
+	{
+		Unauthenticated,
+		Authenticated
+	}
+
+	[Fact]
+	public void Tests()
+	{
+		// Arrange
+		StateMachineManager.Register(new [] { typeof(BasicTests).Assembly }); //Register at bootstrap of your application, i.e. Startup
+		var currentState = AuthenticationState.Unauthenticated;
+		var data = new Dictionary&lt;string, object&gt;();
+		
+		// Act
+		var changeInfo = StateMachineManager.Trigger(currentState, AuthenticationState.Authenticated, data);
+		
+		// Assert
+		Assert.True(changeInfo.StateChangedSucceeded);
+		Assert.Equal("ChangingHandler1", changeInfo.Data["key1"]);
+	}
+}
+
+
+
+</Description>
     </PropertyGroup>
 
 </Project>

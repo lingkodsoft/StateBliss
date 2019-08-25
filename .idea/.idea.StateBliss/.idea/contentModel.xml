@@ -7,37 +7,25 @@
         <e p="Microsoft.DiaSymReader.Native.1.7.0\runtimes\win\native\Microsoft.DiaSymReader.Native.x86.dll" t="Include" />
       </e>
       <e p="StateBliss" t="IncludeRecursive">
-        <e p="ActionInfo" t="Include">
-          <e p="ActionInfo.cs" t="Include" />
-          <e p="HandlersInfo.cs" t="Include" />
-        </e>
+        <e p="ActionInfo.cs" t="Include" />
+        <e p="AggregateStateDefinition.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
-        <e p="Contexts" t="Include">
-          <e p="GuardStateContext.cs" t="Include" />
-          <e p="HandlerStateContext.cs" t="Include" />
-          <e p="IParentStateContext.cs" t="Include" />
-          <e p="ITriggersInfoForContext.cs" t="Include" />
-          <e p="StateContext.cs" t="Include" />
-        </e>
         <e p="Delegates" t="Include">
-          <e p="OnStateEditHandler.cs" t="Include" />
-          <e p="OnStateEnterHandler.cs" t="Include" />
-          <e p="OnStateEventHandler.cs" t="Include" />
-          <e p="OnStateExitHandler.cs" t="Include" />
-          <e p="OnStateTransitionedHandler.cs" t="Include" />
-          <e p="OnStateTransitioningHandler.cs" t="Include" />
+          <e p="StateChangeGuardHandler.cs" t="Include" />
+          <e p="StateChangeHandler.cs" t="Include" />
         </e>
-        <e p="EnumExtensions.cs" t="Include" />
         <e p="Exceptions" t="Include">
           <e p="NoRuleDefinedForStateTransitionException.cs" t="Include" />
           <e p="SameStateTransitionDisabledException.cs" t="Include" />
-          <e p="StateEnterGuardHandlerDiscontinuedException.cs" t="Include" />
-          <e p="StateTypeMismatchException.cs" t="Include" />
+          <e p="StateGuardHandlerDiscontinuedException.cs" t="Include" />
         </e>
-        <e p="ExpressionExtensions.cs" t="Include" />
-        <e p="Handlers.cs" t="Include" />
+        <e p="extensions" t="Include">
+          <e p="EnumExtensions.cs" t="Include" />
+          <e p="ExpressionExtensions.cs" t="Include" />
+          <e p="ObjectExtensions.cs" t="Include" />
+        </e>
         <e p="HandlerType.cs" t="Include" />
-        <e p="IState.cs" t="Include" />
+        <e p="IStateHandlerDefinition.cs" t="Include" />
         <e p="IStateMachineManager.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
@@ -58,7 +46,6 @@
             </e>
           </e>
         </e>
-        <e p="State.cs" t="Include" />
         <e p="StateBliss.csproj" t="IncludeRecursive" />
         <e p="StateBuilder" t="Include">
           <e p="IStateFromBuilder.cs" t="Include" />
@@ -66,64 +53,26 @@
           <e p="IStateTransitionBuilder.cs" t="Include" />
           <e p="StateTransitionBuilder.cs" t="Include" />
         </e>
-        <e p="StateChangeTrigger.cs" t="Include" />
-        <e p="StateExtensions.cs" t="Include" />
-        <e p="StateFactory.cs" t="Include" />
+        <e p="StateChangeGuardInfo.cs" t="Include" />
+        <e p="StateChangeInfo.cs" t="Include" />
+        <e p="StateChangeResult.cs" t="Include" />
+        <e p="StateDefinition.cs" t="Include" />
         <e p="StateMachineManager.cs" t="Include" />
         <e p="StateTransitionInfo.cs" t="Include" />
       </e>
-      <e p="StateBliss.SampleApi" t="IncludeRecursive">
-        <e p="appsettings.Development.json" t="Include" />
-        <e p="appsettings.json" t="Include" />
-        <e p="bin" t="ExcludeRecursive" />
-        <e p="Controllers" t="Include">
-          <e p="PayOrderTriggerContext.cs" t="Include" />
-          <e p="ValuesController.cs" t="Include" />
-        </e>
-        <e p="IStateDefinition.cs" t="Include" />
-        <e p="IStateDefinitionHandler.cs" t="Include" />
-        <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
-            <e p="netcoreapp2.2" t="Include">
-              <e p="StateBliss.SampleApi.AssemblyInfo.cs" t="Include" />
-              <e p="StateBliss.SampleApi.RazorAssemblyInfo.cs" t="Include" />
-            </e>
-          </e>
-        </e>
-        <e p="Order.cs" t="Include" />
-        <e p="OrdersRepository.cs" t="Include" />
-        <e p="OrderState.cs" t="Include" />
-        <e p="OrderStateDefinition.cs" t="Include" />
-        <e p="OrderStateGuardsForChangingFromInitialToPaid.cs" t="Include" />
-        <e p="PaymentGuardContext.cs" t="Include" />
-        <e p="PaymentHandlerContext.cs" t="Include" />
-        <e p="Program.cs" t="Include" />
-        <e p="Properties" t="Include">
-          <e p="launchSettings.json" t="Include" />
-        </e>
-        <e p="Startup.cs" t="Include" />
-        <e p="StateBliss.SampleApi.csproj" t="IncludeRecursive" />
-        <e p="StateProvider.cs" t="Include" />
-      </e>
       <e p="StateBliss.sln" t="IncludeFlat" />
       <e p="StateBliss.Tests" t="IncludeRecursive">
+        <e p="BasicTests.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
-        <e p="GuardContextTests.cs" t="Include" />
-        <e p="MultiThreadingTests.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
-        <e p="OrderTests.cs" t="Include" />
         <e p="packages.config" t="Include" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
         </e>
         <e p="StateBliss.Tests.csproj" t="IncludeRecursive" />
-        <e p="StateBlissTests.cs" t="Include" />
-        <e p="StateFactoryTestHelper.cs" t="Include" />
       </e>
     </e>
-    <e p="C:\Users\mike\.Rider2019.1\config\consoles\db" t="IncludeRecursive" />
-    <e p="C:\Users\mike\.Rider2019.1\config\extensions" t="IncludeRecursive" />
-    <e p="C:\Users\mike\.Rider2019.1\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\mike\.Rider2019.1\system\resharper-host\local\Transient\ReSharperHost\v191\SolutionCaches\_StateBliss.269002201.00" t="ExcludeRecursive" />
+    <e p="C:\Users\lingkodsoft\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\lingkodsoft\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_StateBliss.269002201.00" t="ExcludeRecursive" />
   </component>
 </project>

@@ -1,16 +1,14 @@
 namespace StateBliss
 {
-    internal enum HandlerType
+    public enum HandlerType
     {
-        OnEnter,
-        OnEnterGuard,
-        OnExit,
-        OnExitGuard,
-        OnTransitioning,
-        OnTransitioned,
-        OnTransitionedWithContext,
-        OnTransitioningGuard,
-        OnEdit,
-        OnEditGuard
+        OnEntering,
+        OnEntered,
+        OnExiting,
+        OnExited,
+        OnChanging,
+        OnChanged,
+        OnEditing,
+        OnEdited
     }
 }

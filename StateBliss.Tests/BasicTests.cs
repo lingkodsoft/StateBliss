@@ -1,12 +1,9 @@
-# StateBliss : Finite State Machine in c# with fluent syntax
+using System;
+using System.Collections.Generic;
+using Xunit;
 
-[Stackoverflow](https://stackoverflow.com/questions/5923767/simple-state-machine-example-in-c/5924053)
-
-# How to use 
-
-
-```
- 
+namespace StateBliss.Tests
+{
     public class BasicTests
     {
         [Fact]
@@ -46,27 +43,19 @@
                 builder.ThrowExceptionWhenDiscontinued = true;
             }
 
-            private void ChangingHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
-            {
-                var data = changeinfo.DataAs<Dictionary<string, object>>();
-                data["key1"] = "ChangingHandler1";
-            }
-
-            private void OnEnteringHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
-            {
-                // changeinfo.Continue = false; //this will prevent changing the state
-            }
-
             private void OnEditedHandler1(StateChangeInfo<AuthenticationState> changeinfo)
-            {                
+            {
+                
             }
 
             private void OnExitedHandler1(StateChangeInfo<AuthenticationState> changeinfo)
-            {                
+            {
+                
             }
 
             private void OnEnteredHandler1(StateChangeInfo<AuthenticationState> changeinfo)
-            {                
+            {
+                
             }
 
             private void OnEditingHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
@@ -77,8 +66,19 @@
             {
             }
 
+            private void OnEnteringHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
+            {
+                // changeinfo.Continue = false; //this will prevent changing the state
+            }
+
             private void ChangedHandler1(StateChangeInfo<AuthenticationState> changeinfo)
             {
+            }
+
+            private void ChangingHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
+            {
+                var data = changeinfo.DataAs<Dictionary<string, object>>();
+                data["key1"] = "ChangingHandler1";
             }
         }
         
@@ -106,11 +106,3 @@
         Authenticated
     }
 }
-
-  
-  
-```
-
-# Install from Nuget
-
-`Install-Package StateBliss -Version 1.0.4`
