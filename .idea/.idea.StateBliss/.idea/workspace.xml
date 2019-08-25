@@ -6,8 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="bca49a86-855e-4154-a37f-5fe7b9bb7e0e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.StateBliss/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StateBliss/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/IStateMachineManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/IStateMachineManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/StateDefinition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/StateDefinition.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -118,14 +120,14 @@
         <option value="$PROJECT_DIR$/StateBliss/Delegates/StateChangeHandler.cs" />
         <option value="$PROJECT_DIR$/StateBliss/StateChangeGuardInfo.cs" />
         <option value="$PROJECT_DIR$/StateBliss/ActionInfo.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/IStateMachineManager.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" />
-        <option value="$PROJECT_DIR$/StateBliss/StateDefinition.cs" />
         <option value="$PROJECT_DIR$/StateBliss/Exceptions/StateGuardHandlerDiscontinuedException.cs" />
         <option value="$PROJECT_DIR$/StateBliss/StateChangeResult.cs" />
         <option value="$PROJECT_DIR$/StateBliss/StateChangeInfo.cs" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/StateBliss/IStateMachineManager.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" />
         <option value="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" />
+        <option value="$PROJECT_DIR$/StateBliss/StateDefinition.cs" />
       </list>
     </option>
   </component>
@@ -303,7 +305,7 @@
       <workItem from="1566630694107" duration="27173000" />
       <workItem from="1566741926090" duration="1914000" />
       <workItem from="1566744839076" duration="83000" />
-      <workItem from="1566744957941" duration="733000" />
+      <workItem from="1566744957941" duration="2982000" />
     </task>
     <servers />
   </component>
@@ -361,53 +363,53 @@
     <state width="967" height="436" key="DebuggerActiveHint/1366.768" />
     <state x="740" y="274" key="FileChooserDialogImpl" />
     <state x="740" y="274" key="FileChooserDialogImpl/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.0.bottom" />
-    <state width="1323" height="203" key="GridCell.Tab.0.bottom/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.0.bottom" />
+    <state width="1323" height="130" key="GridCell.Tab.0.bottom/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.0.bottom/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.0.center" />
-    <state width="1323" height="203" key="GridCell.Tab.0.center/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.0.center" />
+    <state width="1323" height="130" key="GridCell.Tab.0.center/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.0.center/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.0.left" />
-    <state width="1323" height="203" key="GridCell.Tab.0.left/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.0.left" />
+    <state width="1323" height="130" key="GridCell.Tab.0.left/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.0.left/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.0.right" />
-    <state width="1323" height="203" key="GridCell.Tab.0.right/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.0.right" />
+    <state width="1323" height="130" key="GridCell.Tab.0.right/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.0.right/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.1.bottom" />
-    <state width="1323" height="203" key="GridCell.Tab.1.bottom/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.1.bottom" />
+    <state width="1323" height="130" key="GridCell.Tab.1.bottom/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.1.bottom/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.1.center" />
-    <state width="1323" height="203" key="GridCell.Tab.1.center/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.1.center" />
+    <state width="1323" height="130" key="GridCell.Tab.1.center/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.1.center/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.1.left" />
-    <state width="1323" height="203" key="GridCell.Tab.1.left/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.1.left" />
+    <state width="1323" height="130" key="GridCell.Tab.1.left/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.1.left/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.1.right" />
-    <state width="1323" height="203" key="GridCell.Tab.1.right/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.1.right" />
+    <state width="1323" height="130" key="GridCell.Tab.1.right/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.1.right/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.2.bottom" />
-    <state width="1323" height="203" key="GridCell.Tab.2.bottom/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.2.bottom" />
+    <state width="1323" height="130" key="GridCell.Tab.2.bottom/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.2.bottom/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.2.center" />
-    <state width="1323" height="203" key="GridCell.Tab.2.center/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.2.center" />
+    <state width="1323" height="130" key="GridCell.Tab.2.center/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.2.center/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.2.left" />
-    <state width="1323" height="203" key="GridCell.Tab.2.left/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.2.left" />
+    <state width="1323" height="130" key="GridCell.Tab.2.left/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.2.left/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.2.right" />
-    <state width="1323" height="203" key="GridCell.Tab.2.right/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.2.right" />
+    <state width="1323" height="130" key="GridCell.Tab.2.right/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.2.right/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.3.bottom" />
-    <state width="1323" height="203" key="GridCell.Tab.3.bottom/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.3.bottom" />
+    <state width="1323" height="130" key="GridCell.Tab.3.bottom/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.3.bottom/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.3.center" />
-    <state width="1323" height="203" key="GridCell.Tab.3.center/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.3.center" />
+    <state width="1323" height="130" key="GridCell.Tab.3.center/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.3.center/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.3.left" />
-    <state width="1323" height="203" key="GridCell.Tab.3.left/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.3.left" />
+    <state width="1323" height="130" key="GridCell.Tab.3.left/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.3.left/1920.1080" />
-    <state width="1323" height="203" key="GridCell.Tab.3.right" />
-    <state width="1323" height="203" key="GridCell.Tab.3.right/1366.768" />
+    <state width="1323" height="130" key="GridCell.Tab.3.right" />
+    <state width="1323" height="130" key="GridCell.Tab.3.right/1366.768" />
     <state width="1877" height="347" key="GridCell.Tab.3.right/1920.1080" />
     <state width="1877" height="347" key="GridCell.Tab.4.bottom" />
     <state width="1877" height="347" key="GridCell.Tab.4.bottom/1920.1080" />
@@ -439,13 +441,13 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs</url>
-          <line>78</line>
+          <line>92</line>
           <properties documentPath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" initialLine="30">
             <startOffsets>
-              <option value="3132" />
+              <option value="3574" />
             </startOffsets>
             <endOffsets>
-              <option value="3133" />
+              <option value="3575" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="271" />
@@ -458,52 +460,52 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/StateBliss/StateMachineManager.cs</url>
-          <line>282</line>
+          <line>292</line>
           <properties documentPath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" initialLine="344">
             <startOffsets>
-              <option value="10807" />
+              <option value="11205" />
             </startOffsets>
             <endOffsets>
-              <option value="10808" />
+              <option value="11206" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="282" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs</url>
-          <line>95</line>
+          <line>109</line>
           <properties documentPath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" initialLine="88">
             <startOffsets>
-              <option value="3883" />
+              <option value="4325" />
             </startOffsets>
             <endOffsets>
-              <option value="3884" />
+              <option value="4326" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="283" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs</url>
-          <line>74</line>
+          <line>88</line>
           <properties documentPath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" initialLine="65">
             <startOffsets>
-              <option value="3007" />
+              <option value="3449" />
             </startOffsets>
             <endOffsets>
-              <option value="3008" />
+              <option value="3450" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="284" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/StateBliss/StateMachineManager.cs</url>
-          <line>246</line>
+          <line>256</line>
           <properties documentPath="$PROJECT_DIR$/StateBliss/StateMachineManager.cs" initialLine="246">
             <startOffsets>
-              <option value="9478" />
+              <option value="9876" />
             </startOffsets>
             <endOffsets>
-              <option value="9580" />
+              <option value="9978" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="285" />
@@ -533,6 +535,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="287" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs</url>
+          <line>36</line>
+          <properties documentPath="$PROJECT_DIR$/StateBliss.Tests/BasicTests.cs" initialLine="38">
+            <startOffsets>
+              <option value="1212" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1280" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="288" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

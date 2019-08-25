@@ -9,6 +9,7 @@ namespace StateBliss
     {
         void Register(IEnumerable<Assembly> assemblyDefinitions, Func<Type, object> serviceProvider = null);
         StateChangeResult<TState, TData> Trigger<TState, TData>(TState currentState, TState nextState, TData context) where TState : Enum;
+        TState[] GetNextStates<TState>(TState currentState) where TState : Enum;
         event EventHandler<(Exception exception,StateChangeInfo changeInfo)> OnHandlerException;
         void Start();
         void Stop();

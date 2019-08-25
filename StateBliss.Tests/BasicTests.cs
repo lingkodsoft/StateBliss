@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace StateBliss.Tests
@@ -13,7 +14,7 @@ namespace StateBliss.Tests
             StateMachineManager.Register(new [] { typeof(BasicTests).Assembly }); //Register at bootstrap of your application, i.e. Startup
             var currentState = AuthenticationState.Unauthenticated;
             var data = new Dictionary<string, object>();
-            
+         
             // Act
             var changeInfo = StateMachineManager.Trigger(currentState, AuthenticationState.Authenticated, data);
             
@@ -23,6 +24,19 @@ namespace StateBliss.Tests
             Assert.Equal("ChangingHandler2", changeInfo.Data["key2"]);
         }
 
+        [Fact]
+        public void GetNextStatesTest()
+        {
+            // Arrange
+            StateMachineManager.Register(new [] { typeof(BasicTests).Assembly });
+
+            // Act
+            var nextStates = StateMachineManager.GetNextStates(AuthenticationState.Unauthenticated);
+            
+            // Assert
+            Assert.Equal(AuthenticationState.Authenticated , nextStates.Last());
+        }
+        
         public class AuthenticationStateDefinition : StateDefinition<AuthenticationState>
         {
             public override void Define(IStateFromBuilder<AuthenticationState> builder)

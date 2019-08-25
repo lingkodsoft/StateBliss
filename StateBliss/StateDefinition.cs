@@ -101,8 +101,10 @@ namespace StateBliss
         internal TState[] GetNextStates(TState state)
         {
             var stateFilter = state.ToInt();
-            return Transitions.Where(a => a.From == stateFilter)
-                .Select(a => a.To.ToEnum<TState>()).ToArray();
+            var result = Transitions.Where(a => a.From == stateFilter && a.To != -1)
+                .Select(a => a.To.ToEnum<TState>()).Distinct().ToArray();
+
+            return DisabledSameStateTransitions.All(a => a != state.ToInt()) ? new []{ state }.Concat(result).ToArray() : result;
         }
         
         private ActionInfo[] GetGuardHandlers(HandlerType handlerType, int? fromState, int? toState)

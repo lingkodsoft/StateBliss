@@ -73,6 +73,16 @@ namespace StateBliss
             return ChangeStateInternal(currentState.ToInt(), nextState.ToInt(), definition, data);
         }
         
+        TState[] IStateMachineManager.GetNextStates<TState>(TState currentState)
+        {
+            var definition = GetStateDefinition<TState>();
+            return definition.GetNextStates(currentState);
+        }
+        
+        public static TState[] GetNextStates<TState>(TState currentState) where TState : Enum
+        {
+            return Default.GetNextStates(currentState);
+        }
         
         public StateDefinition<TState> GetStateDefinition<TState>() where TState : Enum
         {
