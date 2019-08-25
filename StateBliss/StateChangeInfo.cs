@@ -2,7 +2,6 @@ using System;
 
 namespace StateBliss
 {
-    
     public class StateChangeInfo<TState> : StateChangeInfo
         where TState : Enum
     {
@@ -17,6 +16,23 @@ namespace StateBliss
             get => base.ToState.ToEnum<TState>();
             set => base.ToState = value.ToInt();
         }
+
+        public TState CurrentState
+        {
+            get => base.CurrentState.ToEnum<TState>();
+            set => base.CurrentState = value.ToInt();
+        }
+
+        internal StateChangeResult<TState, TData> ToResult<TData>()
+        {
+            return new StateChangeResult<TState, TData>
+            {
+                FromState = this.FromState,
+                ToState = this.ToState,
+                CurrentState = this.CurrentState,
+                StateChangedSucceeded = this.StateChangedSucceeded
+            };
+        }
     }
 
     public class StateChangeInfo
@@ -25,17 +41,7 @@ namespace StateBliss
         public T DataAs<T>() => (T)Data;
         internal int FromState { get; set; }
         internal int ToState { get; set; }
-        
-        /// <summary>
-        /// When Continue is set to false on a handler, setting ThrowExceptionWhenDiscontinued to true will throw StateEnterGuardDiscontinuedException.
-        /// Only applies to Changing, OnEntering and OnExiting transitions
-        /// </summary>
-        public bool ThrowExceptionWhenDiscontinued { get; set; }
-
-        /// <summary>
-        /// Only applies to Changing, OnEntering and OnExiting transitions
-        /// </summary>
-        public bool Continue { get; set; } = true;
-        
+        internal int CurrentState { get; set; }
+        public bool StateChangedSucceeded { get; internal set; }
     }
 }

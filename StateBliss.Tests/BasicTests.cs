@@ -11,15 +11,18 @@ namespace StateBliss.Tests
         {
             // Arrange
             StateMachineManager.Register(new [] { typeof(BasicTests).Assembly });
-            var currentState = AuthenticationState.Unauthenticated;
+            var currentState = AuthenticationState.Authenticated;
             var data = new Dictionary<string, object>();
             
             // Act
-            StateMachineManager.Trigger(currentState, AuthenticationState.Authenticated, data);
+//            var changeInfo = StateMachineManager.Trigger(currentState, AuthenticationState.Authenticated, data);
+            var changeInfo = StateMachineManager.Trigger(currentState, AuthenticationState.Authenticated, data);
             
             // Assert
-            Assert.Equal("ChangingHandler1", data["key1"]);
-            Assert.Equal("ChangingHandler2", data["key2"]);
+            
+            Assert.False(changeInfo.StateChangedSucceeded);
+            //Assert.Equal("ChangingHandler1", data["key1"]);
+            //Assert.Equal("ChangingHandler2", data["key2"]);
         }
 
         public class DefineAuthenticationState : StateHandlerDefinition<AuthenticationState>
@@ -34,19 +37,38 @@ namespace StateBliss.Tests
                     ;
 
                 builder.OnEntering(AuthenticationState.Authenticated, this, a => a.OnEnteringHandler1);
+                
+                builder.OnExiting(AuthenticationState.Unauthenticated, this, a => a.OnExitingHandler1);
+                
+                builder.OnEditing(AuthenticationState.Authenticated, this, a => a.OnEditingHandler1);
+
+                builder.ThrowExceptionWhenDiscontinued = true;
             }
 
-            private void OnEnteringHandler1(StateChangeInfo<AuthenticationState> changeinfo)
+            private void OnEditingHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
             {
+                changeinfo.Continue = false;
                 
+            }
+
+
+            private void OnExitingHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
+            {
+               // changeinfo.Continue = false;
+            }
+
+            private void OnEnteringHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
+            {
+                //changeinfo.Continue = false;
             }
 
             private void ChangedHandler1(StateChangeInfo<AuthenticationState> changeinfo)
             {
+                
                // throw new NotImplementedException();
             }
 
-            private void ChangingHandler1(StateChangeInfo<AuthenticationState> changeinfo)
+            private void ChangingHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
             {
                 var data = changeinfo.DataAs<Dictionary<string, object>>();
                 data["key1"] = "ChangingHandler1";
@@ -63,7 +85,7 @@ namespace StateBliss.Tests
 
             }
 
-            private void ChangingHandler2(StateChangeInfo<AuthenticationState> changeinfo)
+            private void ChangingHandler2(StateChangeGuardInfo<AuthenticationState> changeinfo)
             {
                 var data = changeinfo.DataAs<Dictionary<string, object>>();
                 data["key2"] = "ChangingHandler2";

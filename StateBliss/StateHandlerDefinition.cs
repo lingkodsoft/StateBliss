@@ -36,27 +36,6 @@ namespace StateBliss
         protected abstract void OnDefineState();
     }
 
-    internal class AggregateStateHandlerDefinition<TState> : StateHandlerDefinition<TState> where TState : Enum
-    {
-        public AggregateStateHandlerDefinition(IStateDefinition[] definitions)
-        {
-            foreach (var definition in definitions)
-            {
-                foreach (var transition in definition.Transitions)
-                {
-                    AddTransition(transition);
-                }
-                
-                AddDisabledSameStateTransitions(definition.DisabledSameStateTransitions.ToArray());
-            }
-        }
-        
-        public override void Define(IStateFromBuilder<TState> builder)
-        {
-            throw new NotImplementedException();
-        }
-    }
-    
     public abstract class StateHandlerDefinition<TState> : StateHandlerDefinition where TState : Enum
     {
         private StateTransitionBuilder<TState> StateTransitionBuilder;
@@ -64,7 +43,9 @@ namespace StateBliss
         protected StateHandlerDefinition() : base(typeof(TState))
         {
         }
-        
+
+        public bool ThrowExceptionWhenDiscontinued { get; set; }
+
         public abstract void Define(IStateFromBuilder<TState> builder);
 
         protected override void OnDefineState()
@@ -75,11 +56,6 @@ namespace StateBliss
             }
             StateTransitionBuilder = new StateTransitionBuilder<TState>(this);
             Define(StateTransitionBuilder);
-        }
-
-        internal ActionInfo[] GetOnTransitioningHandlers(int fromState, int toState)
-        {
-            return GetHandlers(HandlerType.OnChanging, fromState, toState);
         }
 
         internal ActionInfo[] GetOnEditHandlers(int currentState)
@@ -120,11 +96,6 @@ namespace StateBliss
         internal ActionInfo[] GetOnExitGuardHandlers(int fromState)
         {
             return GetGuardHandlers(HandlerType.OnExiting, fromState, null);
-        }
-
-        internal ActionInfo[] GetOnTransitionedWithContextHandlers(int fromState, int toState)
-        {
-            return GetGuardHandlers(HandlerType.OnChanged, fromState, toState);
         }
 
         internal TState[] GetNextStates(TState state)

@@ -27,10 +27,10 @@ namespace StateBliss
             return this;
         }
 
-        public void OnEntering<T>(TState state, T target, Expression<Func<T, StateChangeHandler<TState>>> handler) where T : class
+        public void OnEntering<T>(TState state, T target, Expression<Func<T, StateChangeGuardHandler<TState>>> handler) where T : class
         {
             AddHandler(-1, state.ToInt(), HandlerType.OnEntering,
-                new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnEntering, target));
+                new GuardActionInfo<TState>(handler.GetMethodName(), HandlerType.OnEntering, target));
         }
 
         public void OnEntered<T>(TState state, T target, Expression<Func<T, StateChangeHandler<TState>>> handler) where T : class
@@ -39,10 +39,10 @@ namespace StateBliss
                 new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnEntered, target));
         }
 
-        public void OnExiting<T>(TState state, T target, Expression<Func<T, StateChangeHandler<TState>>> handler) where T : class
+        public void OnExiting<T>(TState state, T target, Expression<Func<T, StateChangeGuardHandler<TState>>> handler) where T : class
         {
             AddHandler(state.ToInt(), -1, HandlerType.OnExiting,
-                new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnExiting, target));
+                new GuardActionInfo<TState>(handler.GetMethodName(), HandlerType.OnExiting, target));
         }
 
         public void OnExited<T>(TState state, T target, Expression<Func<T, StateChangeHandler<TState>>> handler) where T : class
@@ -51,11 +51,11 @@ namespace StateBliss
                 new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnExited, target));
         }
 
-        public void OnEditing<T>(TState state, T target, Expression<Func<T, StateChangeHandler<TState>>> handler) where T : class
+        public void OnEditing<T>(TState state, T target, Expression<Func<T, StateChangeGuardHandler<TState>>> handler) where T : class
         {
             var editState = state.ToInt();
             AddHandler(editState, editState, HandlerType.OnEditing,
-                new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnEditing, target));
+                new GuardActionInfo<TState>(handler.GetMethodName(), HandlerType.OnEditing, target));
         }
 
         public void OnEdited<T>(TState state, T target, Expression<Func<T, StateChangeHandler<TState>>> handler) where T : class
@@ -70,6 +70,12 @@ namespace StateBliss
             _stateHandlerDefinition.AddDisabledSameStateTransitions(states.Select(a => a.ToInt()).ToArray());
         }
 
+        public bool ThrowExceptionWhenDiscontinued
+        {
+            get => _stateHandlerDefinition.ThrowExceptionWhenDiscontinued;
+            set => _stateHandlerDefinition.ThrowExceptionWhenDiscontinued = value;
+        }
+
         public IStateTransitionBuilder<TState> To(TState state)
         {
             _stateTransitionInfo.To = state.ToInt();
@@ -77,10 +83,10 @@ namespace StateBliss
             return this;
         }
         
-        public IStateTransitionBuilder<TState> Entering<T>(T target, Expression<Func<T, StateChangeHandler<TState>>> handler) where T : class
+        public IStateTransitionBuilder<TState> Entering<T>(T target, Expression<Func<T, StateChangeGuardHandler<TState>>> handler) where T : class
         {
             AddHandler(-1, _stateTransitionInfo.To, HandlerType.OnEntering,
-                new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnEntering, target));
+                new GuardActionInfo<TState>(handler.GetMethodName(), HandlerType.OnEntering, target));
             return this;
         }
         
@@ -91,10 +97,10 @@ namespace StateBliss
             return this;
         }
 
-        public IStateTransitionBuilder<TState> Changing<T>(T target, Expression<Func<T, StateChangeHandler<TState>>> handler) where T : class
+        public IStateTransitionBuilder<TState> Changing<T>(T target, Expression<Func<T, StateChangeGuardHandler<TState>>> handler) where T : class
         {
             AddHandler(_stateTransitionInfo.From, _stateTransitionInfo.To, HandlerType.OnChanging,
-                new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnChanging, target));
+                new GuardActionInfo<TState>(handler.GetMethodName(), HandlerType.OnChanging, target));
             return this;
         }
         
@@ -105,10 +111,10 @@ namespace StateBliss
             return this;
         }
      
-        public IStateTransitionBuilder<TState> Exiting<T>(T target, Expression<Func<T, StateChangeHandler<TState>>> handler) where T : class
+        public IStateTransitionBuilder<TState> Exiting<T>(T target, Expression<Func<T, StateChangeGuardHandler<TState>>> handler) where T : class
         {
             AddHandler(_stateTransitionInfo.From, -1, HandlerType.OnExiting,
-                new ActionInfo<TState>(handler.GetMethodName(), HandlerType.OnExiting, target));
+                new GuardActionInfo<TState>(handler.GetMethodName(), HandlerType.OnExiting, target));
             return this;
         }
         

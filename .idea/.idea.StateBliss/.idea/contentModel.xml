@@ -8,8 +8,10 @@
       </e>
       <e p="StateBliss" t="IncludeRecursive">
         <e p="ActionInfo.cs" t="Include" />
+        <e p="AggregateStateHandlerDefinition.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="Delegates" t="Include">
+          <e p="StateChangeGuardHandler.cs" t="Include" />
           <e p="StateChangeHandler.cs" t="Include" />
         </e>
         <e p="Exceptions" t="Include">
@@ -44,7 +46,6 @@
             </e>
           </e>
         </e>
-        <e p="State.cs" t="Include" />
         <e p="StateBliss.csproj" t="IncludeRecursive" />
         <e p="StateBuilder" t="Include">
           <e p="IStateFromBuilder.cs" t="Include" />
@@ -52,7 +53,9 @@
           <e p="IStateTransitionBuilder.cs" t="Include" />
           <e p="StateTransitionBuilder.cs" t="Include" />
         </e>
+        <e p="StateChangeGuardInfo.cs" t="Include" />
         <e p="StateChangeInfo.cs" t="Include" />
+        <e p="StateChangeResult.cs" t="Include" />
         <e p="StateHandlerDefinition.cs" t="Include" />
         <e p="StateMachineManager.cs" t="Include" />
         <e p="StateTransitionInfo.cs" t="Include" />
