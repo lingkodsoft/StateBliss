@@ -113,4 +113,4 @@
 
 # Install from Nuget
 
-`Install-Package StateBliss -Version 1.0.4`
+`Install-Package StateBliss -Version 1.0.5`
