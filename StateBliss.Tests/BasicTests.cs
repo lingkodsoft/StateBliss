@@ -10,36 +10,29 @@ namespace StateBliss.Tests
         public void Tests()
         {
             // Arrange
-            StateMachineManager.Register(new [] { typeof(BasicTests).Assembly });
-            var currentState = AuthenticationState.Authenticated;
+            StateMachineManager.Register(new [] { typeof(BasicTests).Assembly }); //Register at bootstrap of yor application, i.e. Startup
+            var currentState = AuthenticationState.Unauthenticated;
             var data = new Dictionary<string, object>();
             
             // Act
-//            var changeInfo = StateMachineManager.Trigger(currentState, AuthenticationState.Authenticated, data);
             var changeInfo = StateMachineManager.Trigger(currentState, AuthenticationState.Authenticated, data);
             
             // Assert
-            
-            Assert.False(changeInfo.StateChangedSucceeded);
-            //Assert.Equal("ChangingHandler1", data["key1"]);
-            //Assert.Equal("ChangingHandler2", data["key2"]);
+            Assert.True(changeInfo.StateChangedSucceeded);
+            Assert.Equal("ChangingHandler1", changeInfo.Data["key1"]);
+            Assert.Equal("ChangingHandler2", changeInfo.Data["key2"]);
         }
 
-        public class DefineAuthenticationState : StateHandlerDefinition<AuthenticationState>
+        public class DefineAuthenticationState : StateDefinition<AuthenticationState>
         {
             public override void Define(IStateFromBuilder<AuthenticationState> builder)
             {
                 builder.From(AuthenticationState.Unauthenticated).To(AuthenticationState.Authenticated)
                     .Changing(this, a => a.ChangingHandler1)
-        
-                    .Changed(this, a => a.ChangedHandler1)
-                    
-                    ;
+                    .Changed(this, a => a.ChangedHandler1);
 
                 builder.OnEntering(AuthenticationState.Authenticated, this, a => a.OnEnteringHandler1);
-                
                 builder.OnExiting(AuthenticationState.Unauthenticated, this, a => a.OnExitingHandler1);
-                
                 builder.OnEditing(AuthenticationState.Authenticated, this, a => a.OnEditingHandler1);
 
                 builder.ThrowExceptionWhenDiscontinued = true;
@@ -47,10 +40,8 @@ namespace StateBliss.Tests
 
             private void OnEditingHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
             {
-                changeinfo.Continue = false;
-                
+               // changeinfo.Continue = false;
             }
-
 
             private void OnExitingHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
             {
@@ -64,8 +55,7 @@ namespace StateBliss.Tests
 
             private void ChangedHandler1(StateChangeInfo<AuthenticationState> changeinfo)
             {
-                
-               // throw new NotImplementedException();
+                // throw new NotImplementedException();
             }
 
             private void ChangingHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
@@ -76,7 +66,7 @@ namespace StateBliss.Tests
         }
 
         
-        public class DefineAuthenticationState2 : StateHandlerDefinition<AuthenticationState>
+        public class DefineAuthenticationState2 : StateDefinition<AuthenticationState>
         {
             public override void Define(IStateFromBuilder<AuthenticationState> builder)
             {

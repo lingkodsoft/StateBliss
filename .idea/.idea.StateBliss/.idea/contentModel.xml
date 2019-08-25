@@ -8,7 +8,7 @@
       </e>
       <e p="StateBliss" t="IncludeRecursive">
         <e p="ActionInfo.cs" t="Include" />
-        <e p="AggregateStateHandlerDefinition.cs" t="Include" />
+        <e p="AggregateStateDefinition.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="Delegates" t="Include">
           <e p="StateChangeGuardHandler.cs" t="Include" />
@@ -17,7 +17,7 @@
         <e p="Exceptions" t="Include">
           <e p="NoRuleDefinedForStateTransitionException.cs" t="Include" />
           <e p="SameStateTransitionDisabledException.cs" t="Include" />
-          <e p="StateEnterGuardHandlerDiscontinuedException.cs" t="Include" />
+          <e p="StateGuardHandlerDiscontinuedException.cs" t="Include" />
         </e>
         <e p="extensions" t="Include">
           <e p="EnumExtensions.cs" t="Include" />
@@ -56,28 +56,20 @@
         <e p="StateChangeGuardInfo.cs" t="Include" />
         <e p="StateChangeInfo.cs" t="Include" />
         <e p="StateChangeResult.cs" t="Include" />
-        <e p="StateHandlerDefinition.cs" t="Include" />
+        <e p="StateDefinition.cs" t="Include" />
         <e p="StateMachineManager.cs" t="Include" />
         <e p="StateTransitionInfo.cs" t="Include" />
-      </e>
-      <e p="StateBliss.SampleApi" t="IncludeRecursive">
-        <e p="StateBliss.SampleApi.csproj" t="IncludeRecursive" />
       </e>
       <e p="StateBliss.sln" t="IncludeFlat" />
       <e p="StateBliss.Tests" t="IncludeRecursive">
         <e p="BasicTests.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
-        <e p="GuardContextTests.cs" t="Include" />
-        <e p="MultiThreadingTests.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
-        <e p="OrderTests.cs" t="Include" />
         <e p="packages.config" t="Include" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
         </e>
         <e p="StateBliss.Tests.csproj" t="IncludeRecursive" />
-        <e p="StateBlissTests.cs" t="Include" />
-        <e p="StateFactoryTestHelper.cs" t="Include" />
       </e>
     </e>
     <e p="C:\Users\lingkodsoft\.Rider2019.2\system\extResources" t="IncludeRecursive" />

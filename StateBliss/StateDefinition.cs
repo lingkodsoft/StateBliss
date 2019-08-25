@@ -36,11 +36,11 @@ namespace StateBliss
         protected abstract void OnDefineState();
     }
 
-    public abstract class StateHandlerDefinition<TState> : StateHandlerDefinition where TState : Enum
+    public abstract class StateDefinition<TState> : StateHandlerDefinition where TState : Enum
     {
         private StateTransitionBuilder<TState> StateTransitionBuilder;
 
-        protected StateHandlerDefinition() : base(typeof(TState))
+        protected StateDefinition() : base(typeof(TState))
         {
         }
 

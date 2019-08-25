@@ -10,12 +10,12 @@ namespace StateBliss
         IStateFromBuilder<TState>, IStateToBuilder<TState>
         where TState : Enum
     {
-        private readonly StateHandlerDefinition<TState> _stateHandlerDefinition;
+        private readonly StateDefinition<TState> _stateDefinition;
         private StateTransitionInfo _stateTransitionInfo;
 
-        internal StateTransitionBuilder(StateHandlerDefinition<TState> stateHandlerDefinition)
+        internal StateTransitionBuilder(StateDefinition<TState> stateDefinition)
         {
-            _stateHandlerDefinition = stateHandlerDefinition;
+            _stateDefinition = stateDefinition;
         }
 
         public IStateToBuilder<TState> From(TState state)
@@ -67,19 +67,19 @@ namespace StateBliss
 
         public void DisableSameStateTransitionFor(params TState[] states)
         {
-            _stateHandlerDefinition.AddDisabledSameStateTransitions(states.Select(a => a.ToInt()).ToArray());
+            _stateDefinition.AddDisabledSameStateTransitions(states.Select(a => a.ToInt()).ToArray());
         }
 
         public bool ThrowExceptionWhenDiscontinued
         {
-            get => _stateHandlerDefinition.ThrowExceptionWhenDiscontinued;
-            set => _stateHandlerDefinition.ThrowExceptionWhenDiscontinued = value;
+            get => _stateDefinition.ThrowExceptionWhenDiscontinued;
+            set => _stateDefinition.ThrowExceptionWhenDiscontinued = value;
         }
 
         public IStateTransitionBuilder<TState> To(TState state)
         {
             _stateTransitionInfo.To = state.ToInt();
-            _stateHandlerDefinition.AddTransition(_stateTransitionInfo);
+            _stateDefinition.AddTransition(_stateTransitionInfo);
             return this;
         }
         
@@ -127,7 +127,7 @@ namespace StateBliss
         
         private void AddHandler(int fromState, int toState, HandlerType handlerType, ActionInfo actionInfo)
         {
-            var stateTransitionInfo = _stateHandlerDefinition.Transitions.SingleOrDefault(a => a.From == fromState && a.To == toState);
+            var stateTransitionInfo = _stateDefinition.Transitions.SingleOrDefault(a => a.From == fromState && a.To == toState);
             if (stateTransitionInfo == null)
             {
                 stateTransitionInfo = new StateTransitionInfo
@@ -135,7 +135,7 @@ namespace StateBliss
                     From = fromState,
                     To = toState
                 };
-                _stateHandlerDefinition.AddTransition(stateTransitionInfo);
+                _stateDefinition.AddTransition(stateTransitionInfo);
             }
 
             stateTransitionInfo.Handlers.Add((actionInfo, handlerType));

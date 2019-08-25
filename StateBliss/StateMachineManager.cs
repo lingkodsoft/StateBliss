@@ -38,7 +38,7 @@ namespace StateBliss
                         ? (IStateDefinition) Activator.CreateInstance(type)
                         : (IStateDefinition) serviceProvider(type);
                     
-                    var definitionHandlerType = typeof(StateHandlerDefinition<>).MakeGenericType(definition.EnumType);
+                    var definitionHandlerType = typeof(StateDefinition<>).MakeGenericType(definition.EnumType);
                     if (!definitionHandlerType.IsInstanceOfType(definition))
                     {
                         throw new ArgumentException("StateDefinition must be of type StateHandlerDefinition<TState>");
@@ -74,13 +74,13 @@ namespace StateBliss
         }
         
         
-        public StateHandlerDefinition<TState> GetStateDefinition<TState>() where TState : Enum
+        public StateDefinition<TState> GetStateDefinition<TState>() where TState : Enum
         {
             var definitions = _stateDefinitions.Where(a => a.EnumType == typeof(TState)).ToArray();
             var definition = definitions.Count() > 1
-                ? new AggregateStateHandlerDefinition<TState>(definitions)
+                ? new AggregateStateDefinition<TState>(definitions)
                 : definitions.Single();
-            return (StateHandlerDefinition<TState>)definition;
+            return (StateDefinition<TState>)definition;
         }
 
         private void QueueActionForExecution(ActionInfo actionInfo, StateChangeInfo changeInfo)
@@ -188,7 +188,7 @@ namespace StateBliss
             }
         }
 
-        private StateChangeResult<TState, TData> ChangeStateInternal<TState, TData>(int fromState, int toState, StateHandlerDefinition<TState> stateHandlerDefinition, TData data) where TState : Enum
+        private StateChangeResult<TState, TData> ChangeStateInternal<TState, TData>(int fromState, int toState, StateDefinition<TState> stateDefinition, TData data) where TState : Enum
         {
             var changeInfo = new StateChangeGuardInfo<TState>
             {
@@ -196,7 +196,7 @@ namespace StateBliss
                 ToState = toState.ToEnum<TState>(),
                 CurrentState = fromState.ToEnum<TState>(),
                 Data = data,
-                ThrowExceptionWhenDiscontinued = stateHandlerDefinition.ThrowExceptionWhenDiscontinued
+                ThrowExceptionWhenDiscontinued = stateDefinition.ThrowExceptionWhenDiscontinued
             };
 
             _lock.EnterUpgradeableReadLock();
@@ -205,26 +205,26 @@ namespace StateBliss
                 //trigger handlers
                 if (fromState == toState)
                 {
-                    if (stateHandlerDefinition.DisabledSameStateTransitions.Any(a => a.Equals(toState)))
+                    if (stateDefinition.DisabledSameStateTransitions.Any(a => a.Equals(toState)))
                     {
                         throw new SameStateTransitionDisabledException();
                     }
 
                     //On edit guards
-                    if (!ExecuteGuardHandlers(changeInfo, stateHandlerDefinition.GetOnEditGuardHandlers(fromState)))
+                    if (!ExecuteGuardHandlers(changeInfo, stateDefinition.GetOnEditGuardHandlers(fromState)))
                     {
                         return changeInfo.ToResult<TData>();
                     }
                     
                     //On Edited state
-                    foreach (var actionInfo in stateHandlerDefinition.GetOnEditHandlers(fromState))
+                    foreach (var actionInfo in stateDefinition.GetOnEditHandlers(fromState))
                     {
                         QueueActionForExecution(actionInfo, changeInfo);
                     }
                 }
                 else
                 {
-                    var nextStateTransitions = stateHandlerDefinition.GetNextStates(changeInfo.FromState);
+                    var nextStateTransitions = stateDefinition.GetNextStates(changeInfo.FromState);
                     if (!nextStateTransitions.Any(a => a.ToInt() == toState))
                     {
                         throw new NoRuleDefinedForStateTransitionException();
@@ -232,19 +232,19 @@ namespace StateBliss
                 }
 
                 //OnExitGuards of new state
-                if (!ExecuteGuardHandlers(changeInfo, stateHandlerDefinition.GetOnExitGuardHandlers(fromState)))
+                if (!ExecuteGuardHandlers(changeInfo, stateDefinition.GetOnExitGuardHandlers(fromState)))
                 {
                     return changeInfo.ToResult<TData>();
                 }
 
                 //OnEnterGuards of new state
-                if (!ExecuteGuardHandlers(changeInfo, stateHandlerDefinition.GetOnEnterGuardHandlers(toState)))
+                if (!ExecuteGuardHandlers(changeInfo, stateDefinition.GetOnEnterGuardHandlers(toState)))
                 {
                     return changeInfo.ToResult<TData>();
                 }
 
                 //OnChanging
-                if (!ExecuteGuardHandlers(changeInfo, stateHandlerDefinition.GetOnChangingGuardHandlers(fromState, toState)))
+                if (!ExecuteGuardHandlers(changeInfo, stateDefinition.GetOnChangingGuardHandlers(fromState, toState)))
                 {
                     return changeInfo.ToResult<TData>();
                 }
@@ -253,19 +253,19 @@ namespace StateBliss
                 changeInfo.StateChangedSucceeded = true;
 
                 //OnExit of current state
-                foreach (var actionInfo in stateHandlerDefinition.GetOnExitHandlers(fromState))
+                foreach (var actionInfo in stateDefinition.GetOnExitHandlers(fromState))
                 {
                     QueueActionForExecution(actionInfo, changeInfo);
                 }
 
                 //OnEnter of new state
-                foreach (var actionInfo in stateHandlerDefinition.GetOnEnteredHandlers(toState))
+                foreach (var actionInfo in stateDefinition.GetOnEnteredHandlers(toState))
                 {
                     QueueActionForExecution(actionInfo, changeInfo);
                 }
 
                 //OnChanged
-                var handlers = stateHandlerDefinition.GetOnChangedHandlers(fromState, toState).ToArray();
+                var handlers = stateDefinition.GetOnChangedHandlers(fromState, toState).ToArray();
                 foreach (var actionInfo in handlers)
                 {
                     QueueActionForExecution(actionInfo, changeInfo);
@@ -314,7 +314,7 @@ namespace StateBliss
 
                     if (guardChangeInfo.ThrowExceptionWhenDiscontinued)
                     {
-                        throw new StateEnterGuardHandlerDiscontinuedException();
+                        throw new StateGuardHandlerDiscontinuedException();
                     }
 
                     return false;

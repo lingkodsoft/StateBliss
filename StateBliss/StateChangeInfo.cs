@@ -27,6 +27,7 @@ namespace StateBliss
         {
             return new StateChangeResult<TState, TData>
             {
+                Data = this.DataAs<TData>(),
                 FromState = this.FromState,
                 ToState = this.ToState,
                 CurrentState = this.CurrentState,

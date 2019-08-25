@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace StateBliss
 {
-    internal class AggregateStateHandlerDefinition<TState> : StateHandlerDefinition<TState> where TState : Enum
+    internal class AggregateStateDefinition<TState> : StateDefinition<TState> where TState : Enum
     {
-        public AggregateStateHandlerDefinition(IStateDefinition[] definitions)
+        public AggregateStateDefinition(IStateDefinition[] definitions)
         {
             foreach (var definition in definitions)
             {
