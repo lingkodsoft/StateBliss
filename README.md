@@ -1,90 +1,116 @@
-# StateBliss : Finite State Machine in c#
+# StateBliss : Finite State Machine in c# with fluent syntax
 
 [Stackoverflow](https://stackoverflow.com/questions/5923767/simple-state-machine-example-in-c/5924053)
 
 # How to use 
 
 
-You can do this. See unit tests and SampleApi for more examples.
-
 ```
-  public class Order
-  {
-      public int Id { get; set; }
-      public OrderState State { get; set; }
-      public Guid Uid { get; set; }
-      public static int TestId = 1;
+ 
+    public class BasicTests
+    {
+        [Fact]
+        public void Tests()
+        {
+            // Arrange
+            StateMachineManager.Register(new [] { typeof(BasicTests).Assembly }); //Register at bootstrap of your application, i.e. Startup
+            var currentState = AuthenticationState.Unauthenticated;
+            var data = new Dictionary<string, object>();
+            
+            // Act
+            var changeInfo = StateMachineManager.Trigger(currentState, AuthenticationState.Authenticated, data);
+            
+            // Assert
+            Assert.True(changeInfo.StateChangedSucceeded);
+            Assert.Equal("ChangingHandler1", changeInfo.Data["key1"]);
+            Assert.Equal("ChangingHandler2", changeInfo.Data["key2"]);
+        }
 
-      public static Guid TestUid = Guid.Parse("3AFEF7E8-2DF2-4245-A2F8-D050DBE6E417");
-  }
+        public class AuthenticationStateDefinition : StateDefinition<AuthenticationState>
+        {
+            public override void Define(IStateFromBuilder<AuthenticationState> builder)
+            {
+                builder.From(AuthenticationState.Unauthenticated).To(AuthenticationState.Authenticated)
+                    .Changing(this, a => a.ChangingHandler1)
+                    .Changed(this, a => a.ChangedHandler1);
 
-  public enum OrderState
-  {
-      Initial,
-      Paid,
-      Processing,
-      Processed,
-      Delivered
-  }
+                builder.OnEntering(AuthenticationState.Authenticated, this, a => a.OnEnteringHandler1);
+                builder.OnEntered(AuthenticationState.Authenticated, this, a => a.OnEnteredHandler1);
+                
+                builder.OnExiting(AuthenticationState.Unauthenticated, this, a => a.OnExitingHandler1);
+                builder.OnExited(AuthenticationState.Authenticated, this, a => a.OnExitedHandler1);
+                
+                builder.OnEditing(AuthenticationState.Authenticated, this, a => a.OnEditingHandler1);
+                builder.OnEdited(AuthenticationState.Authenticated, this, a => a.OnEditedHandler1);
+                
+                builder.ThrowExceptionWhenDiscontinued = true;
+            }
 
-  public class PayOrderChangeTrigger : StateChangeTrigger<OrderState>
-  {
-      public Order Order { get; set; }
-  }
+            private void ChangingHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
+            {
+                var data = changeinfo.DataAs<Dictionary<string, object>>();
+                data["key1"] = "ChangingHandler1";
+            }
 
-  //call in your application startup, see SampleApi for example.
-  public void SetStateFactory()
-  {
-      StateMachineManager.Default.SetStateFactory((stateType, uid) =>
-      {
-          if (stateType == typeof(OrderState))
-          {
+            private void OnEnteringHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
+            {
+                // changeinfo.Continue = false; //this will prevent changing the state
+            }
 
-               var order = _ordersRepository.GetOrders().Single(a => a.Uid == id);            
-               
-               return new State<Order, OrderState>(order, a => a.Uid, a => a.State)
-                  .Define(b =>
-                  {
-                      b.From(OrderState.Initial).To(OrderState.Paid)
-                          .Changing(FromInitialToPaidStateChaningHandler);
+            private void OnEditedHandler1(StateChangeInfo<AuthenticationState> changeinfo)
+            {                
+            }
 
-                      b.From(OrderState.Paid).To(OrderState.Processing);
-                      b.From(OrderState.Processing).To(OrderState.Processed);
+            private void OnExitedHandler1(StateChangeInfo<AuthenticationState> changeinfo)
+            {                
+            }
 
-                  });
-          }
-          
-          //TODO: return other state here. see SampleApi for example.
-          throw new NotImplementedException();
-      });
-  }
-  
-  public void TriggerStateChange()
-  {
-      var uid = Order.TestUid;
-      var cmd = new PayOrderChangeTrigger
-      {
-          //Order = .. set other properties needed by your business logic
-          Uid = uid,
-          NextState = OrderState.Paid
-      };
-      
-      StateMachineManager.Trigger(cmd);
+            private void OnEnteredHandler1(StateChangeInfo<AuthenticationState> changeinfo)
+            {                
+            }
 
-      var succeeded = cmd.ChangeStateSucceeded && cmd.State.Current == OrderState.Paid;
-  }
+            private void OnEditingHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
+            {
+            }
 
-  private void FromInitialToPaidStateChaningHandler(IState<OrderState> state, OrderState next)
-  {
-      //TODO: do some business logic
-  }
-  
-  
+            private void OnExitingHandler1(StateChangeGuardInfo<AuthenticationState> changeinfo)
+            {
+            }
+
+            private void ChangedHandler1(StateChangeInfo<AuthenticationState> changeinfo)
+            {
+            }
+        }
+        
+        //this class gets regitered automatically by calling StateMachineManager.Register
+        public class AnotherAuthenticationStateDefinition : StateDefinition<AuthenticationState>
+        {
+            public override void Define(IStateFromBuilder<AuthenticationState> builder)
+            {
+                builder.From(AuthenticationState.Unauthenticated).To(AuthenticationState.Authenticated)
+                    .Changing(this, a => a.ChangingHandler2);
+
+            }
+
+            private void ChangingHandler2(StateChangeGuardInfo<AuthenticationState> changeinfo)
+            {
+                var data = changeinfo.DataAs<Dictionary<string, object>>();
+                data["key2"] = "ChangingHandler2";
+            }
+        }
+    }
+
+    public enum AuthenticationState
+    {
+        Unauthenticated,
+        Authenticated
+    }
 }
+
   
   
 ```
 
 # Install from Nuget
 
-`Install-Package StateBliss -Version 1.0.1`
+`Install-Package StateBliss -Version 1.0.4`
